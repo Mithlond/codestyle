@@ -14,18 +14,21 @@ The reactor consists has 2 main strucures:
    any custom validation/enforcement rules are placed within this project. Also holds license definitions and
    related header and template files.
 
-## Getting and building the Codestyle project locally
+## Getting the Codestyle project
 
 Clone the repository, and get all tags:
 
 ```
-git clone https://github.com/Mithlond/codestyle.git
+git clone https://github.com/Mithlond/mithlond-codestyle.git
 
 cd codestyle
 
 git fetch --tags
 ```
-For the latest development build, simply run the build:  
+
+## Building the Codestyle project
+
+For the latest development build, simply run the build against the latest master branch revision:  
 
 ```
 mvn clean install
