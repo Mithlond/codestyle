@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- +=============================================== -->
+    <!-- | Section 1:  Project information                -->
+    <!-- +=============================================== -->
+    <parent>
+        <groupId>se.mithlond.poms</groupId>
+        <artifactId>mithlond-api-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../mithlond-api-parent</relativePath>
+    </parent>
+
+    <groupId>se.mithlond.poms</groupId>
+    <artifactId>mithlond-model-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>Mithlond: Entity Model Project Parent.</description>
+    <url>${url.prefix}/${path.in.reactor}</url>
+
+    <properties>
+        <path.in.reactor>poms/mithlond-model-parent</path.in.reactor>
+        <liquibase.version>3.3.2</liquibase.version>
+    </properties>
+
+    <!-- +=============================================== -->
+    <!-- | Section 2:  Dependency (management) settings   -->
+    <!-- +=============================================== -->
+    <dependencies>
+        <!-- Internal dependencies -->
+        <dependency>
+            <groupId>se.jguru.nazgul.core.reflection.api</groupId>
+            <artifactId>nazgul-core-reflection-api</artifactId>
+            <version>${nazgul-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>se.jguru.nazgul.core.persistence.api</groupId>
+            <artifactId>nazgul-core-persistence-api</artifactId>
+            <version>${nazgul-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>se.jguru.nazgul.core.xmlbinding.spi.jaxb</groupId>
+            <artifactId>nazgul-core-xmlbinding-spi-jaxb</artifactId>
+            <version>${nazgul-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <scope>test</scope>
+        </dependency -->
+    </dependencies>
+
+    <!-- +=============================================== -->
+    <!-- | Section 3:  Build settings                     -->
+    <!-- +=============================================== -->
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.build.directory}/jaxb2/transformed</directory>
+                <includes>
+                    <include>**/*.xsd</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+
+            <!--
+                Configure the Surefire plugin to run using 2 forks per core.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkCount>2C</forkCount>
+                    <argLine>${surefire.argLine}</argLine>
+                    <systemPropertyVariables>
+                        <jpa_provider_class>${jpa.provider.class}</jpa_provider_class>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- +=============================================== -->
+    <!-- | Section 5:  Profiles                           -->
+    <!-- +=============================================== -->
+    <profiles>
+
+        <profile>
+            <id>eclipselink2</id>
+            <activation>
+                <property>
+                    <name>!jpaSpec</name>
+                </property>
+            </activation>
+
+            <properties>
+                <jpa.provider.class>org.eclipse.persistence.jpa.PersistenceProvider</jpa.provider.class>
+                <surefire.argLine>-javaagent:${basedir}/target/eclipselink.jar -Dfile.encoding=UTF-8 -Xmx1024m -XX:MaxPermSize=512m</surefire.argLine>
+                <eclipselink.version>2.6.0</eclipselink.version>
+            </properties>
+
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.eclipse.persistence</groupId>
+                        <artifactId>javax.persistence</artifactId>
+                        <version>2.1.0</version>
+                        <scope>provided</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.eclipse.persistence</groupId>
+                        <artifactId>eclipselink</artifactId>
+                        <version>${eclipselink.version}</version>
+                        <scope>provided</scope>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+            <dependencies>
+                <dependency>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>javax.persistence</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>eclipselink</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <!--
+                        Use the dependency plugin to copy the EclipseLink runtime
+                        to the target directory.
+                    -->
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.eclipse.persistence</groupId>
+                                            <artifactId>eclipselink</artifactId>
+                                            <version>${eclipselink.version}</version>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                            <destFileName>eclipselink.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>openjpa2</id>
+
+            <activation>
+                <property>
+                    <name>jpaSpec</name>
+                    <value>openjpa2</value>
+                </property>
+            </activation>
+
+            <properties>
+                <openjpa.version>2.3.0</openjpa.version>
+                <openjpa.includes>se/jguru/nazgul/**/*.class</openjpa.includes>
+                <openjpa.excludes>se/jguru/nazgul/core/xmlbinding/spi/jaxb/transport/EntityWrapper.class</openjpa.excludes>
+                <openjpa.persistenceXmlPath>weaving/openjpa/v2/${project.artifactId}-persistence.xml</openjpa.persistenceXmlPath>
+                <openjpa.persistenceXmlFile>${project.basedir}/src/main/${openjpa.persistenceXmlPath}</openjpa.persistenceXmlFile>
+                <openjpa.persistenceXmlTestFile>${project.basedir}/src/test/${openjpa.persistenceXmlPath}</openjpa.persistenceXmlTestFile>
+                <jpa.provider.class>org.apache.openjpa.persistence.PersistenceProviderImpl</jpa.provider.class>
+                <surefire.argLine>-javaagent:${basedir}/target/openjpa.jar -Dfile.encoding=UTF-8 -Xmx1024m -XX:MaxPermSize=512m</surefire.argLine>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-jpa_2.0_spec</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.openjpa</groupId>
+                    <artifactId>openjpa</artifactId>
+                    <version>${openjpa.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <!--
+                            OpenJPA static enhancement.
+                        -->
+                        <plugin>
+                            <groupId>org.apache.openjpa</groupId>
+                            <artifactId>openjpa-maven-plugin</artifactId>
+                            <version>${openjpa.version}</version>
+                            <configuration>
+                                <includes>${openjpa.includes}</includes>
+                                <excludes>${openjpa.excludes}</excludes>
+                                <addDefaultConstructor>true</addDefaultConstructor>
+                                <enforcePropertyRestrictions>true</enforcePropertyRestrictions>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>weave-openjpa-test-classes</id>
+                                    <phase>process-test-classes</phase>
+                                    <goals>
+                                        <goal>test-enhance</goal>
+                                        <goal>sql</goal>
+                                    </goals>
+                                    <configuration>
+                                        <persistenceXmlFile>${openjpa.persistenceXmlTestFile}</persistenceXmlFile>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.apache.openjpa</groupId>
+                                    <artifactId>openjpa</artifactId>
+                                    <version>${openjpa.version}</version>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <plugins>
+                    <!--
+                        Use the dependency plugin to copy the OpenJPA runtime
+                        to the target directory.
+                    -->
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.apache.openjpa</groupId>
+                                            <artifactId>openjpa</artifactId>
+                                            <version>${openjpa.version}</version>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                            <destFileName>openjpa.jar</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!--
+                    <plugin>
+                        <groupId>org.apache.openjpa</groupId>
+                        <artifactId>openjpa-maven-plugin</artifactId>
+                    </plugin>
+                    -->
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+            Liquibase profiles.
+            PostgreSQL is for Development and Test.
+        -->
+        <profile>
+            <id>liquibase_postgres</id>
+            <activation>
+                <property>
+                    <name>liquibase</name>
+                    <value>postgres</value>
+                </property>
+            </activation>
+
+            <properties>
+                <!--
+                    Liquibase properties.
+
+                    All Maven-internal properties should be prefixed with "lb_".
+                    All properties read from the environment should be prefixed with "db_".
+                    Typical resulting command line:
+
+                    mvn -Ddb_environment=development
+                        -Ddb_username=theUserName
+                        -Ddb_password=thePassword
+                        liquibase:update
+                -->
+                <lb_environment>${db_environment}</lb_environment>
+                <lb_username>${db_username}</lb_username>
+                <lb_password>${db_password}</lb_password>
+                <lb_changelogfile>src/db/liquibase/${lb_environment}/${project.artifactId}.xml</lb_changelogfile>
+                <lb_extractfile>src/db/liquibase/${lb_environment}/${project.artifactId}_extracted.xml</lb_extractfile>
+                <lb_driver>org.postgresql.Driver</lb_driver>
+                <lb_database>IntranetDB</lb_database>
+                <lb_hostname>localhost</lb_hostname>
+                <lb_port>5432</lb_port>
+                <lb_url>jdbc:postgresql://${lb_hostname}:${lb_port}/${lb_database}</lb_url>
+                <lb_promptOnRemoteDb>false</lb_promptOnRemoteDb>
+            </properties>
+
+            <dependencies>
+                <!-- PostgreSQL DB Driver -->
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <!--
+                        Liquibase plugin for database management.
+                    -->
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase.version}</version>
+                        <configuration>
+                            <changeLogFile>${lb_changelogfile}</changeLogFile>
+                            <outputChangeLogFile>${lb_extractfile}</outputChangeLogFile>
+                            <driver>${lb_driver}</driver>
+                            <url>${lb_url}</url>
+                            <username>${lb_username}</username>
+                            <password>${lb_password}</password>
+                            <promptOnNonLocalDatabase>${lb_promptOnRemoteDb}</promptOnNonLocalDatabase>
+                            <outputFileEncoding>UTF-8</outputFileEncoding>
+                        </configuration>
+                        <!-- executions>
+                            <execution>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>update</goal>
+                                </goals>
+                            </execution>
+                        </executions -->
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <!-- +=============================================== -->
+    <!-- | Section 4:  External systems                   -->
+    <!-- +=============================================== -->
+
+    <!--
+        Compensate for Maven standard variable extrapolation.
+        Git requires steady URLs (... but Subversion requires path extrapolation, hence the problem).
+     -->
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <url>${distroManagement.url}</url>
+        </site>
+    </distributionManagement>
+
+    <scm>
+        <connection>${scm.connection.url}</connection>
+        <developerConnection>${scm.devConnection.url}</developerConnection>
+        <url>${scm.url}</url>
+        <tag>HEAD</tag>
+    </scm>
+</project>

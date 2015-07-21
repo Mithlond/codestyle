@@ -41,24 +41,31 @@
         <jdk.version>1.8</jdk.version>
 
         <!--
-            Define the URL prefixes for Site Deployment and DistributionManagement.
-            These can be overridden in sub-reactors to tailor releases to other locations.
+            Define the name and type of this reactor
         -->
         <path.in.reactor />
         <reactor.classification>frameworks</reactor.classification>
         <reactor.name>mithlond-codestyle</reactor.name>
+
+        <!--
+            Define URL prefixes used in the various URL settings of the POM.
+        -->
+        <git.url.prefix>scm:git:ssh://git@github.com/Mithlond</git.url.prefix>
         <organisation.url.prefix>https://github.com/Mithlond</organisation.url.prefix>
         <site.url.prefix>https://Mithlond.github.io</site.url.prefix>
 
+        <!--
+            Define the URL prefixes for Site Deployment and DistributionManagement.
+            These can be overridden in sub-reactors to tailor releases to other locations.
+        -->
         <issue.mgmnt.url>${organisation.url.prefix}/${reactor.name}/issues</issue.mgmnt.url>
         <scm.connection.url>scm:git:${organisation.url.prefix}/${reactor.name}.git</scm.connection.url>
-        <scm.devConnection.url>scm:git:ssh://git@github.com/Mithlond/${reactor.name}.git</scm.devConnection.url>
-        <scm.url>${organisation.url.prefix}/${reactor.name}</scm.url>
-
+        <scm.devConnection.url>${git.url.prefix}/${reactor.name}.git</scm.devConnection.url>
+        <distroManagement.url>${git.url.prefix}/${reactor.name}.git</distroManagement.url>
+        <scm.url>${organisation.url.prefix}/${reactor.name}.git</scm.url>
         <site.staging.localDirectory>/tmp/${reactor.name}/${project.version}</site.staging.localDirectory>
-        <distro.url.prefix>${site.url.prefix}/${reactor.name}/${project.version}</distro.url.prefix>
 
-        <!-- Deploy reactor poms to Repo server? -->
+        <!-- Deploy reactor poms? -->
         <skip.deploy.reactor.poms>false</skip.deploy.reactor.poms>
     </properties>
 
@@ -200,7 +207,7 @@
 
     <ciManagement>
         <system>Travis</system>
-        <url>https://travis-ci.org/Mithlond/${project.artifactId}</url>
+        <url>https://travis-ci.org/Mithlond/${reactor.name}</url>
     </ciManagement>
 
     <!--
@@ -226,7 +233,7 @@
         </snapshotRepository>
         <site>
             <id>github</id>
-            <url>scm:git:ssh://git@github.com/Mithlond/mithlond-codestyle.git</url>
+            <url>${distroManagement.url}</url>
         </site>
     </distributionManagement>
 </project>
