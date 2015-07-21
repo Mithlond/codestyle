@@ -62,7 +62,7 @@ the appserver project you're using, e.g. the Postgres password in
 ### 4. As "postgres" user, Create the database "IntranetDB"
 
 While still being logged in to the PostgreSQL database as the "postgres" user, create the service database
-for the select school service using the following command:
+for the intranet service using the following command:
 
     CREATE DATABASE "IntranetDB"
       WITH OWNER = intranetuser
