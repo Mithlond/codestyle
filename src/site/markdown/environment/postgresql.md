@@ -38,55 +38,43 @@ during the installation:
 ### 3. Create a separate account for the application
 
 It is not recommended to use the database superuser directly from an application server.
-Instead, a new database role should be created and given privileges to own the database used by the application
-server. (In newer PG versions, the somewhat confusing term "role" is an account that can be a "user" or "group").
+Instead, a new database role should be created and given privileges to own the database 
+used by the application server. (In newer PG versions, the somewhat confusing term "role" 
+is an account that can be a "user" or "group").
 
 Launch the PgAdmin III graphical client (or the text console psql tool) and login as
-the superuser postgresql. When logged in as the superuser, create the required database 
-user `intranetuser` using the following SQL:
+the superuser `postgresql`. When logged in as the superuser, create the required database 
+user `mithlonduser` by firing the following SQL:
 
-    CREATE ROLE intranetuser LOGIN SUPERUSER NOINHERIT CREATEDB NOCREATEROLE NOREPLICATION;
-    UPDATE pg_authid SET rolcatupdate=false WHERE rolname='intranetuser';
-    COMMENT ON ROLE intranetuser IS 'Intranet DB Pool User';
+    CREATE ROLE "mithlonduser" LOGIN
+        ENCRYPTED PASSWORD 'md5dc095cc48f407588977c1ae83694342c'
+        NOSUPERUSER NOINHERIT CREATEDB NOCREATEROLE NOREPLICATION;
+    COMMENT ON ROLE "mithlonduser" IS 'Mithlond DB Pool User';
 
 You should now have new database role in the database as illustrated in the image below:
 
-<img src="../images/intranetuser_role.png" style="margin:10px;" altText="Intranetuser"/>
+<img src="../images/mithlonduser_role.png" style="margin:10px;" altText="mithlonduser"/>
 
-To set a password, right-click on the new `intranetuser` role and select `properties`.
-In the second tab `definition`, the password can be set.
-For most cases you want to set the same password as is used in the built configuration from
-the appserver project you're using, e.g. the Postgres password in 
-`appserver/wildfly/v9_0/src/main/resources/standalone/configuration/standalone.xml`
+The default password for the mithlonduser is `MordorRules` 
+(note caps; PostgreSQL uses case sensitive passwords). 
 
-### 4. As "postgres" user, Create the database "IntranetDB"
+### 4. As "postgres" user, Create the database "MithlondDB"
 
 While still being logged in to the PostgreSQL database as the "postgres" user, create the service database
 for the intranet service using the following command:
 
-    CREATE DATABASE "IntranetDB"
-      WITH OWNER = intranetuser
-           ENCODING = 'UTF8'
-           TABLESPACE = pg_default
-           LC_COLLATE = 'sv_SE.utf-8'
-           LC_CTYPE = 'sv_SE.utf-8'
-           CONNECTION LIMIT = -1;
+    CREATE DATABASE "MithlondDB"
+          WITH OWNER = mithlonduser
+               ENCODING = 'UTF8'
+               TABLESPACE = pg_default
+               LC_COLLATE = 'sv_SE.UTF-8'
+               LC_CTYPE = 'sv_SE.UTF-8'
+               CONNECTION LIMIT = -1;
     
-    COMMENT ON DATABASE "IntranetDB"
-      IS 'Intranet Pool DB';
+    COMMENT ON DATABASE "MithlondDB" IS 'Mithlond Pool DB';
 
 Use the PgAdmin III tool to verify that the database is created:
 
-<img src="../images/intranet_db.png" style="margin:10px;" altText="IntranetDB"/>
+<img src="../images/mithlond_db.png" style="margin:10px;" altText="MithlondDB"/>
 
 Log out from the PostgreSQL database
-
-### 5. Setup database structure and data
-
-Open a terminal/shell, make sure you have the **psql** command in your path - it's included in the installation.
-On OS X the command location should be something like "/Library/PostgreSQL/9.4/bin".
-Navigate to the `services/service-model` project. It contains a create script that can be
-run with psql using
-
-    psql -U intranetuser -h localhost -d IntranetDB < src/db/create/intranet.sql
-

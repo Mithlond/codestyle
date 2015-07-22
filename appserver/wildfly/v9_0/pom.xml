@@ -216,6 +216,15 @@
     <!-- +=============================================== -->
     <profiles>
 
+        <!--
+            Profile for building the application server overlay for the staging environment.
+            Requires 2 parameters to building the overlay:
+
+            -Denvironment=staging -Dmithlond.staging.tokens=path/to/staging.properties
+
+            Value of the mithlond.staging.tokens must be a path to a properties files corresponding
+            to the properties supplied in src/main/environments/development.properties file.
+        -->
         <profile>
             <id>staging</id>
             <activation>
@@ -230,6 +239,15 @@
             </properties>
         </profile>
 
+        <!--
+            Profile for building the application server overlay for the production environment.
+            Requires 2 parameters to building the overlay:
+
+            -Denvironment=production -Dmithlond.production.tokens=path/to/production.properties
+
+            Value of the mithlond.production.tokens must be a path to a properties files corresponding
+            to the properties supplied in src/main/environments/development.properties file.
+        -->
         <profile>
             <id>production</id>
             <activation>
