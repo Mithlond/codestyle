@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- +=============================================== -->
+    <!-- | Section 1:  Project information                -->
+    <!-- +=============================================== -->
+    <parent>
+        <groupId>se.mithlond.poms</groupId>
+        <artifactId>mithlond-war-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../../poms/mithlond-war-parent</relativePath>
+    </parent>
+
+    <groupId>se.mithlond.appserver.wildfly.v9_0</groupId>
+    <artifactId>mithlond-appserver-wildfly-v9_0-assembly</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <url>${url.prefix}/${path.in.reactor}</url>
+
+    <properties>
+        <path.in.reactor>appserver/wildfly/v9_0</path.in.reactor>
+        <!--
+            Dependency versions.
+        -->
+        <postgresql.version>9.4-1201-jdbc41</postgresql.version>
+
+        <!--
+            Build-controlling properties.
+        -->
+        <breakOnFailure.enforcer>false</breakOnFailure.enforcer>
+        <cobertura.haltOnFailure>false</cobertura.haltOnFailure>
+    </properties>
+
+    <!-- +=============================================== -->
+    <!-- | Section 2:  Dependency (management) settings   -->
+    <!-- +=============================================== -->
+    <dependencies>
+    </dependencies>
+
+    <!-- +=============================================== -->
+    <!-- | Section 3:  Build settings                     -->
+    <!-- +=============================================== -->
+    <build>
+        <!--
+            The wicket structure implies that we need to copy
+            html documents as resources, to be loaded using
+            getClass().getClassLoader().getResourceAsStream(...)
+            - that is - from the WEB-INF/classes directory in the
+            resulting WAR.
+
+            Adopt the resources settings accordingly.
+        -->
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <filtering>false</filtering>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <filtering>false</filtering>
+                <directory>src/test/java</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <outputDirectory>${project.build.directory}/wildflyRoot/</outputDirectory>
+                    <resources>
+                        <resource>
+                            <directory>src/main/resources</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                    </resources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>copy-and-filter-resources</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>copy-postgresql-driver</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.postgresql</groupId>
+                                    <artifactId>postgresql</artifactId>
+                                    <version>${postgresql.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${project.build.directory}/wildflyRoot/modules/org/postgresql/main
+                                    </outputDirectory>
+                                    <destFileName>postgresql-${postgresql.version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/wars</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>wildfly_9_0_config</finalName>
+                            <useJvmChmod>true</useJvmChmod>
+                            <descriptors>
+                                <descriptor>src/assembly/wildfly_9_0.xml</descriptor>
+                            </descriptors>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addClasspath>false</addClasspath>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9</version>
+                <executions>
+                    <!-- execution>
+                        <id>attach-distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/${project.artifactId}-${project.version}.jar</file>
+                                    <type>jar</type>
+                                    <classifier>configuration</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution -->
+                    <execution>
+                        <id>remove-default-artifact</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remove-project-artifact</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- +=============================================== -->
+    <!-- | Section 4:  External systems                   -->
+    <!-- +=============================================== -->
+
+    <!--
+        Compensate for Maven standard variable extrapolation.
+        Git requires steady URLs (... but Subversion requires path extrapolation, hence the problem).
+     -->
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <url>${distroManagement.url}</url>
+        </site>
+    </distributionManagement>
+
+    <scm>
+        <connection>${scm.connection.url}</connection>
+        <developerConnection>${scm.devConnection.url}</developerConnection>
+        <url>${scm.url}</url>
+        <tag>HEAD</tag>
+    </scm>
+</project>

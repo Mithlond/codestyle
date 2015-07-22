@@ -1,0 +1,52 @@
+@startuml
+
+skinparam component {
+  BackgroundColor<<Reactor>> #EEEEFF
+  BorderColor<<Reactor>> black
+}
+
+
+package mithlond-reactor {
+
+    component "mithlond-reactor-parent" <<Reactor>>
+    [mithlond-reactor-parent] ..down.> [mithlond_poms] : has modules
+
+    package poms as mithlond_poms {
+
+        component "mithlond-parent"
+        component "mithlond-api-parent"
+        component "mithlond-model-parent"
+        component "mithlond-war-parent"
+
+        [mithlond-parent] <|-down- [mithlond-api-parent] : parent
+        [mithlond-api-parent] <|-down- [mithlond-model-parent] : parent
+        [mithlond-model-parent] <|-down- [mithlond-war-parent] : parent
+    }
+}
+
+package foo-reactor {
+
+    component "foo-reactor-parent" <<Reactor>>
+    [foo-reactor-parent] .down.> [foo-someservice-component] : has modules
+    [mithlond-reactor-parent] <|- [foo-reactor-parent] : parent
+
+    package foo-someservice-component {
+
+        component "foo-someservice-model"
+        component "foo-someservice-api"
+        component "foo-someservice-impl-ejb"
+        component "foo-someservice-restful-war"
+
+        [mithlond-parent] <|-left- [foo-someservice-impl-ejb] : parent
+        [mithlond-api-parent] <|-left- [foo-someservice-api] : parent
+        [mithlond-model-parent] <|-left- [foo-someservice-model] : parent
+        [mithlond-war-parent] <|-left- [foo-someservice-restful-war] : parent
+
+        [foo-someservice-model] <-down- [foo-someservice-api] : compile
+        [foo-someservice-api] <-down- [foo-someservice-impl-ejb] : compile
+        [foo-someservice-api] <-down- [foo-someservice-restful-war] : compile
+        [foo-someservice-impl-ejb] <.down. [foo-someservice-restful-war] : runtime injected
+    }
+}
+
+@enduml

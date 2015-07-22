@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   #%L
-  Nazgul Project: mithlond-reactor
+  Nazgul Project: mithlond-codestyle
   %%
   Copyright (C) 2015 Mithlond
   %%
@@ -67,36 +67,20 @@
         </head>
 
         <links>
-            <item name="Mithlond CI" href="https://travis-ci.org/mithlond/"/>
+            <item name="TravisCI" href="https://travis-ci.org/mithlond/"/>
         </links>
-
-        <!-- breadcrumbs>
-        </breadcrumbs -->
 
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
         </menu>
 
-        <menu name="Development Setup">
-            <item name="Git VCS Integration" href="environment/git_integration.html" />
-            <item name="PostgreSQL DB" href="environment/postgresql.html" />
-            <item name="WildFly Setup" href="environment/wildfly.html" />
-            <item name="IDE Setup" href="codestyle/index.html" />
-        </menu>
-
-        <menu name="Theory: Scalability">
-            <item name="Modularity" href="theory/modularity.html"/>
-            <item name="Software Components" href="theory/software_components.html"/>
-            <item name="Reducing complexity" href="theory/complexity_reduction.html"/>
-        </menu>
-
-        <menu name="Documentation">
-            <item name="Staging a local Site" href="staging.html"/>
-            <item name="Remote Deployment" href="remote_deployment.html"/>
+        <menu name="Development Env Setup">
+            <item name="IntelliJ IDEA" href="ides/idea.html" />
+            <item name="Eclipse" href="ides/eclipse.html" />
+            <item name="NetBeans" href="ides/netbeans.html" />
         </menu>
 
         <menu ref="parent"/>
-        <menu ref="modules" inherit="bottom"/>
         <menu ref="reports" inherit="bottom"/>
 
         <footer>

@@ -1,0 +1,18 @@
+#
+# Standard username --> password definitions, if the 
+# JBoss server is set up using the intranet overlay
+# tar archive.
+#
+# Management Users:
+# system --> Warl0rd!
+# <secret value="V2FybDByZCE=" />
+#
+# admin  --> Administrat0r!
+# <secret value="QWRtaW5pc3RyYXQwciE=" />
+#
+#
+# Application Users:
+#
+# appUser --> AppUser!
+# <secret value="QXBwVXNlciE=" />
+#

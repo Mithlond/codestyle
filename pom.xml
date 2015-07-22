@@ -84,6 +84,7 @@
     <modules>
         <module>codestyle</module>
         <module>poms</module>
+        <module>appserver</module>
     </modules>
 
     <!-- +=============================================== -->
