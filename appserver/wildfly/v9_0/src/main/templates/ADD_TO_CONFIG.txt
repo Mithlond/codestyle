@@ -8,4 +8,4 @@
 JAVA_OPTS="$JAVA_OPTS -Darticles.root.dir=/Users/lj/Development/Projects/Tolkien/articles"
 
 # Provide environment definition
-JAVA_OPTS="$JAVA_OPTS -Denvironment.type=Development"
+JAVA_OPTS="$JAVA_OPTS -Denvironment.type=${environment.id}"

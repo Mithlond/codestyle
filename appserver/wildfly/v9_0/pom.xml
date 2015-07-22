@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- +=============================================== -->
@@ -20,10 +21,17 @@
 
     <properties>
         <path.in.reactor>appserver/wildfly/v9_0</path.in.reactor>
+
         <!--
             Dependency versions.
         -->
         <postgresql.version>9.4-1201-jdbc41</postgresql.version>
+
+        <!--
+            Environment-defining properties, possibly overridden in Profiles.
+        -->
+        <environment.tokens>${basedir}/src/main/environments/development.properties</environment.tokens>
+        <environment>development</environment>
 
         <!--
             Build-controlling properties.
@@ -36,70 +44,54 @@
     <!-- | Section 2:  Dependency (management) settings   -->
     <!-- +=============================================== -->
     <dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
     </dependencies>
 
     <!-- +=============================================== -->
     <!-- | Section 3:  Build settings                     -->
     <!-- +=============================================== -->
     <build>
-        <!--
-            The wicket structure implies that we need to copy
-            html documents as resources, to be loaded using
-            getClass().getClassLoader().getResourceAsStream(...)
-            - that is - from the WEB-INF/classes directory in the
-            resulting WAR.
-
-            Adopt the resources settings accordingly.
-        -->
-        <resources>
-            <resource>
-                <filtering>true</filtering>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                <filtering>false</filtering>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <filtering>false</filtering>
-                <directory>src/test/java</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </testResource>
-        </testResources>
-
         <plugins>
 
+            <!--
+                 Configures the resource plugin to copy and filter resources.
+                 This substitutes ${variables} to their properties.
+
+                 Why:  Copies and filters resources
+                 Used: Standard lifecycle, mvn process-resources.
+             -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.7</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <outputDirectory>${project.build.directory}/wildflyRoot/</outputDirectory>
-                    <resources>
-                        <resource>
-                            <directory>src/main/resources</directory>
-                            <filtering>true</filtering>
-                        </resource>
-                    </resources>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>copy-and-filter-resources</id>
+                        <id>filter-environment-and-maven-tokens</id>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
-                        <phase>process-resources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/wildflyRoot</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <includes>
+                                        <include>**/*.txt</include>
+                                        <include>**/*.properties</include>
+                                        <include>**/*.xml</include>
+                                    </includes>
+                                    <directory>${basedir}/src/main/templates</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <filters>
+                                <filter>${project.build.outputDirectory}/META-INF/maven/dependencies.properties</filter>
+                                <filter>${environment.tokens}</filter>
+                            </filters>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -147,8 +139,8 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <finalName>wildfly_9_0_config</finalName>
+                        <configuration combine.self="override">
+                            <finalName>wildfly_9_0_config_${environment}</finalName>
                             <useJvmChmod>true</useJvmChmod>
                             <descriptors>
                                 <descriptor>src/assembly/wildfly_9_0.xml</descriptor>
@@ -218,4 +210,38 @@
         <url>${scm.url}</url>
         <tag>HEAD</tag>
     </scm>
+
+    <!-- +=============================================== -->
+    <!-- | Section 5:  Profiles                           -->
+    <!-- +=============================================== -->
+    <profiles>
+
+        <profile>
+            <id>staging</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>staging</value>
+                </property>
+            </activation>
+
+            <properties>
+                <environment.tokens>${mithlond.staging.tokens}</environment.tokens>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>production</value>
+                </property>
+            </activation>
+
+            <properties>
+                <environment.tokens>${mithlond.production.tokens}</environment.tokens>
+            </properties>
+        </profile>
+    </profiles>
 </project>
