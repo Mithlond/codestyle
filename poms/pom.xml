@@ -6,13 +6,13 @@
     <!-- | Section 1:  Project information                -->
     <!-- +=============================================== -->
     <parent>
-        <groupId>se.mithlond</groupId>
-        <artifactId>mithlond-reactor</artifactId>
+        <groupId>se.mithlond.codestyle</groupId>
+        <artifactId>mithlond-codestyle-reactor</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>se.mithlond.poms</groupId>
-    <artifactId>mithlond-poms-reactor</artifactId>
+    <groupId>se.mithlond.codestyle.poms</groupId>
+    <artifactId>mithlond-codestyle-poms-reactor</artifactId>
     <name>${project.artifactId}</name>
     <description>${project.artifactId}</description>
     <packaging>pom</packaging>
@@ -26,10 +26,10 @@
     <!-- | Section 2:  Module definitions                 -->
     <!-- +=============================================== -->
     <modules>
-        <module>mithlond-parent</module>
-        <module>mithlond-api-parent</module>
-        <module>mithlond-model-parent</module>
-        <module>mithlond-war-parent</module>
+        <module>mithlond-codestyle-parent</module>
+        <module>mithlond-codestyle-api-parent</module>
+        <module>mithlond-codestyle-model-parent</module>
+        <module>mithlond-codestyle-war-parent</module>
     </modules>
 
     <!-- +=============================================== -->

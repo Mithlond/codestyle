@@ -6,21 +6,21 @@
     <!-- | Section 1:  Project information                -->
     <!-- +=============================================== -->
     <parent>
-        <groupId>se.mithlond.poms</groupId>
-        <artifactId>mithlond-api-parent</artifactId>
+        <groupId>se.mithlond.codestyle.poms</groupId>
+        <artifactId>mithlond-codestyle-api-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../mithlond-api-parent</relativePath>
+        <relativePath>../mithlond-codestyle-api-parent</relativePath>
     </parent>
 
-    <groupId>se.mithlond.poms</groupId>
-    <artifactId>mithlond-model-parent</artifactId>
+    <groupId>se.mithlond.codestyle.poms</groupId>
+    <artifactId>mithlond-codestyle-model-parent</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>Mithlond: Entity Model Project Parent.</description>
+    <description>Mithlond Codestyle: Entity Model Project Parent.</description>
     <url>${url.prefix}/${path.in.reactor}</url>
 
     <properties>
-        <path.in.reactor>poms/mithlond-model-parent</path.in.reactor>
+        <path.in.reactor>poms/mithlond-codestyle-model-parent</path.in.reactor>
         <liquibase.version>3.3.2</liquibase.version>
     </properties>
 

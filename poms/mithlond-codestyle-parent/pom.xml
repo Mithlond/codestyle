@@ -12,13 +12,13 @@
         <relativePath />
     </parent>
 
-    <groupId>se.mithlond.poms</groupId>
-    <artifactId>mithlond-parent</artifactId>
+    <groupId>se.mithlond.codestyle.poms</groupId>
+    <artifactId>mithlond-codestyle-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <url>${url.prefix}/${path.in.reactor}</url>
-    <description>Mithlond: Artifact POM Parent.</description>
+    <description>Mithlond Codestyle: Artifact POM Parent.</description>
 
     <organization>
         <name>Mithlond</name>
@@ -50,7 +50,7 @@
         <!--
             Define the name and type of this reactor
         -->
-        <path.in.reactor>poms/mithlond-parent</path.in.reactor>
+        <path.in.reactor>poms/mithlond-codestyle-parent</path.in.reactor>
         <reactor.classification>frameworks</reactor.classification>
         <reactor.name>mithlond-codestyle</reactor.name>
 

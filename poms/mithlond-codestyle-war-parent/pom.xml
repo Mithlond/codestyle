@@ -6,17 +6,17 @@
     <!-- | Section 1:  Project information                -->
     <!-- +=============================================== -->
     <parent>
-        <groupId>se.mithlond.poms</groupId>
-        <artifactId>mithlond-model-parent</artifactId>
+        <groupId>se.mithlond.codestyle.poms</groupId>
+        <artifactId>mithlond-codestyle-model-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../mithlond-model-parent</relativePath>
+        <relativePath>../mithlond-codestyle-model-parent</relativePath>
     </parent>
 
-    <groupId>se.mithlond.poms</groupId>
-    <artifactId>mithlond-war-parent</artifactId>
+    <groupId>se.mithlond.codestyle.poms</groupId>
+    <artifactId>mithlond-codestyle-war-parent</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
-    <description>Mithlond: Web Application Project Parent.</description>
+    <description>Mithlond Codestyle: Web Application Project Parent.</description>
     <url>${url.prefix}/${path.in.reactor}</url>
 
     <properties>
@@ -24,7 +24,7 @@
         <resteasy.version>3.0.8.Final</resteasy.version>
         <undertow.version>1.0.15.Final</undertow.version>
 
-        <path.in.reactor>poms/mithlond-war-parent</path.in.reactor>
+        <path.in.reactor>poms/mithlond-codestyle-war-parent</path.in.reactor>
         <!--
             Don't break the build on coverage problems or pmd problems.
         -->

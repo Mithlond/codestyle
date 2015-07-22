@@ -6,14 +6,14 @@
     <!-- | Section 1:  Project information                -->
     <!-- +=============================================== -->
     <parent>
-        <groupId>se.mithlond.poms</groupId>
-        <artifactId>mithlond-war-parent</artifactId>
+        <groupId>se.mithlond.codestyle.poms</groupId>
+        <artifactId>mithlond-codestyle-war-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../../../poms/mithlond-war-parent</relativePath>
+        <relativePath>../../../poms/mithlond-codestyle-war-parent</relativePath>
     </parent>
 
-    <groupId>se.mithlond.appserver.wildfly.v9_0</groupId>
-    <artifactId>mithlond-appserver-wildfly-v9_0-assembly</artifactId>
+    <groupId>se.mithlond.codestyle.appserver.wildfly.v9_0</groupId>
+    <artifactId>mithlond-codestyle-appserver-wildfly-v9_0-assembly</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <url>${url.prefix}/${path.in.reactor}</url>

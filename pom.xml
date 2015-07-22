@@ -12,11 +12,11 @@
         <relativePath />
     </parent>
 
-    <groupId>se.mithlond</groupId>
-    <artifactId>mithlond-reactor</artifactId>
+    <groupId>se.mithlond.codestyle</groupId>
+    <artifactId>mithlond-codestyle-reactor</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
-    <description>Mithlond: Reactor POM Project Parent.</description>
+    <description>Mithlond Codestyle: Reactor POM Project Parent.</description>
     <packaging>pom</packaging>
     <url>${organisation.url.prefix}/${reactor.name}${path.in.reactor}</url>
 

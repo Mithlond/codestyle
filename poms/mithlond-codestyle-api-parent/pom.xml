@@ -6,21 +6,21 @@
     <!-- | Section 1:  Project information                -->
     <!-- +=============================================== -->
     <parent>
-        <groupId>se.mithlond.poms</groupId>
-        <artifactId>mithlond-parent</artifactId>
+        <groupId>se.mithlond.codestyle.poms</groupId>
+        <artifactId>mithlond-codestyle-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../mithlond-parent</relativePath>
+        <relativePath>../mithlond-codestyle-parent</relativePath>
     </parent>
 
-    <groupId>se.mithlond.poms</groupId>
-    <artifactId>mithlond-api-parent</artifactId>
+    <groupId>se.mithlond.codestyle.poms</groupId>
+    <artifactId>mithlond-codestyle-api-parent</artifactId>
     <name>${project.artifactId}</name>
-    <description>Mithlond: Artifact API POM Parent.</description>
+    <description>Mithlond Codestyle: Artifact API POM Parent.</description>
     <packaging>pom</packaging>
     <url>${url.prefix}/${path.in.reactor}</url>
 
     <properties>
-        <path.in.reactor>poms/mithlond-api-parent</path.in.reactor>
+        <path.in.reactor>poms/mithlond-codestyle-api-parent</path.in.reactor>
     </properties>
 
     <!-- +=============================================== -->
