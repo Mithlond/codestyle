@@ -48,7 +48,7 @@ mvn clean install
 
 ## Using the Codestyle project
 
-When creating multi-module Maven projects, use the ithlond-reactor pom as 
+When creating multi-module Maven projects, use the mithlond-reactor pom as 
 parent for the topmost pom in your reactor:
 
 ```xml
@@ -63,7 +63,7 @@ When creating projects which should emit artifacts, use one of the mithlond-pare
 as parent for your project.
 
 ```xml
-<paent>
+<parent>
    <groupId>se.mithlond.codestyle.poms</groupId>
    <artifactId>mithlond-codestyle-parent</artifactId>
    <version>[latest-release-version]</version>
