@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- +=============================================== -->
@@ -9,7 +10,7 @@
         <groupId>se.jguru.nazgul.core.poms.core-parent</groupId>
         <artifactId>nazgul-core-parent</artifactId>
         <version>1.8.0</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
     <groupId>se.mithlond.codestyle.poms</groupId>
@@ -17,7 +18,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
-    <url>${url.prefix}/${path.in.reactor}</url>
+    <url>${site.top.url}/${path.in.reactor}</url>
     <description>Mithlond Codestyle: Artifact POM Parent.</description>
 
     <organization>
@@ -51,15 +52,16 @@
             Define the name and type of this reactor
         -->
         <path.in.reactor>poms/mithlond-codestyle-parent</path.in.reactor>
-        <reactor.classification>frameworks</reactor.classification>
         <reactor.name>mithlond-codestyle</reactor.name>
+        <organisation.name>Mithlond</organisation.name>
 
         <!--
             Define URL prefixes used in the various URL settings of the POM.
         -->
-        <git.url.prefix>scm:git:ssh://git@github.com/Mithlond</git.url.prefix>
-        <organisation.url.prefix>https://github.com/Mithlond</organisation.url.prefix>
-        <site.url.prefix>https://Mithlond.github.io</site.url.prefix>
+        <organisation.url.prefix>https://github.com/${organisation.name}</organisation.url.prefix>
+        <git.url.prefix>scm:git:ssh://git@github.com/${organisation.name}</git.url.prefix>
+        <site.url.prefix>http://mithlond.github.io</site.url.prefix>
+        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}</site.top.url>
 
         <!--
             Define the URL prefixes for Site Deployment and DistributionManagement.
@@ -68,7 +70,7 @@
         <issue.mgmnt.url>${organisation.url.prefix}/${reactor.name}/issues</issue.mgmnt.url>
         <scm.connection.url>scm:git:${organisation.url.prefix}/${reactor.name}.git</scm.connection.url>
         <scm.devConnection.url>${git.url.prefix}/${reactor.name}.git</scm.devConnection.url>
-        <distroManagement.url>${git.url.prefix}/${reactor.name}.git</distroManagement.url>
+        <distroManagement.url>${site.top.url}/${path.in.reactor}</distroManagement.url>
         <scm.url>${organisation.url.prefix}/${reactor.name}.git</scm.url>
         <site.staging.localDirectory>/tmp/${reactor.name}/${project.version}</site.staging.localDirectory>
 
@@ -213,7 +215,9 @@
             <plugins>
 
                 <!--
-                    Configures the release plugin to use a newer version than the inherited.
+                    Configures the release plugin version.
+                    Also ensures that the default release profile is not used.
+                    (The mithlond-release profile should be used instead).
 
                     Why:  Release artifacts
                     Used: Normal lifecycle, release goal
@@ -222,6 +226,15 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.2</version>
+                    <configuration>
+                        <!--
+                            Do not perform site deployment when releasing.
+                         -->
+                        <mavenExecutorId>forked-path</mavenExecutorId>
+                        <goals>deploy</goals>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <arguments>-Pmithlond-release</arguments>
+                    </configuration>
                 </plugin>
 
                 <!--
@@ -256,7 +269,8 @@
                     <artifactId>license-maven-plugin</artifactId>
                     <version>1.8</version>
                     <configuration>
-                        <descriptionTemplate>/codestyle/license/${license.id}/licenseDescriptionTemplate.ftl</descriptionTemplate>
+                        <descriptionTemplate>/codestyle/license/${license.id}/licenseDescriptionTemplate.ftl
+                        </descriptionTemplate>
                         <failOnMissingHeader>${breakOnFailure.license}</failOnMissingHeader>
                         <licenseName>${license.id}</licenseName>
                         <licenseResolver>${license.licenseResolver}</licenseResolver>
@@ -280,14 +294,14 @@
                     <executions>
                         <execution>
                             <id>check-file-header</id>
-                            <phase />
+                            <phase/>
                             <goals>
                                 <goal>check-file-header</goal>
                             </goals>
                         </execution>
                         <execution>
                             <id>add-license</id>
-                            <phase />
+                            <phase/>
                             <goals>
                                 <goal>update-project-license</goal>
                             </goals>
@@ -352,7 +366,7 @@
                     <executions>
                         <execution>
                             <id>attach-artifacts</id>
-                            <phase />
+                            <phase/>
                             <goals>
                                 <goal>attach-artifact</goal>
                             </goals>
@@ -383,6 +397,41 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <!--
+                    Configures the Maven changes plugin to run only when executed from the project root directory.
+
+                    Why:  Release artifacts
+                    Used: Normal lifecycle, site goal
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-changes-plugin</artifactId>
+                    <version>2.11</version>
+                    <configuration>
+                        <issueManagementSystems>
+                            <issueManagementSystem>GitHub</issueManagementSystem>
+                        </issueManagementSystems>
+                        <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                    </configuration>
+                </plugin>
+
+                <!--
+                    Configures the Maven changes plugin to publish the site to a well-defined directory
+                    which includes its version.
+
+                    Why:  Publish maven site documentation on GitHub Pages.
+                    Used: Release lifecycle, site goal
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-publish-plugin</artifactId>
+                    <version>1.1</version>
+                    <configuration>
+                        <pubScmUrl>${scm.devConnection.url}</pubScmUrl>
+                        <scmBranch>gh-pages</scmBranch>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -391,6 +440,56 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>2.3.1</version>
+            </plugin>
+
+            <!--
+                Configures the site plugin. Its use is further documented in the site documentation itself.
+
+                Why:  Make compile and publish the site documentation.
+                Used: Site lifecycle, mvn site.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-descriptor</id>
+                        <goals>
+                            <goal>attach-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <topSiteURL>${site.top.url}</topSiteURL>
+                    <stagingSiteURL>${site.url.prefix}/${reactor.name}/${project.version}</stagingSiteURL>
+                    <stagingDirectory>${site.staging.localDirectory}</stagingDirectory>
+                    <generateSitemap>true</generateSitemap>
+                    <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+                    <outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-ssh</artifactId>
+                        <version>2.7</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-file</artifactId>
+                        <version>2.7</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.maven.doxia</groupId>
+                        <artifactId>doxia-module-markdown</artifactId>
+                        <version>1.6</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.maven.doxia</groupId>
+                        <artifactId>doxia-module-xhtml</artifactId>
+                        <version>1.6</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
 
@@ -408,7 +507,7 @@
                 <executions>
                     <execution>
                         <id>check-file-header</id>
-                        <phase />
+                        <phase/>
                         <goals>
                             <goal>check-file-header</goal>
                         </goals>
@@ -548,13 +647,14 @@
                                 <requireJavaVersion>
                                     <version>${jdk.version}</version>
                                 </requireJavaVersion>
-                                <requireUpperBoundDeps />
+                                <requireUpperBoundDeps/>
 
                                 <!--
                                     Enforce the ProjectType structure, implying that all projects
                                     must comply with the project template definitions.
                                 -->
-                                <validateProjectTypes implementation="se.jguru.nazgul.tools.codestyle.enforcer.rules.ValidateProjectType" />
+                                <validateProjectTypes
+                                        implementation="se.jguru.nazgul.tools.codestyle.enforcer.rules.ValidateProjectType"/>
 
                                 <!--
                                     Enforce the implementation rules for dependencies, to enforce that
@@ -565,7 +665,8 @@
                                     reproduced her to serve as an example of how to configure this enforcement rule
                                     in child reactors - where needs are likely different than here.
                                 -->
-                                <restrictImplDependencies implementation="se.jguru.nazgul.tools.codestyle.enforcer.rules.RestrictImplDependencies">
+                                <restrictImplDependencies
+                                        implementation="se.jguru.nazgul.tools.codestyle.enforcer.rules.RestrictImplDependencies">
                                     <includedGroupIdPatterns>^se\\.mithlond\\..*</includedGroupIdPatterns>
                                     <excludedGroupIdPatterns>
                                         ^se\\.mithlond\\..*\\.generated\\..*,^se\\.mithlond\\.codestyle\\..*
@@ -581,7 +682,8 @@
                                     then all code within that project must reside within the "com.acme.foobar" package,
                                     or in any subpackage thereof.
                                 -->
-                                <correctPackaging implementation="se.jguru.nazgul.tools.codestyle.enforcer.rules.CorrectPackagingRule" />
+                                <correctPackaging
+                                        implementation="se.jguru.nazgul.tools.codestyle.enforcer.rules.CorrectPackagingRule"/>
                             </rules>
                         </configuration>
                     </execution>
@@ -667,6 +769,46 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven-project-info-reports-plugin.version}</version>
+                <!-- reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>cim</report>
+                            <report>cobertura</report>
+                            <report>dependency-info</report>
+                            <report>index</report>
+                            <report>issue-tracking</report>
+                            <report>mailing-list</report>
+                            <report>project-team</report>
+                            <report>scm</report>
+                            <report>summary</report>
+                        </reports>
+                    </reportSet>
+                </reportSets -->
+            </plugin>
+
+            <!--
+                Generate a Surefire Report.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <!-- +=============================================== -->
     <!-- | Section 4:  External systems                   -->
@@ -950,6 +1092,88 @@
                         </plugin>
                     </plugins>
                 </pluginManagement>
+            </build>
+        </profile>
+
+        <profile>
+            <id>mithlond-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.apache.resources</groupId>
+                                <artifactId>apache-source-release-assembly-descriptor</artifactId>
+                                <version>1.0.4</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>attach-source-release-distro</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                                    <descriptorRefs>
+                                        <descriptorRef>source-release</descriptorRef>
+                                    </descriptorRefs>
+                                    <tarLongFileFormat>gnu</tarLongFileFormat>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <configuration>
+                            <updateReleaseInfo>true</updateReleaseInfo>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-jar-no-fork</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
     </profiles>

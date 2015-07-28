@@ -1,4 +1,4 @@
-# Mithlond: Codestyle
+# 1. Mithlond: Codestyle
 
 The Mithlond: Codestyle project structure contains parent POMs and codestyle 
 definitions with best practises for collaborative development.
@@ -18,24 +18,30 @@ The reactor consists has 3 main strucures:
    can be a daunting task in itself. The overlays here are meant to be unpacked in (the root of) a vanilla
    application installation to create a fully operating application server.
           
-## Release Documentation
+## 1.1. Release Documentation
 
 Release documentation (including Maven site documentation) can be found
-at [The Mithlond: Codestyle Documentation Site](http://mithlond.github.io/mithlond-codestyle).
+at [The Mithlond: Codestyle Documentation Site](http://mithlond.github.io/mithlond-codestyle). 
+Select the release version you are interested in, to find its full Maven site documentation. 
 
-## Getting the Codestyle project
+# 2. Getting and building mithlond-codestyle
 
-Clone the repository, and get all tags:
+The mithlond-codestyle is a normal Git-based Maven project. 
+It is simple to get and build it. 
+
+## 2.1. Getting the repository
+
+Clone the repository, and fetch all tags:
 
 ```
 git clone https://github.com/Mithlond/mithlond-codestyle.git
 
-cd codestyle
+cd mithlond-codestyle
 
 git fetch --tags
 ```
 
-## Building the Codestyle project
+## 2.2. Building the Codestyle project
 
 For the latest development build, simply run the build against the latest master branch revision:  
 
@@ -50,6 +56,28 @@ git checkout mithlond-codestyle-1.0.1
 
 mvn clean install
 ```
+
+All tags (and hence also all release versions) are visible using the command
+ 
+```
+git tag -l
+```
+
+### 2.2.1. Building with different Maven versions
+
+For building the project with another Maven version, simply run the following 
+script, where the `${MAVEN_VERSION}` should be substituted for a version number
+such as `3.3.3`:
+  
+```
+mvn -N io.takari:maven:wrapper -Dmaven=${MAVEN_VERSION}
+
+./mvnw --show-version --errors --batch-mode validte dependency:go-offline
+
+./mvnw --show-version --errors --batch-mode clean verify site
+```
+
+In the windows operating system
 
 
 

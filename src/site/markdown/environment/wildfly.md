@@ -30,7 +30,7 @@ of the application server. To simplify things, this type of application server c
 built to an assembly by the project `mithlond-codestyle-appserver-wildfly-v9_0-assembly` 
 (use either tar.gz or zip version as per your own preference):
 
-<img src="../images/wildfly_overlay.png" style="margin:10px;" altText="Overlay Structure"/>
+<img src="../images/wildfly_overlay.png" style="margin:10px; border: solid DarkGray 1px;" altText="Overlay Structure"/>
 
 The overlay should be extracted in the WILDFLY_HOME directory **when the server is shut down**. 
 Since Wildfly application server re-writes its configuration data when the server is shut down, it will 
@@ -52,7 +52,7 @@ Open the DataSources management console on the URL:
 
 ... (using user and password from file ACCESS.txt) and verify that the data source Mithlond DS is operational:
 
-<img src="../images/MithlondDS.png" style="margin:10px;" altText="Mithlond DS"/>
+<img src="../images/MithlondDS.png" style="margin:10px; border: solid DarkGray 1px;" altText="Mithlond DS"/>
 
 Your development application environment set should now be complete; a standard setup application server
 for development, including a Database and DataSource is now available on your computer.

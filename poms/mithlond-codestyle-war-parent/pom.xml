@@ -17,7 +17,7 @@
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <description>Mithlond Codestyle: Web Application Project Parent.</description>
-    <url>${url.prefix}/${path.in.reactor}</url>
+    <url>${site.top.url}/${path.in.reactor}</url>
 
     <properties>
         <!-- Define some extra version constants -->

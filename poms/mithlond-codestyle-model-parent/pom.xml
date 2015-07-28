@@ -17,7 +17,7 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Mithlond Codestyle: Entity Model Project Parent.</description>
-    <url>${url.prefix}/${path.in.reactor}</url>
+    <url>${site.top.url}/${path.in.reactor}</url>
 
     <properties>
         <path.in.reactor>poms/mithlond-codestyle-model-parent</path.in.reactor>

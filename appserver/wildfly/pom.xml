@@ -16,7 +16,7 @@
     <name>${project.artifactId}</name>
     <description>${project.artifactId}</description>
     <packaging>pom</packaging>
-    <url>${url.prefix}/${path.in.reactor}</url>
+    <url>${site.top.url}/${path.in.reactor}</url>
 
     <properties>
         <path.in.reactor>appserver/wildfly</path.in.reactor>

@@ -17,7 +17,7 @@
     <artifactId>mithlond-codestyle-appserver-wildfly-v9_0-assembly</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
-    <url>${url.prefix}/${path.in.reactor}</url>
+    <url>${site.top.url}/${path.in.reactor}</url>
 
     <properties>
         <path.in.reactor>appserver/wildfly/v9_0</path.in.reactor>
