@@ -13,7 +13,7 @@ of the application server. To simplify things, this type of application server c
 built to an assembly by the project `mithlond-codestyle-appserver-wildfly-v9_0-assembly` 
 (use either tar.gz or zip version as per your own preference):
 
-<img src="../images/wildfly_overlay.png" style="margin:10px; border: solid DarkGray 1px;" altText="Overlay Structure"/>
+<img src="./images/wildfly_overlay.png" style="margin:10px; border: solid DarkGray 1px;" altText="Overlay Structure"/>
 
 The overlay should be extracted in the WILDFLY_HOME directory **when the server is shut down**. 
 Since Wildfly application server re-writes its configuration data when the server is shut down, it will 

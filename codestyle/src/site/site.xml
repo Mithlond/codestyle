@@ -80,7 +80,6 @@
             <item name="NetBeans" href="ides/netbeans.html" />
         </menu>
 
-        <menu ref="parent"/>
         <menu ref="reports" inherit="bottom"/>
 
         <footer>
