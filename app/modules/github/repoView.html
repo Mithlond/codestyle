@@ -24,18 +24,19 @@
                 <th>Tag Name</th>
                 <th>Release version</th>
                 <th>Commit SHA</th>
-                <th>Publish Date</th>
-                <th></th>
+                <th>Maven Documentation</th>
             </tr>
             </thead>
             <tbody>
             <tr data-ng-repeat="current in repo.tagList">
-                <td>{{current.name}}</td>
+                <td><nobr>{{current.name}}</nobr></td>
                 <td>{{current.name | releaseNumberFilter}}</td>
                 <td>{{current.commit.sha}}</td>
-                <td>{{current.published_at | date:'yyyy-MM-dd HH:mm' }}</td>
-                <td><a href="#/documentation/{{current.name | releaseNumberFilter}}"
-                       class="btn btn-default btn-xs">Documentation (v. {{current.name | releaseNumberFilter}})</a></td>
+                <td>
+                    <nobr><a
+                            href="http://mithlond.github.io/mithlond-codestyle/Documentation/{{current.name | releaseNumberFilter}}/index.html">To Maven Documentation</a>
+                    </nobr>
+                </td>
             </tr>
             </tbody>
         </table>
