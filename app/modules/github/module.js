@@ -2,22 +2,23 @@
 
 angular.module('github_light', ['ngResource'])
         .filter('releaseNumberFilter', [function () {
-            return function (value) {
-                if(!value) {
+            return function (tagText) {
+                if(!tagText) {
                     return '';
                 }
 
-                // Cut out the version constant from this tag, which is expected to
-                // be on the form [text-version].
-                var lastDashIndex = value.lastIndexOf('-');
+                // Cut out the version constant from this tag, which is
+                // expected to be on the form [text-version].
+                var lastDashIndex = tagText.lastIndexOf('-');
                 if(lastDashIndex != -1) {
 
                     // Cut out the version number, and return it.
-                    return value.substring(lastDashIndex + 1);
+                    return tagText.substring(lastDashIndex + 1);
                 }
 
-                // Unknown
-                return value;
+                // Unknown tag format.
+                // Simply return the full tag text.
+                return tagText;
             };
         }])
         .factory('tagService', ['$resource', function ($resource) {
@@ -59,6 +60,9 @@ angular.module('github_light', ['ngResource'])
                     return this;
                 };
 
+                /**
+                 * @returns {boolean} True if the repo has defined tags, and false otherwise.
+                 */
                 this.hasTags = function () {
                     return this.tagList.length > 0;
                 };

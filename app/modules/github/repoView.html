@@ -34,7 +34,8 @@
                 <td>{{current.name | releaseNumberFilter}}</td>
                 <td>{{current.commit.sha}}</td>
                 <td>{{current.published_at | date:'yyyy-MM-dd HH:mm' }}</td>
-                <td><a href="#/documentation/{{current.name | releaseNumberFilter}}" class="btn btn-default btn-xs">Documentation</a></td>
+                <td><a href="#/documentation/{{current.name | releaseNumberFilter}}"
+                       class="btn btn-default btn-xs">Documentation (v. {{current.name | releaseNumberFilter}})</a></td>
             </tr>
             </tbody>
         </table>
