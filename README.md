@@ -77,7 +77,7 @@ mvn -N io.takari:maven:wrapper -Dmaven=${MAVEN_VERSION}
 ./mvnw --show-version --errors --batch-mode clean verify site
 ```
 
-In the windows operating system
+In the windows operating system, use `mvnw.bat` instead.
 
 
 
