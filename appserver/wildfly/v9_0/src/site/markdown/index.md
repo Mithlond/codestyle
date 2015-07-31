@@ -19,3 +19,9 @@ The overlay should be extracted in the WILDFLY_HOME directory **when the server 
 Since Wildfly application server re-writes its configuration data when the server is shut down, it will 
 overwrite any configuration written to any of its configuration files when the server is running. 
 Hence the need to unpack the overlay archive when the server is shut down.
+
+## [Keycloak single-sign on (SSO) server](http://keycloak.jboss.org) 
+
+**Keycloak** is a Single-sign-on application which may be installed as an 
+optional extension within the Wildfly application server. By default, the overlay installs the 
+modules and configuration for a Keycloak server running within the Wildfly appserver.

@@ -35,7 +35,7 @@ during the installation:
 2. **Encoding**. When asked to "initialize database" during the installation select the Server 
    Encoding **UTF-8**. This is important to correctly handle search and text encodings.
 
-### 3. Create a separate account for the application
+### 3. Create two required PostgreSQL roles ("Database Users")
 
 It is not recommended to use the database superuser directly from an application server.
 Instead, a new database role should be created and given privileges to own the database 
@@ -44,24 +44,47 @@ is an account that can be a "user" or "group").
 
 Launch the PgAdmin III graphical client (or the text console psql tool) and login as
 the superuser `postgresql`. When logged in as the superuser, create the required database 
-user `mithlonduser` by firing the following SQL:
+users `mithlonduser` and `keycloakuser` by firing the following SQL:
 
+    begin;
+    
     CREATE ROLE "mithlonduser" LOGIN
         ENCRYPTED PASSWORD 'md5dc095cc48f407588977c1ae83694342c'
         NOSUPERUSER NOINHERIT CREATEDB NOCREATEROLE NOREPLICATION;
     COMMENT ON ROLE "mithlonduser" IS 'Mithlond DB Pool User';
+    
+    CREATE ROLE keycloakuser LOGIN
+      ENCRYPTED PASSWORD 'md56ce5a850ade08488235c351d605cd4ff'
+      NOSUPERUSER INHERIT CREATEDB NOCREATEROLE NOREPLICATION;
+    COMMENT ON ROLE "keycloakuser" IS 'Keycloak DB Pool User';
+    
+    commit;
 
-You should now have new database role in the database as illustrated in the image below:
+You should now have two new database role in the development database.
+Their respective purpose and access credentials are as follows:
 
-<img src="../images/mithlonduser_role.png" style="margin:10px;" altText="mithlonduser"/>
+<table>
+    <tr>
+        <th>Role</th>
+        <th>Password (Development Environment DB)</th>
+        <th>Purpose</th>
+    </tr>
+    <tr>
+        <td>mithlonduser</td>
+        <td>MordorRules</td>
+        <td>DB role for accessing application data.</td>
+    </tr>
+    <tr>
+        <td>keycloakuser</td>
+        <td>SliceMeNice</td>
+        <td>DB role for accessing keycloak data.</td>
+    </tr>    
+</table>       
 
-The default password for the mithlonduser is `MordorRules` 
-(note caps; PostgreSQL uses case sensitive passwords). 
+### 4. As "postgres" user, create the databases "MithlondDB" and "KeyloakDB"
 
-### 4. As "postgres" user, Create the database "MithlondDB"
-
-While still being logged in to the PostgreSQL database as the "postgres" user, create the service database
-for the intranet service using the following command:
+While still being logged in to the PostgreSQL database as the "postgres" user, create the 
+service databases for the mithlond and keycloak services using the following commands in order:
 
     CREATE DATABASE "MithlondDB"
           WITH OWNER = mithlonduser
@@ -72,9 +95,21 @@ for the intranet service using the following command:
                CONNECTION LIMIT = -1;
     
     COMMENT ON DATABASE "MithlondDB" IS 'Mithlond Pool DB';
+    
+    CREATE DATABASE "KeycloakDB"
+              WITH OWNER = keycloakuser
+                   ENCODING = 'UTF8'
+                   TABLESPACE = pg_default
+                   LC_COLLATE = 'sv_SE.UTF-8'
+                   LC_CTYPE = 'sv_SE.UTF-8'
+                   CONNECTION LIMIT = -1;
+        
+    COMMENT ON DATABASE "KeycloakDB" IS 'Keycloak Pool DB';
 
-Use the PgAdmin III tool to verify that the database is created:
+Use the PgAdmin III tool to verify that the databases are created:
 
-<img src="../images/mithlond_db.png" style="margin:10px;" altText="MithlondDB"/>
+<img src="../images/service_databases.png" style="margin:10px;" altText="Service Databases"/>
 
-Log out from the PostgreSQL database
+### All Done.
+  
+Database users and Databases are now set up; you can log out from the PostgreSQL database.
