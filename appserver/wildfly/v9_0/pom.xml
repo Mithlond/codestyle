@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- +=============================================== -->
@@ -25,6 +26,7 @@
             Dependency versions.
         -->
         <postgresql.version>9.4-1201-jdbc41</postgresql.version>
+        <keycloak.version>1.4.0.Final</keycloak.version>
 
         <!--
             Environment-defining properties, possibly overridden in Profiles.
@@ -48,6 +50,12 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
+        <!-- dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-server-overlay</artifactId>
+            <version>${keycloak.version}</version>
+            <type>zip</type>
+        </dependency -->
     </dependencies>
 
     <!-- +=============================================== -->
@@ -114,9 +122,31 @@
                                     <version>${postgresql.version}</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
-                                    <outputDirectory>${project.build.directory}/wildflyRoot/modules/org/postgresql/main
-                                    </outputDirectory>
+                                    <outputDirectory>${project.build.directory}/wildflyRoot/modules/org/postgresql/main</outputDirectory>
                                     <destFileName>postgresql-${postgresql.version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/wars</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-keycloak-module</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>standalone/configuration/keycloak-server.json</excludes>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.keycloak</groupId>
+                                    <artifactId>keycloak-server-overlay</artifactId>
+                                    <version>${keycloak.version}</version>
+                                    <type>zip</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${project.build.directory}/wildflyRoot/</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/wars</outputDirectory>

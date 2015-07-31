@@ -49,6 +49,7 @@
         <extension module="org.wildfly.extension.request-controller"/>
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
+        <extension module="org.keycloak.keycloak-server-subsystem"/>
     </extensions>
     <management>
         <security-realms>
@@ -170,17 +171,39 @@
                     </security>
                 </datasource>
                 <datasource jta="true"
-                            jndi-name="${datasource.jndi.prefix}/${db.name}DS"
-                            pool-name="${datasource.pool.name}"
+                            jndi-name="${datasource.jndi.prefix}/${mithlond.db.name}DS"
+                            pool-name="${mithlond.datasource.pool.name}"
                             enabled="true"
                             use-ccm="false">
-                    <connection-url>${datasource.connection.url}</connection-url>
-                    <driver-class>${datasource.driver.class}</driver-class>
-                    <driver>${datasource.driver.id}</driver>
+                    <connection-url>${mithlond.datasource.connection.url}</connection-url>
+                    <driver-class>${mithlond.datasource.driver.class}</driver-class>
+                    <driver>${mithlond.datasource.driver.id}</driver>
                     <transaction-isolation>TRANSACTION_REPEATABLE_READ</transaction-isolation>
                     <security>
-                        <user-name>${db.user.name}</user-name>
-                        <password>${db.user.password}</password>
+                        <user-name>${mithlond.db.user.name}</user-name>
+                        <password>${mithlond.db.user.password}</password>
+                    </security>
+                    <validation>
+                        <validate-on-match>false</validate-on-match>
+                        <background-validation>false</background-validation>
+                    </validation>
+                    <statement>
+                        <prepared-statement-cache-size>4</prepared-statement-cache-size>
+                        <share-prepared-statements>true</share-prepared-statements>
+                    </statement>
+                </datasource>
+                <datasource jta="true"
+                            jndi-name="${datasource.jndi.prefix}/${keycloak.db.name}DS"
+                            pool-name="${keycloak.datasource.pool.name}"
+                            enabled="true"
+                            use-ccm="false">
+                    <connection-url>${keycloak.datasource.connection.url}</connection-url>
+                    <driver-class>${keycloak.datasource.driver.class}</driver-class>
+                    <driver>${keycloak.datasource.driver.id}</driver>
+                    <transaction-isolation>TRANSACTION_REPEATABLE_READ</transaction-isolation>
+                    <security>
+                        <user-name>${keycloak.db.user.name}</user-name>
+                        <password>${keycloak.db.user.password}</password>
                     </security>
                     <validation>
                         <validate-on-match>false</validate-on-match>
@@ -195,8 +218,8 @@
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
                     </driver>
-                    <driver name="${datasource.driver.id}" module="${datasource.driver.module}">
-                        <xa-datasource-class>${datasource.driver.xa.class}</xa-datasource-class>
+                    <driver name="${postgresql.datasource.driver.id}" module="${postgresql.datasource.driver.module}">
+                        <xa-datasource-class>${postgresql.datasource.driver.xa.class}</xa-datasource-class>
                     </driver>
                 </drivers>
             </datasources>
@@ -446,6 +469,9 @@
             <client-config name="Standard-Client-Config"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:weld:2.0"/>
+        <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
+            <web-context>${keycloak.webcontext}</web-context>
+        </subsystem>
     </profile>
     <interfaces>
         <interface name="management">
