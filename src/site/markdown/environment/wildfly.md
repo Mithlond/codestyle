@@ -37,25 +37,25 @@ Since Wildfly application server re-writes its configuration data when the serve
 overwrite any configuration written to any of its configuration files when the server is running. 
 Hence the need to unpack the overlay archive when the server is shut down.
 
-### 4. Launch the server; verify Datasource "MithlondDS"
+### 4. Launch the server; verify Datasources "MithlondDS" and "KeycloakDS"
 
 Start the application server using the command `standalone.sh` or `standalone.bat` depending on your operating system.
 In the console log, you should see a log line about Wildfly picking up the something like
     
-    [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-3) WFLYJCA0001: Bound data source [java:jboss/datasources/MithlondDS]
+    [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-2) WFLYJCA0001: Bound data source [java:jboss/datasources/MithlondDS]
+    [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-1) WFLYJCA0001: Bound data source [java:jboss/datasources/KeycloakDS]
 
 If you're runnig on Windows and get an error `Failed to start the http-interface service` it might be the management service using the same port as for example *NVIDIA Network Service*. If this happens you need to stop that service before starting wildfly, change the management port of wildfly or change the port of NVidia service.
 
-Open the DataSources management console on the URL: 
+Open the management console on your local development machine, and navigate to the
+Datasources pane, which can be found on the URL `http://localhost:9990/console/App.html`.
+Click on the `Configuration` tab, and select `Subsystems | Datasources` to validate the 
+data sources `MithlondDS` and `KeycloakDS`. To access the management console in the development
+environment, use user name and password from the file ACCESS.txt.
 
-`http://localhost:9990/console/App.html#datasources`
+<img src="../images/datasources_scaled.png" style="margin:10px;" altText="Wildfly Datasources"/>
 
-... (using user and password from file ACCESS.txt) and verify that the data source Mithlond DS is operational:
-
-<img src="../images/MithlondDS.png" style="margin:10px; border: solid DarkGray 1px;" altText="Mithlond DS"/>
-
-Your development application environment set should now be complete; a standard setup application server
-for development, including a Database and DataSource is now available on your computer.
+The Development environment Wildfly Application Server should now be fully set up.
 
 
 

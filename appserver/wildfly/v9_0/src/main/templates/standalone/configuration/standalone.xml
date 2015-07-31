@@ -173,7 +173,6 @@
                 <datasource jta="true"
                             jndi-name="${datasource.jndi.prefix}/${mithlond.db.name}DS"
                             pool-name="${mithlond.datasource.pool.name}"
-                            enabled="true"
                             use-ccm="false">
                     <connection-url>${mithlond.datasource.connection.url}</connection-url>
                     <driver-class>${mithlond.datasource.driver.class}</driver-class>
@@ -195,7 +194,6 @@
                 <datasource jta="true"
                             jndi-name="${datasource.jndi.prefix}/${keycloak.db.name}DS"
                             pool-name="${keycloak.datasource.pool.name}"
-                            enabled="true"
                             use-ccm="false">
                     <connection-url>${keycloak.datasource.connection.url}</connection-url>
                     <driver-class>${keycloak.datasource.driver.class}</driver-class>
