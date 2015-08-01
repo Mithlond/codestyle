@@ -65,6 +65,45 @@
         <plugins>
 
             <!--
+                Configures the LessCSS plugin to compile all less files into CSS files
+                to be used as Keycloak theme stylesheets within the overlay.
+
+                Why:  Generates CSS files from LESS files.
+                Used: Standard lifecycle, mvn process-sources.
+            -->
+            <plugin>
+                <groupId>org.lesscss</groupId>
+                <artifactId>lesscss-maven-plugin</artifactId>
+                <version>1.7.0.1.1</version>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/templates/standalone/configuration/themes</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/wildflyRoot/standalone/configuration/themes</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile_css_files</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <outputFileFormat>{fileName}.css</outputFileFormat>
+                            <compress>false</compress>
+                        </configuration>
+                    </execution>
+                    <!-- execution>
+                        <id>compile_minified_css_files</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <outputFileFormat>{fileName}.min.css</outputFileFormat>
+                            <compress>true</compress>
+                        </configuration>
+                    </execution -->
+                </executions>
+            </plugin>
+
+            <!--
                  Configures the resource plugin to copy and filter resources.
                  This substitutes ${variables} to their properties.
 
@@ -89,6 +128,8 @@
                                         <include>**/*.txt</include>
                                         <include>**/*.properties</include>
                                         <include>**/*.xml</include>
+                                        <include>**/*.json</include>
+                                        <include>**/*.png</include>
                                     </includes>
                                     <directory>${basedir}/src/main/templates</directory>
                                     <filtering>true</filtering>

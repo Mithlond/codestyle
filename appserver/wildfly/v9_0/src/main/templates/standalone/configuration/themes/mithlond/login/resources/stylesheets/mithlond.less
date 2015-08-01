@@ -1,0 +1,24 @@
+// Define some constants
+@background-base-color: #006600;
+@background-dark-color: #000000;
+
+body {
+  background: @background-base-color;
+  background-repeat: repeat-x;
+  background-image: -webkit-linear-gradient(top, @background-dark-color 0%, @background-base-color 250px);
+  background-image: -moz-linear-gradient(top, @background-dark-color 0%, @background-base-color 250px);
+  background-image: -ms-linear-gradient(top, @background-dark-color 0%, @background-base-color 250px);
+  background-image: -o-linear-gradient(top, @background-dark-color 0%, @background-base-color 250px);
+  background-image: linear-gradient(top, @background-dark-color 0%, @background-base-color 250px);
+
+  div#kc-header {
+    background: url('../img/mithlondLogo.png') no-repeat;
+    height: 500px;
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    width: 500px;
+    z-index: -1;
+    text-indent: -9999px;
+  }
+}
