@@ -24,7 +24,7 @@
 <module xmlns="urn:jboss:module:1.3" name="org.postgresql">
     <!--
         Load with wildfly-cli command:
-        /subsystem=datasources/jdbc-driver=${datasource.driver.id}:add(driver-name=postgresql, driver-class-name=${datasource.driver.class}, driver-module-name=${datasource.driver.module})
+        /subsystem=datasources/jdbc-driver=${mithlond.datasource.driver.id}:add(driver-name=${mithlond.datasource.driver.id}, driver-class-name=${mithlond.datasource.driver.class}, driver-module-name=org.postgresql)
     -->
     <resources>
         <resource-root path="${datasource.module.resource}"/>
