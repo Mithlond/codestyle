@@ -130,6 +130,7 @@
                                         <include>**/*.xml</include>
                                         <include>**/*.json</include>
                                         <include>**/*.png</include>
+                                        <include>**/*.jpg</include>
                                     </includes>
                                     <directory>${basedir}/src/main/templates</directory>
                                     <filtering>true</filtering>
