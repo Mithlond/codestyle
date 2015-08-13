@@ -27,6 +27,13 @@
         -->
         <postgresql.version>9.4-1201-jdbc41</postgresql.version>
         <keycloak.version>1.4.0.Final</keycloak.version>
+        <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
+
+        <!--
+            Directory definitions.
+        -->
+        <dir.wildfly.root>${project.build.directory}/wildflyRoot</dir.wildfly.root>
+        <dir.webjars.unpacked>${project.build.directory}/downloaded/webjars</dir.webjars.unpacked>
 
         <!--
             Environment-defining properties, possibly overridden in Profiles.
@@ -51,10 +58,9 @@
             <version>${postgresql.version}</version>
         </dependency>
         <!-- dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-server-overlay</artifactId>
-            <version>${keycloak.version}</version>
-            <type>zip</type>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap-datepicker</artifactId>
+            <version>1.4.0</version>
         </dependency -->
     </dependencies>
 
@@ -77,7 +83,7 @@
                 <version>1.7.0.1.1</version>
                 <configuration>
                     <sourceDirectory>${project.basedir}/src/main/templates/standalone/configuration/themes</sourceDirectory>
-                    <outputDirectory>${project.build.directory}/wildflyRoot/standalone/configuration/themes</outputDirectory>
+                    <outputDirectory>${dir.wildfly.root}/standalone/configuration/themes</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -121,7 +127,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/wildflyRoot</outputDirectory>
+                            <outputDirectory>${dir.wildfly.root}</outputDirectory>
                             <resources>
                                 <resource>
                                     <includes>
@@ -164,11 +170,10 @@
                                     <version>${postgresql.version}</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
-                                    <outputDirectory>${project.build.directory}/wildflyRoot/modules/org/postgresql/main</outputDirectory>
+                                    <outputDirectory>${dir.wildfly.root}/modules/org/postgresql/main</outputDirectory>
                                     <destFileName>postgresql-${postgresql.version}.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>${project.build.directory}/wars</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
@@ -190,7 +195,28 @@
                                     <overWrite>false</overWrite>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>${project.build.directory}/wildflyRoot/</outputDirectory>
+                            <outputDirectory>${dir.wildfly.root}</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>include-bootstrap-datetime</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>bootstrap-datepicker</artifactId>
+                                    <version>${bootstrap-datepicker.version}</version>
+                                    <overWrite>false</overWrite>
+                                    <includes>**/*.css,**/*.js</includes>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${dir.webjars.unpacked}</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>

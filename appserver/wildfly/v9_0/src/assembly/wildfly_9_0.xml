@@ -11,6 +11,22 @@
     <fileSets>
 
         <!--
+            Include all WebJars resources as libraries in all Themes' Admin types.
+        -->
+        <fileSet>
+            <outputDirectory>/standalone/configuration/themes/mithlond/admin/resources/lib/</outputDirectory>
+            <directory>${project.build.directory}/downloaded/webjars/META-INF/resources/webjars/</directory>
+        </fileSet>
+        <fileSet>
+            <outputDirectory>/standalone/configuration/themes/forodrim/admin/resources/lib/</outputDirectory>
+            <directory>${project.build.directory}/downloaded/webjars/META-INF/resources/webjars/</directory>
+        </fileSet>
+        <fileSet>
+            <outputDirectory>/standalone/configuration/themes/angmar/admin/resources/lib/</outputDirectory>
+            <directory>${project.build.directory}/downloaded/webjars/META-INF/resources/webjars/</directory>
+        </fileSet>
+
+        <!--
             Include all files from the wildflyRoot directory
         -->
         <fileSet>
