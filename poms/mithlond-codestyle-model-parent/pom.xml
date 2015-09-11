@@ -74,6 +74,21 @@
         </resources>
 
         <plugins>
+            <!--
+                Ensure that we generate XSDs for all our model projects.
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>schemagen</id>
+                        <goals>
+                            <goal>schemagen</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!--
                 Configure the Surefire plugin to run using 2 forks per core.
@@ -288,86 +303,6 @@
                         <artifactId>openjpa-maven-plugin</artifactId>
                     </plugin>
                     -->
-                </plugins>
-            </build>
-        </profile>
-
-        <!--
-            Liquibase profiles.
-            PostgreSQL is for Development and Test.
-        -->
-        <profile>
-            <id>liquibase_postgres</id>
-            <activation>
-                <property>
-                    <name>liquibase</name>
-                    <value>postgres</value>
-                </property>
-            </activation>
-
-            <properties>
-                <!--
-                    Liquibase properties.
-
-                    All Maven-internal properties should be prefixed with "lb_".
-                    All properties read from the environment should be prefixed with "db_".
-                    Typical resulting command line:
-
-                    mvn -Ddb_environment=development
-                        -Ddb_username=theUserName
-                        -Ddb_password=thePassword
-                        liquibase:update
-                -->
-                <lb_environment>${db_environment}</lb_environment>
-                <lb_username>${db_username}</lb_username>
-                <lb_password>${db_password}</lb_password>
-                <lb_changelogfile>src/db/liquibase/${lb_environment}/${project.artifactId}.xml</lb_changelogfile>
-                <lb_extractfile>src/db/liquibase/${lb_environment}/${project.artifactId}_extracted.xml</lb_extractfile>
-                <lb_driver>org.postgresql.Driver</lb_driver>
-                <lb_database>IntranetDB</lb_database>
-                <lb_hostname>localhost</lb_hostname>
-                <lb_port>5432</lb_port>
-                <lb_url>jdbc:postgresql://${lb_hostname}:${lb_port}/${lb_database}</lb_url>
-                <lb_promptOnRemoteDb>false</lb_promptOnRemoteDb>
-            </properties>
-
-            <dependencies>
-                <!-- PostgreSQL DB Driver -->
-                <dependency>
-                    <groupId>org.postgresql</groupId>
-                    <artifactId>postgresql</artifactId>
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
-
-            <build>
-                <plugins>
-                    <!--
-                        Liquibase plugin for database management.
-                    -->
-                    <plugin>
-                        <groupId>org.liquibase</groupId>
-                        <artifactId>liquibase-maven-plugin</artifactId>
-                        <version>${liquibase.version}</version>
-                        <configuration>
-                            <changeLogFile>${lb_changelogfile}</changeLogFile>
-                            <outputChangeLogFile>${lb_extractfile}</outputChangeLogFile>
-                            <driver>${lb_driver}</driver>
-                            <url>${lb_url}</url>
-                            <username>${lb_username}</username>
-                            <password>${lb_password}</password>
-                            <promptOnNonLocalDatabase>${lb_promptOnRemoteDb}</promptOnNonLocalDatabase>
-                            <outputFileEncoding>UTF-8</outputFileEncoding>
-                        </configuration>
-                        <!-- executions>
-                            <execution>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>update</goal>
-                                </goals>
-                            </execution>
-                        </executions -->
-                    </plugin>
                 </plugins>
             </build>
         </profile>

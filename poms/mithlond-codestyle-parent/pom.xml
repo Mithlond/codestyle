@@ -600,10 +600,14 @@
                 </configuration>
             </plugin>
 
+            <!--
+                Use the latest jaxb2-maven-plugin to provide XSD generation abilities
+                for the model projects.
+            -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>1.6</version>
+                <version>2.2</version>
                 <configuration>
                     <outputDirectory>${project.build.directory}/jaxb2/transformed/generated-schema</outputDirectory>
                     <transformSchemas>
@@ -628,18 +632,13 @@
                                excluding the ".xsd" suffix (which will be added automatically).
                         -->
                         <transformSchema>
-                            <uri>http://www.mithlond.se/services/selectschool</uri>
-                            <toPrefix>school</toPrefix>
-                            <toFile>SelectSchool.xsd</toFile>
-                        </transformSchema>
-                        <transformSchema>
                             <uri>http://www.jguru.se/nazgul/core</uri>
                             <toPrefix>core</toPrefix>
                             <toFile>NazgulCore.xsd</toFile>
                         </transformSchema>
                         <transformSchema>
                             <uri>http://www.mithlond.se/dataexchange</uri>
-                            <toPrefix>svex</toPrefix>
+                            <toPrefix>dataexchange</toPrefix>
                             <toFile>dataexchange.xsd</toFile>
                         </transformSchema>
                     </transformSchemas>
