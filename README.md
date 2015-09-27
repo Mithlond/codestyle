@@ -1,4 +1,4 @@
-# 1. Mithlond: Codestyle
+# [1. Mithlond: Codestyle](http://mithlond.github.io/mithlond-codestyle)
 
 The Mithlond: Codestyle project structure contains parent POMs and codestyle 
 definitions with best practises for collaborative development.
@@ -22,7 +22,10 @@ The reactor consists has 3 main strucures:
 
 Release documentation (including Maven site documentation) can be found
 at [The Mithlond: Codestyle Documentation Site](http://mithlond.github.io/mithlond-codestyle). 
-Select the release version you are interested in, to find its full Maven site documentation. 
+Select the release version you are interested in, to find its full Maven site documentation.
+A screenshot of the landing page is shown below at a particular point in time:
+
+<img src="documentationStructure.png" />
 
 # 2. Getting and building mithlond-codestyle
 
