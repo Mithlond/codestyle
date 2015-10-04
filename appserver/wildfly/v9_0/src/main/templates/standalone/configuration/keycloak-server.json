@@ -19,18 +19,6 @@
   "user": {
     "provider": "jpa"
   },
-  "userSessions": {
-    "provider": "mem"
-  },
-  "realmCache": {
-    "provider": "mem"
-  },
-  "userCache": {
-    "provider": "mem",
-    "mem": {
-      "maxSize": 20000
-    }
-  },
   "timer": {
     "provider": "basic"
   },
@@ -42,15 +30,6 @@
     "folder": {
       "dir": "${jboss.server.config.dir}/themes"
     }
-  },
-  "login": {
-    "provider": "freemarker"
-  },
-  "account": {
-    "provider": "freemarker"
-  },
-  "email": {
-    "provider": "freemarker"
   },
   "scheduled": {
     "interval": 900
@@ -64,6 +43,11 @@
     "default": {
       "dataSource": "java:jboss/datasources/KeycloakDS",
       "databaseSchema": "update"
+    }
+  },
+  "connectionsInfinispan": {
+    "default" : {
+      "cacheContainer" : "java:jboss/infinispan/Keycloak"
     }
   }
 }

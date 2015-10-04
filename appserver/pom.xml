@@ -14,7 +14,7 @@
     <groupId>se.mithlond.codestyle.appserver</groupId>
     <artifactId>mithlond-codestyle-appserver-reactor</artifactId>
     <name>${project.artifactId}</name>
-    <description>${project.artifactId}</description>
+    <description>Mithlond Codestyle: Appserver Reactor.</description>
     <packaging>pom</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
 

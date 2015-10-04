@@ -50,6 +50,8 @@
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
         <extension module="org.keycloak.keycloak-server-subsystem"/>
+        <!-- The Adapter is required when defining Keycloak within the WildFly Descriptors -->
+        <extension module="org.keycloak.keycloak-adapter-subsystem"/>
     </extensions>
     <management>
         <security-realms>
@@ -305,6 +307,12 @@
             <buffer-pool name="default"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:infinispan:3.0">
+            <cache-container name="keycloak" jndi-name="infinispan/Keycloak">
+                <local-cache name="realms"/>
+                <local-cache name="users"/>
+                <local-cache name="sessions"/>
+                <local-cache name="loginFailures"/>
+            </cache-container>
             <cache-container name="server" default-cache="default" module="org.wildfly.clustering.server">
                 <local-cache name="default">
                     <transaction mode="BATCH"/>
@@ -413,6 +421,12 @@
                         </login-module>
                     </authentication>
                 </security-domain>
+                <security-domain name="keycloak">
+                    <authentication>
+                        <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule"
+                                      flag="required"/>
+                    </authentication>
+                </security-domain>
                 <security-domain name="jboss-web-policy" cache-type="default">
                     <authorization>
                         <policy-module code="Delegating" flag="required"/>
@@ -470,6 +484,27 @@
         <subsystem xmlns="urn:jboss:domain:keycloak-server:1.1">
             <web-context>${keycloak.webcontext}</web-context>
         </subsystem>
+        <!--
+            In KeyCloak vocabulary, a WAR secured by KeyCloak is called "Client".
+            To activate KeyCloak security management for the "foo.war"...
+
+            1) Choose a Realm within KeyCloak to secure the WAR
+            2) Within that Realm (in the KeyCloak console), select "Create Client".
+            3) (Add required URLs, and KeyCloak name/ID to the WAR within KeyCloak)
+            4) Select the "Installation" tab of the Client WAR
+            5) Select the WildFly/EAP Subsystem XML format.
+            6) Paste the XML produced by KeyCloak below this comment.
+        -->
+        <!-- subsystem xmlns="urn:jboss:domain:keycloak:1.1">
+            <secure-deployment name="WAR MODULE NAME.war">
+                <realm>demo</realm>
+                <realm-public-key>[paste from the KeyCloak admin Console]</realm-public-key>
+                <auth-server-url>http://localhost:8081/auth</auth-server-url>
+                <ssl-required>external</ssl-required>
+                <resource>customer-portal</resource>
+                <credential name="secret">password</credential>
+            </secure-deployment>
+        </subsystem -->
     </profile>
     <interfaces>
         <interface name="management">

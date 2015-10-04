@@ -15,6 +15,7 @@
     <groupId>se.mithlond.codestyle.appserver.wildfly.v9_0</groupId>
     <artifactId>mithlond-codestyle-appserver-wildfly-v9_0-assembly</artifactId>
     <name>${project.artifactId}</name>
+    <description>Mithlond Codestyle: Wildfly 9 Appserver Assembly.</description>
     <packaging>pom</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
 
@@ -178,7 +179,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-keycloak-module</id>
+                        <id>copy-keycloak-server-module</id>
                         <phase>package</phase>
                         <goals>
                             <goal>unpack</goal>
@@ -189,6 +190,28 @@
                                 <artifactItem>
                                     <groupId>org.keycloak</groupId>
                                     <artifactId>keycloak-server-overlay</artifactId>
+                                    <version>${keycloak.version}</version>
+                                    <type>zip</type>
+                                    <overWrite>false</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${dir.wildfly.root}</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-keycloak-wf9-adapter-module</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>standalone/configuration/keycloak-server.json</excludes>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.keycloak</groupId>
+                                    <artifactId>keycloak-wf9-adapter-dist</artifactId>
                                     <version>${keycloak.version}</version>
                                     <type>zip</type>
                                     <overWrite>false</overWrite>
