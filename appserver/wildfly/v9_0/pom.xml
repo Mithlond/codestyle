@@ -214,7 +214,7 @@
                                     <artifactId>keycloak-wf9-adapter-dist</artifactId>
                                     <version>${keycloak.version}</version>
                                     <type>zip</type>
-                                    <overWrite>false</overWrite>
+                                    <overWrite>true</overWrite>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>${dir.wildfly.root}</outputDirectory>

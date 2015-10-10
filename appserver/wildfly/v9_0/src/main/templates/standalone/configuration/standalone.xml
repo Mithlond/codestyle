@@ -50,7 +50,10 @@
         <extension module="org.wildfly.extension.security.manager"/>
         <extension module="org.wildfly.extension.undertow"/>
         <extension module="org.keycloak.keycloak-server-subsystem"/>
-        <!-- The Adapter is required when defining Keycloak within the WildFly Descriptors -->
+        <!--
+            The Adapter is required when defining KEYCLOAK security
+            and properties within the WildFly Descriptors
+         -->
         <extension module="org.keycloak.keycloak-adapter-subsystem"/>
     </extensions>
     <management>
