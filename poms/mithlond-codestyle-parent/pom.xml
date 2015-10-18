@@ -80,6 +80,8 @@
         <aspectj-maven-plugin.version>1.7</aspectj-maven-plugin.version>
         <aspectj.runtime.version>1.8.7</aspectj.runtime.version>
         <findbugs.plugin.version>3.0.0</findbugs.plugin.version>
+        <checkstyle.plugin.version>2.16</checkstyle.plugin.version>
+        <checkstyle.version>6.11.2</checkstyle.version>
         <pmd.plugin.version>3.3</pmd.plugin.version>
 
         <!-- Build time constants -->
@@ -212,6 +214,31 @@
 
         <pluginManagement>
             <plugins>
+                <!--
+                    Configures the checkstyle plugin version.
+                    Also ensures that the default release profile is not used.
+                    (The mithlond-release profile should be used instead).
+
+                    Why:  Release artifacts
+                    Used: Normal lifecycle, release goal
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${checkstyle.plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>se.jguru.nazgul.tools.codestyle</groupId>
+                            <artifactId>nazgul-codestyle</artifactId>
+                            <version>${nazgul.tools.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
 
                 <!--
                     Configures the release plugin version.
@@ -1114,7 +1141,7 @@
             <id>mithlond-release</id>
             <build>
                 <plugins>
-                    <plugin>
+                    <!-- plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <dependencies>
@@ -1140,7 +1167,7 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-deploy-plugin</artifactId>
