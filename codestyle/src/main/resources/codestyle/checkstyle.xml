@@ -75,13 +75,15 @@
         <!--
             We should not use Calendar or Date types in any public method.
             They could be used internally - and only within model classes to cope with JPA time types -
-            but not within parameters or return types.
+            but not within parameters or return types. Also commented out the default format specification
+            which makes abstract return types be illegal by default(!).
         -->
         <module name="IllegalType">
             <property name="severity" value="error"/>
             <property name="tokens" value="PARAMETER_DEF, METHOD_DEF"/>
             <property name="illegalClassNames"
                       value="java.util.GregorianCalendar, java.util.Calendar, java.util.Date, java.util.Vector, java.util.Properties"/>
+            <property name="format" value=""/>
         </module>
 
         <!--

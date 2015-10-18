@@ -233,9 +233,9 @@
                             <version>${checkstyle.version}</version>
                         </dependency>
                         <dependency>
-                            <groupId>se.jguru.nazgul.tools.codestyle</groupId>
-                            <artifactId>nazgul-codestyle</artifactId>
-                            <version>${nazgul.tools.version}</version>
+                            <groupId>se.mithlond.codestyle.codestyle</groupId>
+                            <artifactId>mithlond-codestyle</artifactId>
+                            <version>1.1.1-SNAPSHOT</version>
                         </dependency>
                     </dependencies>
                 </plugin>
