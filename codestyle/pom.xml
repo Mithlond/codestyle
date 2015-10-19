@@ -434,8 +434,8 @@
                 <version>${checkstyle.plugin.version}</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <propertyExpansion>cacheFile=${project.build.directory}/checkstyle-cachefile</propertyExpansion>
-                    <configLocation>${project.build.outputDirectory}/codestyle/checkstyle.xml</configLocation>
+                    <propertyExpansion>cacheFile=${project.build.directory}/mithlond-checkstyle-cachefile</propertyExpansion>
+                    <configLocation>${project.build.outputDirectory}/codestyle/mithlond-checkstyle.xml</configLocation>
                     <failOnViolation>true</failOnViolation>
                     <violationSeverity>error</violationSeverity>
                 </configuration>
@@ -523,7 +523,7 @@
             <id>mithlond-release</id>
             <build>
                 <plugins>
-                    <plugin>
+                    <!-- plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <dependencies>
@@ -549,7 +549,7 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-deploy-plugin</artifactId>
