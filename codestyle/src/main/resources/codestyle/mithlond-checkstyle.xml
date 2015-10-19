@@ -27,9 +27,9 @@
 <module name="Checker">
     <property name="severity" value="warning"/>
 
-    <module name="SuppressWarningsFilter" />
+    <module name="SuppressWarningsFilter"/>
     <module name="TreeWalker">
-        <module name="SuppressWarningsHolder" />
+        <module name="SuppressWarningsHolder"/>
         <module name="JavadocMethod">
             <property name="scope" value="public"/>
             <property name="allowMissingPropertyJavadoc" value="true"/>
@@ -39,12 +39,10 @@
         <module name="LineLength">
             <property name="max" value="120"/>
         </module>
-
         <module name="JavadocStyle">
             <property name="checkFirstSentence" value="false"/>
             <property name="checkHtml" value="false"/>
         </module>
-
         <module name="ConstantName">
             <property name="format" value="(^[A-Z][A-Z0-9_]*$)|log"/>
         </module>
@@ -62,7 +60,6 @@
             <property name="severity" value="error"/>
         </module>
         <module name="JavaNCSS"/>
-
         <!--
             Enforce correct logging mechanics in release artifacts.
         -->
@@ -71,7 +68,6 @@
             <property name="illegalPkgs"
                       value="java.util.logging, org.jboss.logging, org.apache.log4j, org.apache.commons.logging"/>
         </module>
-
         <!--
             We should not use Calendar or Date types in any public method.
             They could be used internally - and only within model classes to cope with JPA time types -
@@ -80,12 +76,12 @@
         -->
         <module name="IllegalType">
             <property name="severity" value="error"/>
-            <property name="tokens" value="PARAMETER_DEF, METHOD_DEF"/>
+            <property name="tokens" value="PARAMETER_DEF,METHOD_DEF"/>
+            <property name="validateAbstractClassNames" value="true"/>
             <property name="illegalClassNames"
                       value="java.util.GregorianCalendar, java.util.Calendar, java.util.Date, java.util.Vector, java.util.Properties"/>
-            <property name="format" value=""/>
+            <property name="format" value="thisShouldMatchNothingReally"/>
         </module>
-
         <!--
             Validate that we don't use the System.exit, out or err in the code.
             Use proper logging instead.
