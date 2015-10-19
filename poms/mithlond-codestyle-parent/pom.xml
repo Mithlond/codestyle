@@ -237,13 +237,32 @@
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>${checkstyle.plugin.version}</version>
                     <configuration>
+                        <includeResources>true</includeResources>
+                        <includeTestResources>true</includeTestResources>
+                        <encoding>${project.build.sourceEncoding}</encoding>
                         <configLocation>${checkstyle.config.location}</configLocation>
-                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <consoleOutput>true</consoleOutput>
                         <suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
                         <skip>${skip.verify.code}</skip>
                         <failOnViolation>${breakOnFailure.checkstyle}</failOnViolation>
                         <violationSeverity>${checkstyle.violationSeverity}</violationSeverity>
+                        <linkXRef>false</linkXRef>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <id>verify</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <goals>
+                                <goal>checkstyle</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                     <dependencies>
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
@@ -867,6 +886,34 @@
                         <reports>
                             <report>report</report>
                         </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <!--
+                 Due to problems in the Maven 3 site plugin you must enter the configuration twice,
+                 once for the pluginManagement section and once for the site, see
+                 http://jira.codehaus.org/browse/MSITE-516 and http://jira.codehaus.org/browse/MSITE-523
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.plugin.version}</version>
+                <configuration>
+                    <includeResources>true</includeResources>
+                    <includeTestResources>true</includeTestResources>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <configLocation>${checkstyle.config.location}</configLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
+                    <skip>${skip.verify.code}</skip>
+                    <failOnViolation>${breakOnFailure.checkstyle}</failOnViolation>
+                    <violationSeverity>${checkstyle.violationSeverity}</violationSeverity>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports/>
                     </reportSet>
                 </reportSets>
             </plugin>
