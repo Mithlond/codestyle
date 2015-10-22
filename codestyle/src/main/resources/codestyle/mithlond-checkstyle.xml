@@ -79,8 +79,6 @@
         -->
         <module name="se.mithlond.codestyle.codestyle.checks.EntityDateTimePublicApiCheck">
             <property name="severity" value="error" />
-            <property name="illegalClassNames"
-                      value="java.util.GregorianCalendar, java.util.Calendar, java.util.Date, java.util.Vector, java.util.Properties"/>
         </module>
         <!--
             We should not use Calendar or Date types in any public method.
