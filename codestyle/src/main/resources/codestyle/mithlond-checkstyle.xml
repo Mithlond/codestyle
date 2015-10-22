@@ -25,6 +25,7 @@
         "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
+    <property name="charset" value="UTF-8"/>
     <property name="severity" value="warning"/>
 
     <module name="SuppressWarningsFilter"/>
@@ -69,19 +70,30 @@
                       value="java.util.logging, org.jboss.logging, org.apache.log4j, org.apache.commons.logging"/>
         </module>
         <!--
+            Since the IllegalTypeCheck implementation in Checkstyle 6.11.2 is buggy, provide
+            a custom implementation which actually differs between public API in a class and
+            the private state of the class.
+
+            Also, in this case, use a default token setting of "PARAMETER_DEF, METHOD_DEF".
+            C.f. the implementation.
+        -->
+        <module name="se.mithlond.codestyle.codestyle.checks.EntityDateTimePublicApiCheck">
+            <property name="severity" value="error" />
+        </module>
+        <!--
             We should not use Calendar or Date types in any public method.
             They could be used internally - and only within model classes to cope with JPA time types -
             but not within parameters or return types. Also commented out the default format specification
             which makes abstract return types be illegal by default(!).
         -->
-        <module name="IllegalType">
+        <!-- module name="IllegalType">
             <property name="severity" value="error"/>
-            <property name="tokens" value="PARAMETER_DEF,METHOD_DEF"/>
+            <property name="tokens" value="PARAMETER_DEF, METHOD_DEF"/>
             <property name="validateAbstractClassNames" value="true"/>
             <property name="illegalClassNames"
                       value="java.util.GregorianCalendar, java.util.Calendar, java.util.Date, java.util.Vector, java.util.Properties"/>
             <property name="format" value="thisShouldMatchNothingReally"/>
-        </module>
+        </module -->
         <!--
             Validate that we don't use the System.exit, out or err in the code.
             Use proper logging instead.
