@@ -41,8 +41,8 @@ import java.util.TreeMap;
  * <ol>
  * <li>The pre-JDK8 time types (Calendar, Date and GregorianCalendar) should not be
  * used in the public API of a class or interface. </li>
- * <il>JPA frameworks are not yet compliant with any timestamp class other than the pre-JDK8 types.
- * Hence, these types must be usable within the <strong>internal state</strong> of an Entity class.</il>
+ * <li>JPA frameworks are not yet compliant with any timestamp class other than the pre-JDK8 types.
+ * Hence, these types must be usable within the <strong>internal state</strong> of an Entity class.</li>
  * </ol>
  *
  * @author <a href="mailto:lj@jguru.se">Lennart J&ouml;relid</a>, jGuru Europe AB
