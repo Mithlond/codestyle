@@ -1,3 +1,24 @@
+/*
+ * #%L
+ * Nazgul Project: mithlond-codestyle
+ * %%
+ * Copyright (C) 2015 Mithlond
+ * %%
+ * Licensed under the jGuru Europe AB license (the "License"), based
+ * on Apache License, Version 2.0; you may not use this file except
+ * in compliance with the License.
+ * 
+ * You may obtain a copy of the License at
+ * 
+ *       http://www.jguru.se/licenses/jguruCorporateSourceLicense-2.0.txt
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package se.mithlond.codestyle.codestyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -11,15 +32,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * <p>Calendar check which should be applied to model projects, implying two rules:</p>
  * <ol>
- *     <li>The pre-JDK8 time types (Calendar, Date and GregorianCalendar) should not be
- *     used in the public API of a class or interface. </li>
- *     <il>JPA frameworks are not yet compliant with any timestamp class other than the pre-JDK8 types.
- *     Hence, these types must be usable within the <strong>internal state</strong> of an Entity class.</il>
+ * <li>The pre-JDK8 time types (Calendar, Date and GregorianCalendar) should not be
+ * used in the public API of a class or interface. </li>
+ * <il>JPA frameworks are not yet compliant with any timestamp class other than the pre-JDK8 types.
+ * Hence, these types must be usable within the <strong>internal state</strong> of an Entity class.</il>
  * </ol>
  *
  * @author <a href="mailto:lj@jguru.se">Lennart J&ouml;relid</a>, jGuru Europe AB
@@ -37,28 +60,42 @@ public class EntityDateTimePublicApiCheck extends AbstractFormatCheck {
 	/** Abstract classes legal by default. */
 	private static final String[] DEFAULT_LEGAL_ABSTRACT_NAMES = {};
 
-	private static final String JAVA_UTIL = "java.util.";
-
 	/** Types illegal by default. */
 	private static final String[] DEFAULT_ILLEGAL_TYPES;
 
 	static {
 
-		final String[] plainTypes = {
+		final Map<String, String[]> plainTypesMap = new TreeMap<>();
+		plainTypesMap.put("java.util.", new String[]{
 				"HashSet",
 				"HashMap",
 				"LinkedHashMap",
 				"LinkedHashSet",
 				"TreeSet",
 				"TreeMap",
+				"Vector",
 				"Date",
 				"Calendar",
-				"GregorianCalendar"};
+				"GregorianCalendar"});
+		plainTypesMap.put("java.lang.", new String[]{
+				"Double",
+				"Float"});
 
-		DEFAULT_ILLEGAL_TYPES = new String[plainTypes.length * 2];
-		for (int i = 0; i < plainTypes.length; i++) {
-			DEFAULT_ILLEGAL_TYPES[2 * i] = plainTypes[i];
-			DEFAULT_ILLEGAL_TYPES[2 * i + 1] = JAVA_UTIL + plainTypes[i];
+		int numTypes = 0;
+		for (String[] current : plainTypesMap.values()) {
+			numTypes += current.length;
+		}
+
+		DEFAULT_ILLEGAL_TYPES = new String[numTypes * 2];
+		int i = 0;
+		for (Map.Entry<String, String[]> current : plainTypesMap.entrySet()) {
+
+			final String packagePrefix = current.getKey();
+			for (String currentPlainTypeName : current.getValue()) {
+				DEFAULT_ILLEGAL_TYPES[2 * i] = currentPlainTypeName;
+				DEFAULT_ILLEGAL_TYPES[2 * i + 1] = packagePrefix + currentPlainTypeName;
+				i++;
+			}
 		}
 	}
 
