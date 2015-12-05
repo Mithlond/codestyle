@@ -42,16 +42,19 @@ Hence the need to unpack the overlay archive when the server is shut down.
 Start the application server using the command `standalone.sh` or `standalone.bat` depending on your operating system.
 In the console log, you should see a log line about Wildfly picking up the something like
     
-    [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-2) WFLYJCA0001: Bound data source [java:jboss/datasources/MithlondDS]
-    [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-1) WFLYJCA0001: Bound data source [java:jboss/datasources/KeycloakDS]
+    [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-2) WFLYJCA0001: Bound data source [java:jboss/datasources/KeycloakDS]
+    [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-4) WFLYJCA0001: Bound data source [java:jboss/datasources/WildflyDS]
+    [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-6) WFLYJCA0001: Bound data source [java:jboss/datasources/MithlondDS]
 
-If you're runnig on Windows and get an error `Failed to start the http-interface service` it might be the management service using the same port as for example *NVIDIA Network Service*. If this happens you need to stop that service before starting wildfly, change the management port of wildfly or change the port of NVidia service.
+If you're running on Windows and get an error `Failed to start the http-interface service` it might be the management
+service using the same port as for example *NVIDIA Network Service*. If this happens you need to stop that service
+before starting wildfly, change the management port of wildfly or change the port of NVidia service.
 
 Open the management console on your local development machine, and navigate to the
-Datasources pane, which can be found on the URL `http://localhost:9990/console/App.html`.
-Click on the `Configuration` tab, and select `Subsystems | Datasources` to validate the 
-data sources `MithlondDS` and `KeycloakDS`. To access the management console in the development
-environment, use user name and password from the file ACCESS.txt.
+DataSources pane, which can be found on the URL `http://localhost:9990/console/App.html`.
+Click on the `Configuration` tab, and select `Subsystems | Datasources | NonXA` to validate the
+3 data sources `KeycloakDS`, `MithlondDS` and `WildflyDS`. To access the management console in
+the development environment, use user name and password from the file ACCESS.txt.
 
 <img src="../images/datasources_scaled.png" style="margin:10px;" altText="Wildfly Datasources"/>
 

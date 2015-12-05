@@ -26,7 +26,7 @@
             Dependency versions.
         -->
         <postgresql.version>9.4-1201-jdbc41</postgresql.version>
-        <keycloak.version>1.5.0.Final</keycloak.version>
+        <keycloak.version>1.7.0.Final</keycloak.version>
         <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
         <jipijapa.version>1.0.1.Final</jipijapa.version>
 
@@ -35,12 +35,6 @@
         -->
         <dir.wildfly.root>${project.build.directory}/wildflyRoot</dir.wildfly.root>
         <dir.webjars.unpacked>${project.build.directory}/downloaded/webjars</dir.webjars.unpacked>
-
-        <!--
-            Environment-defining properties, possibly overridden in Profiles.
-        -->
-        <environment.tokens>${basedir}/src/main/environments/development.properties</environment.tokens>
-        <environment>development</environment>
 
         <!--
             Build-controlling properties.
@@ -72,45 +66,6 @@
         <plugins>
 
             <!--
-                Configures the LessCSS plugin to compile all less files into CSS files
-                to be used as Keycloak theme stylesheets within the overlay.
-
-                Why:  Generates CSS files from LESS files.
-                Used: Standard lifecycle, mvn process-sources.
-            -->
-            <plugin>
-                <groupId>org.lesscss</groupId>
-                <artifactId>lesscss-maven-plugin</artifactId>
-                <version>1.7.0.1.1</version>
-                <configuration>
-                    <sourceDirectory>${project.basedir}/src/main/templates/standalone/configuration/themes</sourceDirectory>
-                    <outputDirectory>${dir.wildfly.root}/standalone/configuration/themes</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>compile_css_files</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <outputFileFormat>{fileName}.css</outputFileFormat>
-                            <compress>false</compress>
-                        </configuration>
-                    </execution>
-                    <!-- execution>
-                        <id>compile_minified_css_files</id>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <outputFileFormat>{fileName}.min.css</outputFileFormat>
-                            <compress>true</compress>
-                        </configuration>
-                    </execution -->
-                </executions>
-            </plugin>
-
-            <!--
                  Configures the resource plugin to copy and filter resources.
                  This substitutes ${variables} to their properties.
 
@@ -135,9 +90,6 @@
                                         <include>**/*.txt</include>
                                         <include>**/*.properties</include>
                                         <include>**/*.xml</include>
-                                        <include>**/*.json</include>
-                                        <include>**/*.png</include>
-                                        <include>**/*.jpg</include>
                                     </includes>
                                     <directory>${basedir}/src/main/templates</directory>
                                     <filtering>true</filtering>
@@ -207,71 +159,6 @@
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/wars</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-keycloak-server-module</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <excludes>standalone/configuration/keycloak-server.json</excludes>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.keycloak</groupId>
-                                    <artifactId>keycloak-server-overlay</artifactId>
-                                    <version>${keycloak.version}</version>
-                                    <type>zip</type>
-                                    <overWrite>false</overWrite>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${dir.wildfly.root}</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-keycloak-wf9-adapter-module</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <excludes>standalone/configuration/keycloak-server.json</excludes>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.keycloak</groupId>
-                                    <artifactId>keycloak-wf9-adapter-dist</artifactId>
-                                    <version>${keycloak.version}</version>
-                                    <type>zip</type>
-                                    <overWrite>true</overWrite>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${dir.wildfly.root}</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>include-bootstrap-datetime</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.webjars</groupId>
-                                    <artifactId>bootstrap-datepicker</artifactId>
-                                    <version>${bootstrap-datepicker.version}</version>
-                                    <overWrite>false</overWrite>
-                                    <includes>**/*.css,**/*.js</includes>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${dir.webjars.unpacked}</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
@@ -366,6 +253,25 @@
     <!-- | Section 5:  Profiles                           -->
     <!-- +=============================================== -->
     <profiles>
+
+        <!--
+            Profile for building the application server overlay for the development environment.
+            Requires no build parameters to building the overlay, and is therefor the default
+            build unless configured otherwise.
+        -->
+        <profile>
+            <id>development</id>
+            <activation>
+                <property>
+                    <name>!environment</name>
+                </property>
+            </activation>
+
+            <properties>
+                <environment.tokens>${basedir}/src/main/environments/development.properties</environment.tokens>
+                <environment>development</environment>
+            </properties>
+        </profile>
 
         <!--
             Profile for building the application server overlay for the staging environment.
