@@ -28,6 +28,7 @@
         <postgresql.version>9.4-1201-jdbc41</postgresql.version>
         <keycloak.version>1.5.0.Final</keycloak.version>
         <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
+        <jipijapa.version>1.0.1.Final</jipijapa.version>
 
         <!--
             Directory definitions.
@@ -174,6 +175,38 @@
                                     <destFileName>postgresql-${postgresql.version}.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-eclipselink-driver</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.eclipse.persistence</groupId>
+                                    <artifactId>eclipselink</artifactId>
+                                    <version>${eclipselink.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${dir.wildfly.root}/modules/org/eclipse/persistence/main</outputDirectory>
+                                    <destFileName>eclipselink-${eclipselink.version}.jar</destFileName>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.jipijapa</groupId>
+                                    <artifactId>jipijapa-eclipselink</artifactId>
+                                    <version>${jipijapa.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${dir.wildfly.root}/modules/org/eclipse/persistence/main</outputDirectory>
+                                    <destFileName>jipijapa-eclipselink-${jipijapa.version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/wars</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>

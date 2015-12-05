@@ -36,6 +36,7 @@
         <extension module="org.jboss.as.logging"/>
         <extension module="org.jboss.as.mail"/>
         <extension module="org.jboss.as.naming"/>
+        <extension module="org.jboss.as.messaging"/>
         <extension module="org.jboss.as.pojo"/>
         <extension module="org.jboss.as.remoting"/>
         <extension module="org.jboss.as.sar"/>
@@ -359,6 +360,99 @@
                 <local-cache name="timestamps"/>
             </cache-container>
         </subsystem>
+        <subsystem xmlns="urn:jboss:domain:messaging:3.0">
+            <!--
+                This should be a non-clustered, mainly IN-VM configuration for JMS on WildFly.
+                It should be suitable for ***non-clustered development environments***.
+            -->
+            <hornetq-server>
+                <persistence-enabled>true</persistence-enabled>
+                <journal-file-size>102400</journal-file-size>
+                <journal-min-files>2</journal-min-files>
+
+                <connectors>
+                    <http-connector name="http-connector" socket-binding="http">
+                        <param key="http-upgrade-endpoint" value="http-acceptor"/>
+                    </http-connector>
+                    <http-connector name="http-connector-throughput" socket-binding="http">
+                        <param key="http-upgrade-endpoint" value="http-acceptor-throughput"/>
+                        <param key="batch-delay" value="50"/>
+                    </http-connector>
+                    <in-vm-connector name="in-vm" server-id="0"/>
+                </connectors>
+
+                <acceptors>
+                    <http-acceptor http-listener="default" name="http-acceptor"/>
+                    <http-acceptor http-listener="default" name="http-acceptor-throughput">
+                        <param key="batch-delay" value="50"/>
+                        <param key="direct-deliver" value="false"/>
+                    </http-acceptor>
+                    <in-vm-acceptor name="in-vm" server-id="0"/>
+                </acceptors>
+
+                <security-settings>
+                    <security-setting match="#">
+                        <permission type="send" roles="guest"/>
+                        <permission type="consume" roles="guest"/>
+                        <permission type="createNonDurableQueue" roles="guest"/>
+                        <permission type="deleteNonDurableQueue" roles="guest"/>
+                    </security-setting>
+                </security-settings>
+
+                <address-settings>
+                    <address-setting match="#">
+                        <dead-letter-address>jms.queue.DLQ</dead-letter-address>
+                        <expiry-address>jms.queue.ExpiryQueue</expiry-address>
+                        <redelivery-delay>0</redelivery-delay>
+                        <max-size-bytes>10485760</max-size-bytes>
+                        <page-size-bytes>2097152</page-size-bytes>
+                        <address-full-policy>PAGE</address-full-policy>
+                        <message-counter-history-day-limit>10</message-counter-history-day-limit>
+                    </address-setting>
+                </address-settings>
+
+                <jms-connection-factories>
+                    <connection-factory name="InVmConnectionFactory">
+                        <connectors>
+                            <connector-ref connector-name="in-vm"/>
+                        </connectors>
+                        <entries>
+                            <entry name="java:/jms/invm/ConnectionFactory"/>
+                        </entries>
+                    </connection-factory>
+                    <connection-factory name="RemoteConnectionFactory">
+                        <connectors>
+                            <connector-ref connector-name="http-connector"/>
+                        </connectors>
+                        <entries>
+                            <entry name="java:/jms/exported/RemoteConnectionFactory"/>
+                        </entries>
+                    </connection-factory>
+                    <pooled-connection-factory name="hornetq-ra">
+                        <transaction mode="xa"/>
+                        <connectors>
+                            <connector-ref connector-name="in-vm"/>
+                        </connectors>
+                        <entries>
+                            <entry name="java:/JmsXA"/>
+                            <entry name="java:/jms/DefaultJMSConnectionFactory"/>
+                        </entries>
+                    </pooled-connection-factory>
+                </jms-connection-factories>
+
+                <jms-destinations>
+                    <jms-queue name="ExpiryQueue">
+                        <entry name="java:/jms/nazgul/ActivityEventQueue"/>
+                    </jms-queue>
+                    <jms-queue name="MemberDataUpdatedQueue">
+                        <entry name="java:/jms/nazgul/MemberDataUpdatedQueue"/>
+                    </jms-queue>
+                    <!-- jms-topic name="TopicExampleName">
+                        <entry name="java:/jms/some/topic"/>
+                    </jms-topic -->
+                </jms-destinations>
+            </hornetq-server>
+        </subsystem>
         <subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
         <subsystem xmlns="urn:jboss:domain:jca:3.0">
             <archive-validation enabled="true" fail-on-error="true" fail-on-warn="false"/>
@@ -395,6 +489,34 @@
             </mail-session>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
+            <bindings>
+                <!-- A primitive bound into the JNDI registry -->
+                <simple name="java:global/meaningOfLife" value="42" type="int"/>
+
+                <!--
+                    JNDI mappings, relating an external (portable) JNDI name to the internal (Wildfly-specific) lookup.
+
+                    Portable standard JNDI on the form              "java:global/[some path]".
+                    Internal lookup on the WildFly-accepted form    "java:/[some path]" or "java:jboss/[some path]"
+                 -->
+
+                <!--
+                    DataSource mappings.
+                -->
+                <lookup name="java:global/datasources/${mithlond.db.name}DS"
+                        lookup="${datasource.jndi.prefix}/${mithlond.db.name}DS"/>
+                <lookup name="java:global/datasources/${keycloak.db.name}DS"
+                        lookup="${datasource.jndi.prefix}/${keycloak.db.name}DS"/>
+
+                <!--
+                    JMS Destination mappings.
+                -->
+                <lookup name="java:global/jms/datapump/fetchdata" lookup="java:/jms/datapump/fetchdata"/>
+                <lookup name="java:global/jms/datapump/datastored" lookup="java:/jms/datapump/datastored"/>
+                <lookup name="java:global/jms/datapump/dataexchanges" lookup="java:/jms/datapump/dataexchanges"/>
+                <lookup name="java:global/jms/datapump/dataimport" lookup="java:/jms/datapump/dataimport"/>
+                <lookup name="java:global/jms/datapump/report" lookup="java:/jms/datapump/report"/>
+            </bindings>
             <remote-naming/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
