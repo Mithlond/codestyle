@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- +=============================================== -->
@@ -9,7 +10,7 @@
         <groupId>se.jguru.nazgul.tools.poms.external</groupId>
         <artifactId>nazgul-tools-external-reactor-parent</artifactId>
         <version>4.1.1</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
     <groupId>se.mithlond.codestyle</groupId>
@@ -43,7 +44,7 @@
         <!--
             Define the name and type of this reactor
         -->
-        <path.in.reactor />
+        <path.in.reactor/>
         <reactor.name>mithlond-codestyle</reactor.name>
         <organisation.name>Mithlond</organisation.name>
 
@@ -53,7 +54,8 @@
         <organisation.url.prefix>https://github.com/${organisation.name}</organisation.url.prefix>
         <git.url.prefix>scm:git:ssh://git@github.com/${organisation.name}</git.url.prefix>
         <site.url.prefix>http://mithlond.github.io</site.url.prefix>
-        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}</site.top.url>
+        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}
+        </site.top.url>
 
         <!--
             Define the URL prefixes for Site Deployment and DistributionManagement.
@@ -137,6 +139,23 @@
                 </plugin>
 
                 <!--
+                    Configures the Maven changes plugin to publish the site to a
+                    well-defined directory which includes its version.
+
+                    Why:  Publish maven site documentation on GitHub Pages.
+                    Used: Release lifecycle, site goal
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-publish-plugin</artifactId>
+                    <version>1.1</version>
+                    <configuration>
+                        <pubScmUrl>${scm.devConnection.url}</pubScmUrl>
+                        <scmBranch>gh-pages</scmBranch>
+                    </configuration>
+                </plugin>
+
+                <!--
                     Configures the site plugin. Its use is further documented in the site documentation itself.
 
                     Why:  Make compile and publish the site documentation.
@@ -157,7 +176,7 @@
                     </executions>
                     <configuration combine.self="override">
                         <topSiteURL>${site.top.url}</topSiteURL>
-                        <stagingSiteURL>${site.url.prefix}/${reactor.name}/${project.version}</stagingSiteURL>
+                        <stagingSiteURL>${project.url}</stagingSiteURL>
                         <stagingDirectory>${site.staging.localDirectory}</stagingDirectory>
                         <generateSitemap>true</generateSitemap>
                         <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
@@ -217,13 +236,28 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
+                <configuration combine.self="override">
+                    <topSiteURL>${site.top.url}</topSiteURL>
+                    <stagingSiteURL>${project.url}</stagingSiteURL>
+                    <stagingDirectory>${site.staging.localDirectory}</stagingDirectory>
+                    <generateSitemap>true</generateSitemap>
+                    <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+                    <outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
+                </configuration>
                 <executions>
                     <execution>
                         <id>attach-descriptor</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>attach-descriptor</goal>
                         </goals>
-                        <phase>package</phase>
+                    </execution>
+                    <execution>
+                        <id>default-site</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

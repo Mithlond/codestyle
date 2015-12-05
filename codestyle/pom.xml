@@ -168,6 +168,20 @@
         <pluginManagement>
             <plugins>
 
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${clean.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>default-clean</id>
+                            <phase>clean</phase>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
                 <!--
                     Configures the release plugin version.
                     Also ensures that the default release profile is not used.
@@ -331,7 +345,7 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
+                <configuration combine.self="override">
                     <topSiteURL>${site.top.url}</topSiteURL>
                     <stagingSiteURL>${project.url}</stagingSiteURL>
                     <stagingDirectory>${site.staging.localDirectory}</stagingDirectory>
@@ -450,6 +464,13 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.plugin.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>cobertura</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
             </plugin>
             <!--
                  Due to problems in the Maven 3 site plugin you must enter the configuration twice,
