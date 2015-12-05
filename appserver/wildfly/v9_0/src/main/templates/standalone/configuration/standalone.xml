@@ -235,7 +235,20 @@
                 To develop using exploded WARs, fix the path and uncomment the deployment scanner below.
              -->
             <!--
-                <deployment-scanner name="development-angularjs" path="/Users/lj/Development/Research/AngularJS/quickstart/target/exploded" scan-enabled="true" scan-interval="5000" auto-deploy-exploded="true" deployment-timeout="60"/>
+            <deployment-scanner
+                    name="mithlond_website"
+                    path="/Users/lj/Development/Projects/Mithlond/mithlond-web/target/exploded"
+                    scan-enabled="true"
+                    scan-interval="5000"
+                    auto-deploy-exploded="true"
+                    deployment-timeout="60"/>
+            <deployment-scanner
+                    name="mithlond_services"
+                    path="/Users/lj/Development/Projects/Mithlond/mithlond-services/backend/backend-war/target/exploded"
+                    scan-enabled="true"
+                    scan-interval="5000"
+                    auto-deploy-exploded="true"
+                    deployment-timeout="60"/>
             -->
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee:3.0">
@@ -363,7 +376,8 @@
         <subsystem xmlns="urn:jboss:domain:messaging:3.0">
             <!--
                 This should be a non-clustered, mainly IN-VM configuration for JMS on WildFly.
-                It should be suitable for ***non-clustered development environments***.
+
+                Suitable for: Non-clustered, development environments.
             -->
             <hornetq-server>
                 <persistence-enabled>true</persistence-enabled>
@@ -440,16 +454,19 @@
                     </pooled-connection-factory>
                 </jms-connection-factories>
 
+                <!--
+                    Managed destinations, created by the application server at startup.
+                -->
                 <jms-destinations>
-                    <jms-queue name="ExpiryQueue">
-                        <entry name="java:/jms/nazgul/ActivityEventQueue"/>
-                    </jms-queue>
-                    <jms-queue name="MemberDataUpdatedQueue">
-                        <entry name="java:/jms/nazgul/MemberDataUpdatedQueue"/>
-                    </jms-queue>
-                    <!-- jms-topic name="TopicExampleName">
-                        <entry name="java:/jms/some/topic"/>
-                    </jms-topic -->
+                    <jms-topic name="ActivityEventTopic">
+                        <entry name="java:/jms/nazgul/ActivityEventTopic"/>
+                    </jms-topic>
+                    <jms-topic name="MemberDataUpdatedTopic">
+                        <entry name="java:/jms/nazgul/MemberDataUpdatedTopic"/>
+                    </jms-topic>
+                    <!-- jms-queue name="QueueExampleName">
+                        <entry name="java:/jms/some/queue"/>
+                    </jms-queue -->
                 </jms-destinations>
             </hornetq-server>
         </subsystem>
@@ -511,11 +528,21 @@
                 <!--
                     JMS Destination mappings.
                 -->
-                <lookup name="java:global/jms/datapump/fetchdata" lookup="java:/jms/datapump/fetchdata"/>
-                <lookup name="java:global/jms/datapump/datastored" lookup="java:/jms/datapump/datastored"/>
-                <lookup name="java:global/jms/datapump/dataexchanges" lookup="java:/jms/datapump/dataexchanges"/>
-                <lookup name="java:global/jms/datapump/dataimport" lookup="java:/jms/datapump/dataimport"/>
-                <lookup name="java:global/jms/datapump/report" lookup="java:/jms/datapump/report"/>
+                <lookup name="java:global/jms/nazgul/ActivityEventTopic"
+                        lookup="java:/jms/nazgul/ActivityEventTopic"/>
+                <lookup name="java:global/jms/nazgul/MemberDataUpdatedTopic"
+                        lookup="java:/jms/nazgul/MemberDataUpdatedTopic"/>
+
+                <!--
+                    JMS ConnectionFactory mappings.
+
+                    Note: The DefaultJMSConnectionFactory is Pooled, and should route its connections
+                          through the IN-VM connector. This implies a local-only messaging system (i.e.
+                          non-clustered and non-redundant), suitable for development and standalone test
+                          only.
+                -->
+                <lookup name="java:global/jms/ConnectionFactory"
+                        lookup="java:/jms/DefaultJMSConnectionFactory"/>
             </bindings>
             <remote-naming/>
         </subsystem>
