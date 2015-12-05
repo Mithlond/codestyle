@@ -19,6 +19,30 @@
     <packaging>pom</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
 
+    <!--
+        Add the repository where the JipiJapa dependency is published.
+        This is only done to please TravisCI, as I cannot find any means
+        to add repositories to the build within the yml file.
+    -->
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <id>jboss3rdPartyReleases</id>
+            <name>JBoss 3rd Party Releases Repo</name>
+            <url>http://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
     <properties>
         <path.in.reactor>appserver/wildfly/v9_0</path.in.reactor>
 
@@ -26,7 +50,6 @@
             Dependency versions.
         -->
         <postgresql.version>9.4-1201-jdbc41</postgresql.version>
-        <keycloak.version>1.7.0.Final</keycloak.version>
         <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
         <jipijapa.version>1.0.1.Final</jipijapa.version>
 
@@ -52,11 +75,19 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
-        <!-- dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap-datepicker</artifactId>
-            <version>1.4.0</version>
-        </dependency -->
+        <!--
+            Note!
+
+            JipiJapa is not published in the Maven Central Repo, repo1.
+            Instead, one has to add the JBoss 3rd party releases repository to the build
+
+            http://repository.jboss.org/nexus/content/repositories/thirdparty-releases.
+        -->
+        <dependency>
+            <groupId>org.jipijapa</groupId>
+            <artifactId>jipijapa-eclipselink</artifactId>
+            <version>${jipijapa.version}</version>
+        </dependency>
     </dependencies>
 
     <!-- +=============================================== -->

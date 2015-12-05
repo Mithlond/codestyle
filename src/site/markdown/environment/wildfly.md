@@ -37,6 +37,18 @@ Since Wildfly application server re-writes its configuration data when the serve
 overwrite any configuration written to any of its configuration files when the server is running. 
 Hence the need to unpack the overlay archive when the server is shut down.
 
+> **NOTE!**
+>
+> The overlay requires the JipiJapa integration library for EclipseLink.
+> This dependency is not published in the global Maven repository, but instead in
+> JBoss 3rd Party releases repository. This means that you must add this repo
+> to your list of standard repositories within your maven settings.xml file.
+>
+> If you use a local repo cache, such as Archiva, JFrog or Nexus you should instead
+> add the extra repository to your repo cache. The repo URL is:
+>
+> http://repository.jboss.org/nexus/content/repositories/thirdparty-releases.
+
 ### 4. Launch the server; verify Datasources "MithlondDS" and "KeycloakDS"
 
 Start the application server using the command `standalone.sh` or `standalone.bat` depending on your operating system.
