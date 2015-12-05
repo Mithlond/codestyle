@@ -83,7 +83,9 @@
                 <json-formatter name="json-formatter"/>
             </formatters>
             <handlers>
-                <file-handler name="file" formatter="json-formatter" relative-to="jboss.server.data.dir"
+                <file-handler name="file"
+                              formatter="json-formatter"
+                              relative-to="jboss.server.data.dir"
                               path="audit-log.log"/>
             </handlers>
             <logger log-boot="true" log-read-only="false" enabled="false">
@@ -93,7 +95,8 @@
             </logger>
         </audit-log>
         <management-interfaces>
-            <http-interface security-realm="ManagementRealm" http-upgrade-enabled="true">
+            <http-interface security-realm="ManagementRealm"
+                            http-upgrade-enabled="true">
                 <socket-binding http="management-http"/>
             </http-interface>
         </management-interfaces>
@@ -167,7 +170,7 @@
         <subsystem xmlns="urn:jboss:domain:bean-validation:1.0"/>
         <subsystem xmlns="urn:jboss:domain:datasources:3.0">
             <datasources>
-                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true"
+                <!-- datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true"
                             use-java-context="true">
                     <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
                     <driver>h2</driver>
@@ -175,7 +178,7 @@
                         <user-name>sa</user-name>
                         <password>sa</password>
                     </security>
-                </datasource>
+                </datasource -->
                 <datasource jta="true"
                             jndi-name="${datasource.jndi.prefix}/${mithlond.db.name}DS"
                             pool-name="${mithlond.datasource.pool.name}"
@@ -218,10 +221,32 @@
                         <share-prepared-statements>true</share-prepared-statements>
                     </statement>
                 </datasource>
+                <datasource jta="true"
+                            jndi-name="${datasource.jndi.prefix}/${wildfly.db.name}DS"
+                            pool-name="${wildfly.datasource.pool.name}"
+                            enabled="true"
+                            use-ccm="false">
+                    <connection-url>${wildfly.datasource.connection.url}</connection-url>
+                    <driver-class>${wildfly.datasource.driver.class}</driver-class>
+                    <driver>${wildfly.datasource.driver.id}</driver>
+                    <transaction-isolation>TRANSACTION_REPEATABLE_READ</transaction-isolation>
+                    <security>
+                        <user-name>${wildfly.db.user.name}</user-name>
+                        <password>${wildfly.db.user.password}</password>
+                    </security>
+                    <validation>
+                        <validate-on-match>false</validate-on-match>
+                        <background-validation>false</background-validation>
+                    </validation>
+                    <statement>
+                        <prepared-statement-cache-size>4</prepared-statement-cache-size>
+                        <share-prepared-statements>true</share-prepared-statements>
+                    </statement>
+                </datasource>
                 <drivers>
-                    <driver name="h2" module="com.h2database.h2">
+                    <!-- driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
-                    </driver>
+                    </driver -->
                     <driver name="${postgresql.datasource.driver.id}" module="${postgresql.datasource.driver.module}">
                         <xa-datasource-class>${postgresql.datasource.driver.xa.class}</xa-datasource-class>
                     </driver>
@@ -275,7 +300,7 @@
                 </managed-scheduled-executor-services>
             </concurrent>
             <default-bindings context-service="java:jboss/ee/concurrency/context/default"
-                              datasource="java:jboss/datasources/ExampleDS"
+                              datasource="java:jboss/datasources/${wildfly.db.name}DS"
                               managed-executor-service="java:jboss/ee/concurrency/executor/default"
                               managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default"
                               managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>

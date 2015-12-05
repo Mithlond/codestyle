@@ -47,6 +47,11 @@ the superuser `postgresql`. When logged in as the superuser, create the required
 users `mithlonduser` and `keycloakuser` by firing the following SQL:
 
     begin;
+
+    CREATE ROLE "wildflyuser" LOGIN
+        ENCRYPTED PASSWORD 'md585a23914551c4146ea6469ef2be1e5a3'
+        NOSUPERUSER INHERIT CREATEDB NOCREATEROLE NOREPLICATION;
+    COMMENT ON ROLE "wildflyuser" IS 'WildFly Appserver DB Pool User';
     
     CREATE ROLE "mithlonduser" LOGIN
         ENCRYPTED PASSWORD 'md5dc095cc48f407588977c1ae83694342c'
@@ -75,13 +80,18 @@ Their respective purpose and access credentials are as follows:
         <td>DB role for accessing application data.</td>
     </tr>
     <tr>
+        <td>wildflyuser</td>
+        <td>MuscaCacavit</td>
+        <td>DB role for application server default storage.</td>
+    </tr>
+    <tr>
         <td>keycloakuser</td>
         <td>SliceMeNice</td>
         <td>DB role for accessing keycloak data.</td>
     </tr>    
 </table>       
 
-### 4. As "postgres" user, create the databases "MithlondDB" and "KeyloakDB"
+### 4. As "postgres" user, create the databases "MithlondDB", "WildflyDB" and "KeyloakDB"
 
 While still being logged in to the PostgreSQL database as the "postgres" user, create the 
 service databases for the mithlond and keycloak services using the following commands in order:
@@ -95,7 +105,17 @@ service databases for the mithlond and keycloak services using the following com
                CONNECTION LIMIT = -1;
     
     COMMENT ON DATABASE "MithlondDB" IS 'Mithlond Pool DB';
-    
+
+    CREATE DATABASE "WildflyDB"
+          WITH OWNER "wildflyuser"
+               ENCODING = 'UTF8'
+               TABLESPACE = pg_default
+               LC_COLLATE = 'sv_SE.UTF-8'
+               LC_CTYPE = 'sv_SE.UTF-8'
+               CONNECTION LIMIT = -1;
+
+    COMMENT ON DATABASE "WildflyDB" IS 'Wildfly Appserver Default DB';
+
     CREATE DATABASE "KeycloakDB"
               WITH OWNER = keycloakuser
                    ENCODING = 'UTF8'
@@ -103,7 +123,7 @@ service databases for the mithlond and keycloak services using the following com
                    LC_COLLATE = 'sv_SE.UTF-8'
                    LC_CTYPE = 'sv_SE.UTF-8'
                    CONNECTION LIMIT = -1;
-        
+
     COMMENT ON DATABASE "KeycloakDB" IS 'Keycloak Pool DB';
 
 Use the PgAdmin III tool to verify that the databases are created:

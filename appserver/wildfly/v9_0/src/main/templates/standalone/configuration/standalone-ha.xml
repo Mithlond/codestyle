@@ -164,7 +164,7 @@
         <subsystem xmlns="urn:jboss:domain:bean-validation:1.0"/>
         <subsystem xmlns="urn:jboss:domain:datasources:3.0">
             <datasources>
-                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true"
+                <!-- datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true"
                             use-java-context="true">
                     <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
                     <driver>h2</driver>
@@ -172,7 +172,7 @@
                         <user-name>sa</user-name>
                         <password>sa</password>
                     </security>
-                </datasource>
+                </datasource -->
                 <datasource jta="true"
                             jndi-name="${datasource.jndi.prefix}/${mithlond.db.name}DS"
                             pool-name="${mithlond.datasource.pool.name}"
@@ -217,10 +217,32 @@
                         <share-prepared-statements>true</share-prepared-statements>
                     </statement>
                 </datasource>
+                <datasource jta="true"
+                            jndi-name="${datasource.jndi.prefix}/${wildfly.db.name}DS"
+                            pool-name="${wildfly.datasource.pool.name}"
+                            enabled="true"
+                            use-ccm="false">
+                    <connection-url>${wildfly.datasource.connection.url}</connection-url>
+                    <driver-class>${wildfly.datasource.driver.class}</driver-class>
+                    <driver>${wildfly.datasource.driver.id}</driver>
+                    <transaction-isolation>TRANSACTION_REPEATABLE_READ</transaction-isolation>
+                    <security>
+                        <user-name>${wildfly.db.user.name}</user-name>
+                        <password>${wildfly.db.user.password}</password>
+                    </security>
+                    <validation>
+                        <validate-on-match>false</validate-on-match>
+                        <background-validation>false</background-validation>
+                    </validation>
+                    <statement>
+                        <prepared-statement-cache-size>4</prepared-statement-cache-size>
+                        <share-prepared-statements>true</share-prepared-statements>
+                    </statement>
+                </datasource>
                 <drivers>
-                    <driver name="h2" module="com.h2database.h2">
+                    <!-- driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
-                    </driver>
+                    </driver -->
                     <driver name="${postgresql.datasource.driver.id}" module="${postgresql.datasource.driver.module}">
                         <xa-datasource-class>${postgresql.datasource.driver.xa.class}</xa-datasource-class>
                     </driver>
@@ -277,7 +299,7 @@
                 </managed-scheduled-executor-services>
             </concurrent>
             <default-bindings context-service="java:jboss/ee/concurrency/context/default"
-                              datasource="java:jboss/datasources/ExampleDS"
+                              datasource="java:jboss/datasources/${wildfly.db.name}DS"
                               managed-executor-service="java:jboss/ee/concurrency/executor/default"
                               managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default"
                               managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
@@ -387,8 +409,26 @@
                 -->
                 <cluster-password>${jboss.messaging.cluster.password:Gnarp!!!}</cluster-password>
                 <persistence-enabled>true</persistence-enabled>
+                <shared-store>true</shared-store>
                 <journal-file-size>102400</journal-file-size>
                 <journal-min-files>2</journal-min-files>
+
+                <!--
+                    Whether on startup to perform a diagnostic test on how fast your disk can sync.
+                    Useful when determining performance issues.
+                -->
+                <run-sync-speed-test>true</run-sync-speed-test>
+
+                <!--
+                    For Linux environments, the journal is written using the LibAIO
+                    mechanics, if present. (Otherwise, silent fallback to NIO).
+
+                    Install the LibAIO for Linux (kernel 2.6+ required) using the equivalent of
+
+                    Debian/Ubuntu:  apt-get install libaio1
+                -->
+                <journal-type>ASYNCIO</journal-type>
+                <journal-max-io>500</journal-max-io>
 
                 <connectors>
                     <http-connector name="http-connector" socket-binding="http">
@@ -409,6 +449,29 @@
                     </http-acceptor>
                     <in-vm-acceptor name="in-vm" server-id="0"/>
                 </acceptors>
+
+                <broadcast-groups>
+                    <broadcast-group name="jms-ha-broadcast-group">
+                        <jgroups-stack>udp</jgroups-stack>
+                        <jgroups-channel>hq-cluster</jgroups-channel>
+                        <connector-ref>http-connector</connector-ref>
+                    </broadcast-group>
+                </broadcast-groups>
+
+                <discovery-groups>
+                    <discovery-group name="jms-ha-discovery-group">
+                        <jgroups-stack>udp</jgroups-stack>
+                        <jgroups-channel>hq-cluster</jgroups-channel>
+                    </discovery-group>
+                </discovery-groups>
+
+                <cluster-connections>
+                    <cluster-connection name="jms-ha-cluster">
+                        <address>jms</address>
+                        <connector-ref>http-connector</connector-ref>
+                        <discovery-group-ref discovery-group-name="jms-ha-discovery-group"/>
+                    </cluster-connection>
+                </cluster-connections>
 
                 <security-settings>
                     <security-setting match="#">
