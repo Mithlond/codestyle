@@ -1,0 +1,9 @@
+##############
+#
+# KeyCloak backup properties.
+#
+##############
+export KEYCLOAK_EXPORT_FILENAME="keycloak_db_`date \"+%Y%m%d_%H:%M\"`.json"
+
+# ... and then extend the SERVER_OPTS setting.
+SERVER_OPTS="-Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/Users/lj/AppServers/KeyCloak/${KEYCLOAK_EXPORT_FILENAME}"
