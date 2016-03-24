@@ -20,17 +20,6 @@
 
 <module xmlns="urn:jboss:module:1.1" name="org.eclipse.persistence">
     <resources>
-        <!--
-            The JipiJapa dependency is not published on repo1, but instead
-            on the JBoss 3rd party releases repository. Add it to your
-            settings.xml or pom.xml as follows:
-
-              <repository>
-                <id>jboss-3rd-party-releases</id>
-                <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
-               </repository>
-        -->
-        <resource-root path="jipijapa-eclipselink-${jipijapa.version}.jar"/>
         <resource-root path="eclipselink-${eclipselink.version}.jar">
             <filter>
                 <exclude path="javax/**" />
@@ -51,6 +40,8 @@
         <module name="org.antlr"/>
         <module name="org.apache.commons.collections"/>
         <module name="org.dom4j"/>
+        <!-- Use the bundled JipiJapa-Eclipselink module -->
+        <module name="org.eclipse.persistence"/>
         <module name="org.javassist"/>
         <module name="org.jboss.as.jpa.spi"/>
         <module name="org.jboss.logging"/>

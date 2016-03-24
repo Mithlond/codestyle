@@ -123,7 +123,7 @@
             <properties>
                 <jpa.provider.class>org.eclipse.persistence.jpa.PersistenceProvider</jpa.provider.class>
                 <surefire.argLine>-javaagent:${basedir}/target/eclipselink.jar -Dfile.encoding=UTF-8 -Xmx1024m -XX:MaxPermSize=512m</surefire.argLine>
-                <eclipselink.version>2.6.0</eclipselink.version>
+                <eclipselink.version>2.6.2</eclipselink.version>
             </properties>
 
             <dependencyManagement>
@@ -131,7 +131,7 @@
                     <dependency>
                         <groupId>org.eclipse.persistence</groupId>
                         <artifactId>javax.persistence</artifactId>
-                        <version>2.1.0</version>
+                        <version>2.1.1</version>
                         <scope>provided</scope>
                     </dependency>
                     <dependency>
