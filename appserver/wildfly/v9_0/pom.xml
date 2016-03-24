@@ -64,6 +64,7 @@
         -->
         <breakOnFailure.enforcer>false</breakOnFailure.enforcer>
         <cobertura.haltOnFailure>false</cobertura.haltOnFailure>
+        <jee.container>wildfly9</jee.container>
     </properties>
 
     <!-- +=============================================== -->
