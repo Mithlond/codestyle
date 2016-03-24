@@ -186,27 +186,6 @@
                     </statement>
                 </datasource>
                 <datasource jta="true"
-                            jndi-name="${datasource.jndi.prefix}/${keycloak.db.name}DS"
-                            pool-name="${keycloak.datasource.pool.name}"
-                            use-ccm="false">
-                    <connection-url>${keycloak.datasource.connection.url}</connection-url>
-                    <driver-class>${keycloak.datasource.driver.class}</driver-class>
-                    <driver>${keycloak.datasource.driver.id}</driver>
-                    <transaction-isolation>TRANSACTION_REPEATABLE_READ</transaction-isolation>
-                    <security>
-                        <user-name>${keycloak.db.user.name}</user-name>
-                        <password>${keycloak.db.user.password}</password>
-                    </security>
-                    <validation>
-                        <validate-on-match>false</validate-on-match>
-                        <background-validation>false</background-validation>
-                    </validation>
-                    <statement>
-                        <prepared-statement-cache-size>4</prepared-statement-cache-size>
-                        <share-prepared-statements>true</share-prepared-statements>
-                    </statement>
-                </datasource>
-                <datasource jta="true"
                             jndi-name="${datasource.jndi.prefix}/${wildfly.db.name}DS"
                             pool-name="${wildfly.datasource.pool.name}"
                             enabled="true"
@@ -487,8 +466,6 @@
                 -->
                 <lookup name="java:global/datasources/${services.db.name}DS"
                         lookup="${datasource.jndi.prefix}/${services.db.name}DS"/>
-                <lookup name="java:global/datasources/${keycloak.db.name}DS"
-                        lookup="${datasource.jndi.prefix}/${keycloak.db.name}DS"/>
 
                 <!--
                     JMS Destination mappings.
