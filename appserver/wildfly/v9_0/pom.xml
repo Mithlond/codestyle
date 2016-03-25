@@ -8,7 +8,7 @@
     <parent>
         <groupId>se.mithlond.codestyle.poms</groupId>
         <artifactId>mithlond-codestyle-war-parent</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.1-SNAPSHOT</version>
         <relativePath>../../../poms/mithlond-codestyle-war-parent</relativePath>
     </parent>
 
@@ -278,7 +278,7 @@
         <connection>${scm.connection.url}</connection>
         <developerConnection>${scm.devConnection.url}</developerConnection>
         <url>${scm.url}</url>
-        <tag>mithlond-codestyle-1.4.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <!-- +=============================================== -->
