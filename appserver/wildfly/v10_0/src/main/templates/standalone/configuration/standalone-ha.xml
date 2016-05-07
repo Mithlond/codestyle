@@ -493,6 +493,8 @@
                 -->
                 <lookup name="java:global/datasources/${services.db.name}DS"
                         lookup="${datasource.jndi.prefix}/${services.db.name}DS"/>
+                <lookup name="java:global/datasources/${wildfly.db.name}DS"
+                        lookup="${datasource.jndi.prefix}/${wildfly.db.name}DS"/>
 
                 <!--
                     JMS Destination mappings.
