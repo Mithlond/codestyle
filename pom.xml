@@ -53,8 +53,7 @@
         <organisation.url.prefix>https://github.com/${organisation.name}</organisation.url.prefix>
         <git.url.prefix>scm:git:ssh://git@github.com/${organisation.name}</git.url.prefix>
         <site.url.prefix>http://mithlond.github.io</site.url.prefix>
-        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}
-        </site.top.url>
+        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}</site.top.url>
 
         <!--
             Define the URL prefixes for Site Deployment and DistributionManagement.

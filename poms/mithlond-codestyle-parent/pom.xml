@@ -78,15 +78,14 @@
         <checkstyle.suppressions.location>codestyle/mithlond-checkstyle-suppressions.xml</checkstyle.suppressions.location>
 
         <!-- Version constants -->
-        <jdk.version>1.8</jdk.version>
-        <nazgul-core.version>1.8.1</nazgul-core.version>
+        <nazgul-core.version>1.9.0</nazgul-core.version>
         <logback.version>1.1.7</logback.version>
         <aspectj-maven-plugin.version>1.8</aspectj-maven-plugin.version>
         <aspectj.runtime.version>1.8.9</aspectj.runtime.version>
         <findbugs.plugin.version>3.0.0</findbugs.plugin.version>
         <cobertura.plugin.version>2.7</cobertura.plugin.version>
         <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
-        <checkstyle.version>6.17</checkstyle.version>
+        <checkstyle.version>7.0</checkstyle.version>
         <pmd.plugin.version>3.6</pmd.plugin.version>
         <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
         <eclipselink.version>2.6.1</eclipselink.version>
@@ -1014,7 +1013,7 @@
                 <datasource.prefix>java:jboss/</datasource.prefix>
 
                 <!-- Version and import-scope properties -->
-                <version.jboss.bom>10.0.0.Final</version.jboss.bom>
+                <version.jboss.bom>10.0.1.Final</version.jboss.bom>
                 <version.jboss.as>10.0.0.Final</version.jboss.as>
                 <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
                 <version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
@@ -1134,7 +1133,7 @@
                 <datasource.prefix>java:jboss/</datasource.prefix>
 
                 <!-- Version and import-scope properties -->
-                <version.jboss.bom>9.0.0.Final</version.jboss.bom>
+                <version.jboss.bom>9.0.2.Final</version.jboss.bom>
                 <version.jboss.as>9.0.0.Final</version.jboss.as>
                 <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
                 <version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
