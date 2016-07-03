@@ -75,7 +75,7 @@ such as `3.3.3`:
 ```
 mvn -N io.takari:maven:wrapper -Dmaven=${MAVEN_VERSION}
 
-./mvnw --show-version --errors --batch-mode validte dependency:go-offline
+./mvnw --show-version --errors --batch-mode validate dependency:go-offline
 
 ./mvnw --show-version --errors --batch-mode clean verify site
 ```
