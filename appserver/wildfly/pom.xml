@@ -8,7 +8,7 @@
     <parent>
         <groupId>se.mithlond.codestyle.appserver</groupId>
         <artifactId>mithlond-codestyle-appserver-reactor</artifactId>
-        <version>1.6.0</version>
+        <version>1.6.0-SNAPSHOT</version>
     </parent>
 
     <groupId>se.mithlond.codestyle.appserver.wildfly</groupId>
