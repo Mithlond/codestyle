@@ -26,7 +26,6 @@
     <!-- | Section 2:  Module definitions                 -->
     <!-- +=============================================== -->
     <modules>
-        <module>v9_0</module>
         <module>v10_0</module>
     </modules>
 

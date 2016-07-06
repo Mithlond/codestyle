@@ -1,9 +1,18 @@
 # Wildfly 10 AppServer overlay Assembly
 
-Getting the basic infrastructure ready for running on an application server
-can be a daunting task in itself. The overlay archives produced here are meant
-to be unpacked in (the root of) a vanilla application server installation to
-create a fully set-up application server in a matter of seconds.
+Getting the basic infrastructure ready for running on an application server can be a daunting task.
+This project builds a custom/convenient distribution on top of the WildFly 10 application server,
+adding 4 things to it:
+
+1. A suite of standard users, implying that the custom distribution application server can be launched
+   immediately upon unpacking (provided that a PostgreSQL database is installed on the server; see below).
+1. A PostgreSQL module (containing the JDBC driver for PostgreSQL databases)is installed into the
+   application server. This enables creating connection pools to postgres databases, and the application
+   server configuration file also contains a PostgreSQL Database pool definition.
+2. An EclipseLink module is installed into the application server. This enables the use of EclipseLink instead
+   of Hibernate as a JPA provider, and also the use of MOXy as a JAXB provider instead of Jackson.
+3. A Keycloak Adapter for Wildfly 10 is installed as an Add-On in the application server. This enables installed
+   WARs to use [Keycloak](http://www.keycloak.org/index.html) as an identity manager or identity broker.
 
 ## Build the Wildfly configuration overlay
 
@@ -35,3 +44,7 @@ the content of the file is simply `layers=nazgul`. The structure within the file
 the image below:
 
 <img src="./images/nazgul_layer.png" style="margin:10px; border: solid DarkGray 1px;" altText="Overlay Structure"/>
+
+### WildFly modules in separate layer: Keycloak
+
+The Keycloak adapter is installed into its own add-on space, named `keycloak`.

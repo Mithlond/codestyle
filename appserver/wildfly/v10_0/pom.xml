@@ -15,20 +15,19 @@
     <groupId>se.mithlond.codestyle.appserver.wildfly.v10_0</groupId>
     <artifactId>mithlond-codestyle-appserver-wildfly-v10_0-assembly</artifactId>
     <name>${project.artifactId}</name>
-    <description>Mithlond Codestyle: Wildfly 10 Appserver Assembly.</description>
+    <description>Mithlond Codestyle: Wildfly 10 Appserver Assembly</description>
     <packaging>pom</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
 
     <properties>
         <path.in.reactor>appserver/wildfly/v10_0</path.in.reactor>
 
-
-
         <!--
             Dependency versions.
         -->
         <postgresql.version>9.4.1208</postgresql.version>
         <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
+        <keycloak.version>2.0.0.Final</keycloak.version>
 
         <!--
             Directory definitions.
@@ -155,6 +154,28 @@
                                 </artifactItem -->
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/wars</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-keycloak-adapter</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>bin/adapter-install*</excludes>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.keycloak</groupId>
+                                    <artifactId>keycloak-wildfly-adapter-dist</artifactId>
+                                    <version>${keycloak.version}</version>
+                                    <type>zip</type>
+                                    <overWrite>false</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${dir.wildfly.root}</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                         </configuration>
