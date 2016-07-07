@@ -16,7 +16,7 @@
 
     <groupId>se.mithlond.codestyle.codestyle</groupId>
     <artifactId>mithlond-codestyle</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.1-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
