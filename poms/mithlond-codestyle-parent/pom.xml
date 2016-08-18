@@ -8,7 +8,7 @@
     <parent>
         <groupId>se.jguru.nazgul.core.poms.core-parent</groupId>
         <artifactId>nazgul-core-parent</artifactId>
-        <version>1.9.0</version>
+        <version>2.1.0</version>
         <relativePath />
     </parent>
 
@@ -78,17 +78,16 @@
         <checkstyle.suppressions.location>codestyle/mithlond-checkstyle-suppressions.xml</checkstyle.suppressions.location>
 
         <!-- Version constants -->
-        <nazgul-core.version>1.9.0</nazgul-core.version>
+        <nazgul-core.version>2.1.0</nazgul-core.version>
         <logback.version>1.1.7</logback.version>
         <aspectj-maven-plugin.version>1.8</aspectj-maven-plugin.version>
         <aspectj.runtime.version>1.8.9</aspectj.runtime.version>
         <findbugs.plugin.version>3.0.0</findbugs.plugin.version>
         <cobertura.plugin.version>2.7</cobertura.plugin.version>
-        <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
         <checkstyle.version>7.0</checkstyle.version>
         <pmd.plugin.version>3.6</pmd.plugin.version>
         <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
-        <eclipselink.version>2.6.1</eclipselink.version>
+        <eclipselink.version>2.6.3</eclipselink.version>
 
         <!-- Build time constants -->
         <timestamp>${maven.build.timestamp}</timestamp>
@@ -131,11 +130,31 @@
                 <groupId>se.jguru.nazgul.core.persistence.api</groupId>
                 <artifactId>nazgul-core-persistence-api</artifactId>
                 <version>${nazgul-core.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.ejb</groupId>
+                        <artifactId>javax.ejb-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>se.jguru.nazgul.core.xmlbinding.spi.jaxb</groupId>
                 <artifactId>nazgul-core-xmlbinding-spi-jaxb</artifactId>
                 <version>${nazgul-core.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.glassfish.jaxb</groupId>
+                        <artifactId>jaxb-runtime</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>se.jguru.nazgul.test.xmlbinding</groupId>
@@ -238,33 +257,27 @@
         <pluginManagement>
             <plugins>
                 <!--
-                    Configures the checkstyle plugin version.
-                    Also ensures that the default release profile is not used.
-                    (The mithlond-release profile should be used instead).
+                    Enforces the defined code style, as provided within the codestyle project.
 
-                    Why:  Release artifacts
-                    Used: Normal lifecycle, release goal
+                    Why:  Validates the codestyle.
+                    Used: Standard lifecycle, mvn package.
                 -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${checkstyle.plugin.version}</version>
+                    <groupId>se.jguru.nazgul.tools.plugin.checkstyle</groupId>
+                    <artifactId>nazgul-tools-checkstyle-maven-plugin</artifactId>
+                    <version>6.0.2</version>
                     <configuration>
-                        <includeResources>true</includeResources>
-                        <includeTestResources>true</includeTestResources>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                        <configLocation>${checkstyle.config.location}</configLocation>
-                        <consoleOutput>true</consoleOutput>
-                        <suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
                         <skip>${skip.verify.code}</skip>
+                        <configLocation>${checkstyle.config.location}</configLocation>
+                        <excludes>${checkstyle.excludes}</excludes>
+                        <suppressionsFile>${checkstyle.suppressions.location}</suppressionsFile>
                         <failOnViolation>${breakOnFailure.checkstyle}</failOnViolation>
                         <violationSeverity>${checkstyle.violationSeverity}</violationSeverity>
-                        <linkXRef>false</linkXRef>
                     </configuration>
                     <executions>
                         <execution>
                             <id>verify</id>
-                            <phase>package</phase>
+                            <phase>${check.plugins.phase}</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>
@@ -278,15 +291,25 @@
                     </executions>
                     <dependencies>
                         <dependency>
-                            <groupId>com.puppycrawl.tools</groupId>
-                            <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
-                        </dependency>
-                        <dependency>
                             <groupId>se.mithlond.codestyle.codestyle</groupId>
                             <artifactId>mithlond-codestyle</artifactId>
                             <version>1.6.1-SNAPSHOT</version>
                         </dependency>
+
+                        <!--
+                            Workaround https://github.com/jcgay/maven-color/issues/8
+                            i.e. Maven 2 to 3 incompatibilities.
+                         -->
+                        <!-- dependency>
+                            <groupId>org.slf4j</groupId>
+                            <artifactId>jcl-over-slf4j</artifactId>
+                            <version>${slf4j.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.slf4j</groupId>
+                            <artifactId>slf4j-jdk14</artifactId>
+                            <version>${slf4j.version}</version>
+                        </dependency -->
                     </dependencies>
                 </plugin>
 
@@ -915,34 +938,6 @@
                         <reports>
                             <report>report</report>
                         </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-
-            <!--
-                 Due to problems in the Maven 3 site plugin you must enter the configuration twice,
-                 once for the pluginManagement section and once for the site, see
-                 http://jira.codehaus.org/browse/MSITE-516 and http://jira.codehaus.org/browse/MSITE-523
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${checkstyle.plugin.version}</version>
-                <configuration>
-                    <includeResources>true</includeResources>
-                    <includeTestResources>true</includeTestResources>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <configLocation>${checkstyle.config.location}</configLocation>
-                    <consoleOutput>true</consoleOutput>
-                    <suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
-                    <skip>${skip.verify.code}</skip>
-                    <failOnViolation>${breakOnFailure.checkstyle}</failOnViolation>
-                    <violationSeverity>${checkstyle.violationSeverity}</violationSeverity>
-                    <linkXRef>false</linkXRef>
-                </configuration>
-                <reportSets>
-                    <reportSet>
-                        <reports />
                     </reportSet>
                 </reportSets>
             </plugin>

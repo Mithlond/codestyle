@@ -33,6 +33,7 @@
             Directory definitions.
         -->
         <dir.wildfly.root>${project.build.directory}/wildflyRoot</dir.wildfly.root>
+        <dir.base.layer>${dir.wildfly.root}/modules/system/layers/base</dir.base.layer>
         <dir.nazgul.layer>${dir.wildfly.root}/modules/system/layers/nazgul</dir.nazgul.layer>
         <dir.webjars.unpacked>${project.build.directory}/downloaded/webjars</dir.webjars.unpacked>
 
@@ -106,7 +107,7 @@
                 <executions>
                     <execution>
                         <id>copy-postgresql-driver</id>
-                        <phase>package</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>
@@ -128,7 +129,7 @@
                     </execution>
                     <execution>
                         <id>copy-eclipselink-driver</id>
-                        <phase>package</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>
@@ -140,18 +141,9 @@
                                     <version>${eclipselink.version}</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
-                                    <outputDirectory>${dir.nazgul.layer}/org/eclipse/persistence/main</outputDirectory>
+                                    <outputDirectory>${dir.base.layer}/org/eclipse/persistence/main</outputDirectory>
                                     <destFileName>eclipselink-${eclipselink.version}.jar</destFileName>
                                 </artifactItem>
-                                <!-- artifactItem>
-                                    <groupId>org.jipijapa</groupId>
-                                    <artifactId>jipijapa-eclipselink</artifactId>
-                                    <version>${jipijapa.version}</version>
-                                    <type>jar</type>
-                                    <overWrite>false</overWrite>
-                                    <outputDirectory>${dir.nazgul.layer}/org/eclipse/persistence/main</outputDirectory>
-                                    <destFileName>jipijapa-eclipselink-${jipijapa.version}.jar</destFileName>
-                                </artifactItem -->
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/wars</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
@@ -215,22 +207,6 @@
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>1.9</version>
                 <executions>
-                    <!-- execution>
-                        <id>attach-distribution</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>target/${project.artifactId}-${project.version}.jar</file>
-                                    <type>jar</type>
-                                    <classifier>configuration</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution -->
                     <execution>
                         <id>remove-default-artifact</id>
                         <phase>package</phase>

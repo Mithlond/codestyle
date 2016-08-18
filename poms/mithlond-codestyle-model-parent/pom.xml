@@ -28,7 +28,7 @@
     <!-- | Section 2:  Dependency (management) settings   -->
     <!-- +=============================================== -->
     <dependencies>
-        <!-- Internal dependencies -->
+        <!-- External dependencies -->
         <dependency>
             <groupId>se.jguru.nazgul.core.reflection.api</groupId>
             <artifactId>nazgul-core-reflection-api</artifactId>
@@ -50,11 +50,6 @@
             <artifactId>xmlunit</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <scope>test</scope>
-        </dependency -->
     </dependencies>
 
     <!-- +=============================================== -->
