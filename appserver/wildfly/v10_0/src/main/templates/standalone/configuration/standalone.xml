@@ -170,11 +170,15 @@
                 <datasource jta="true"
                             jndi-name="${datasource.jndi.prefix}/${services.db.name}DS"
                             pool-name="${services.datasource.pool.name}"
-                            use-ccm="false">
+                            use-ccm="false"
+                            statistics-enabled="true">
                     <connection-url>${services.datasource.connection.url}</connection-url>
                     <driver-class>${services.datasource.driver.class}</driver-class>
                     <driver>${services.datasource.driver.id}</driver>
                     <transaction-isolation>TRANSACTION_REPEATABLE_READ</transaction-isolation>
+                    <pool>
+                        <max-pool-size>50</max-pool-size>
+                    </pool>
                     <security>
                         <user-name>${services.db.user.name}</user-name>
                         <password>${services.db.user.password}</password>
@@ -192,7 +196,8 @@
                             jndi-name="${datasource.jndi.prefix}/${wildfly.db.name}DS"
                             pool-name="${wildfly.datasource.pool.name}"
                             enabled="true"
-                            use-ccm="false">
+                            use-ccm="false"
+                            statistics-enabled="true">
                     <connection-url>${wildfly.datasource.connection.url}</connection-url>
                     <driver-class>${wildfly.datasource.driver.class}</driver-class>
                     <driver>${wildfly.datasource.driver.id}</driver>
