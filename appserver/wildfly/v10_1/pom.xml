@@ -12,22 +12,22 @@
         <relativePath>../../../poms/mithlond-codestyle-war-parent</relativePath>
     </parent>
 
-    <groupId>se.mithlond.codestyle.appserver.wildfly.v10_0</groupId>
-    <artifactId>mithlond-codestyle-appserver-wildfly-v10_0-assembly</artifactId>
+    <groupId>se.mithlond.codestyle.appserver.wildfly.v10_1</groupId>
+    <artifactId>mithlond-codestyle-appserver-wildfly-v10_1-assembly</artifactId>
     <name>${project.artifactId}</name>
     <description>Mithlond Codestyle: Wildfly 10 Appserver Assembly</description>
     <packaging>pom</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
 
     <properties>
-        <path.in.reactor>appserver/wildfly/v10_0</path.in.reactor>
+        <path.in.reactor>appserver/wildfly/v10_1</path.in.reactor>
 
         <!--
             Dependency versions.
         -->
         <postgresql.version>9.4.1208</postgresql.version>
         <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
-        <keycloak.version>2.0.0.Final</keycloak.version>
+        <keycloak.version>2.1.0.Final</keycloak.version>
 
         <!--
             Directory definitions.
@@ -186,10 +186,10 @@
                             <goal>single</goal>
                         </goals>
                         <configuration combine.self="override">
-                            <finalName>wildfly_10_0_config_${environment}</finalName>
+                            <finalName>wildfly_10_1_config_${environment}</finalName>
                             <useJvmChmod>true</useJvmChmod>
                             <descriptors>
-                                <descriptor>src/assembly/wildfly_10_0.xml</descriptor>
+                                <descriptor>src/assembly/wildfly_10_1.xml</descriptor>
                             </descriptors>
                             <archive>
                                 <manifest>
