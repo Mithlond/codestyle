@@ -1,7 +1,7 @@
 # About mithlond-codestyle-appserver-wildfly-reactor
 
 The Appserver Wildfly reactor contains projects that build tailored distributions of application servers.
-In the case of Wildfly, 3 things are added within the Nazgul add-on -
+In the case of Wildfly, 3 things are added within the Nazgul layer -
 
 1. A PostgreSQL module is installed into the application server.
    This enables creating connection pools to postgres databases.

@@ -13,9 +13,9 @@ during the build of this reactor.
 ### 1. Download the [Wildfly 10+ app server](http://wildfly.org/downloads/)
 
 Download a full distribution release.
-The current latest release is version 10.0.0.Final which implements the Java EE 7 standard.
+The current latest release is version 10.1.0.Final which implements the Java EE 7 standard.
 It is important to use the 10+ version of WildFly, to enable installing an updated version of
-the KeyCloak IDM server overlay (currently version 1.9.1.Final) within the same application
+the KeyCloak IDM server overlay (currently version 2.1.0.Final) within the same application
 server instance as any of the services.
 
 ### 2. Install WildFly in a path **without whitespace**.
