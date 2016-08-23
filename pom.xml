@@ -14,7 +14,7 @@
 
     <groupId>se.mithlond.codestyle</groupId>
     <artifactId>mithlond-codestyle-reactor</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.7.0</version>
     <name>${project.artifactId}</name>
     <description>Mithlond Codestyle: Reactor POM Project Parent.</description>
     <packaging>pom</packaging>
@@ -287,7 +287,7 @@
         <connection>${scm.connection.url}</connection>
         <developerConnection>${scm.devConnection.url}</developerConnection>
         <url>${scm.url}</url>
-        <tag>mithlond-codestyle-1.6.0</tag>
+        <tag>mithlond-codestyle-1.7.0</tag>
     </scm>
 
     <ciManagement>
