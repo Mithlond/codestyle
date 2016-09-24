@@ -99,6 +99,14 @@
     <!-- +=============================================== -->
     <dependencyManagement>
         <dependencies>
+            <!-- Java EE API dependencies -->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>7.0</version>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- Nazgul Core dependencies -->
             <dependency>
                 <groupId>se.jguru.nazgul.core.algorithms.api</groupId>
@@ -270,7 +278,7 @@
                         <skip>${skip.verify.code}</skip>
                         <configLocation>${checkstyle.config.location}</configLocation>
                         <excludes>${checkstyle.excludes}</excludes>
-                        <suppressionsFile>${checkstyle.suppressions.location}</suppressionsFile>
+                        <suppressionsLocation>${checkstyle.suppressions.location}</suppressionsLocation>
                         <failOnViolation>${breakOnFailure.checkstyle}</failOnViolation>
                         <violationSeverity>${checkstyle.violationSeverity}</violationSeverity>
                     </configuration>
@@ -695,7 +703,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.3</version>
                 <configuration>
                     <outputDirectory>${project.build.directory}/jaxb2/transformed/generated-schema</outputDirectory>
                     <transformSchemas>
@@ -721,12 +729,12 @@
                         -->
                         <transformSchema>
                             <uri>http://www.jguru.se/nazgul/core</uri>
-                            <toPrefix>core</toPrefix>
+                            <!-- toPrefix>core</toPrefix -->
                             <toFile>NazgulCore.xsd</toFile>
                         </transformSchema>
                         <transformSchema>
                             <uri>http://www.mithlond.se/dataexchange</uri>
-                            <toPrefix>dataexchange</toPrefix>
+                            <!-- toPrefix>dataexchange</toPrefix -->
                             <toFile>dataexchange.xsd</toFile>
                         </transformSchema>
                     </transformSchemas>
