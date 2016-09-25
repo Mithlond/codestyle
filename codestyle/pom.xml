@@ -134,37 +134,6 @@
                 </plugin>
 
                 <!--
-                    Configures the release plugin version.
-                    Also ensures that the default release profile is not used.
-                    (The mithlond-release profile should be used instead).
-
-                    Why:  Release artifacts
-                    Used: Normal lifecycle, release goal
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
-                    <configuration>
-                        <!--
-                            Do not perform site deployment when releasing.
-                         -->
-                        <mavenExecutorId>forked-path</mavenExecutorId>
-                        <goals>deploy</goals>
-                        <useReleaseProfile>false</useReleaseProfile>
-                        <tagNameFormat>${reactor.name}-@{project.version}</tagNameFormat>
-                        <arguments>-Pmithlond-release</arguments>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.apache.maven.scm</groupId>
-                            <artifactId>maven-scm-providers-git</artifactId>
-                            <version>1.9.4</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-
-                <!--
                     Configures a better versions-maven-plugin, implying fewer
                     NullPointerExceptions on normal operations.
                 -->
@@ -324,6 +293,30 @@
                         <version>2.7</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <!--
+                Configures the release plugin version.
+                Also ensures that the default release profile is not used.
+                (The mithlond-release profile should be used instead).
+
+                Why:  Release artifacts
+                Used: Normal lifecycle, release goal
+             -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <!--
+                        Do not perform site deployment when releasing.
+                     -->
+                    <mavenExecutorId>forked-path</mavenExecutorId>
+                    <goals>deploy</goals>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <tagNameFormat>${reactor.name}-@{project.version}</tagNameFormat>
+                    <arguments>-Pmithlond-release</arguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -493,10 +486,8 @@
                             <updateReleaseInfo>true</updateReleaseInfo>
                         </configuration>
                     </plugin>
-                    <!--
-                        No source code to pack in this project.
-                    -->
-                    <!-- plugin>
+
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
                         <version>3.0.1</version>
@@ -508,11 +499,8 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin -->
-                    <!--
-                        No code to JavaDoc in this project.
-                    -->
-                    <!-- plugin>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>2.10.4</version>
@@ -527,7 +515,7 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin -->
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>

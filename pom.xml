@@ -108,12 +108,10 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.3</version>
                     <configuration>
-                        <!--
-                            Do not perform site deployment when releasing.
-                         -->
                         <mavenExecutorId>forked-path</mavenExecutorId>
                         <goals>deploy</goals>
                         <useReleaseProfile>false</useReleaseProfile>
+                        <tagNameFormat>${reactor.name}-@{project.version}</tagNameFormat>
                         <arguments>-Pmithlond-release</arguments>
                     </configuration>
                 </plugin>
@@ -248,6 +246,26 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!--
+                    Configures the release plugin version.
+                    Also ensures that the default release profile is not used.
+                    (The mithlond-release profile should be used instead).
+
+                    Why:  Release artifacts
+                    Used: Normal lifecycle, release goal
+                -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration combine.self="override">
+                    <mavenExecutorId>forked-path</mavenExecutorId>
+                    <goals>deploy</goals>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <tagNameFormat>${reactor.name}-@{project.version}</tagNameFormat>
+                    <arguments>-Pmithlond-release</arguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
