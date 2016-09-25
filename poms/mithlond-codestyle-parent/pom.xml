@@ -14,7 +14,7 @@
 
     <groupId>se.mithlond.codestyle.poms</groupId>
     <artifactId>mithlond-codestyle-parent</artifactId>
-    <version>1.8.1-SNAPSHOT</version>
+    <version>1.8.1</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
@@ -301,7 +301,7 @@
                         <dependency>
                             <groupId>se.mithlond.codestyle.codestyle</groupId>
                             <artifactId>mithlond-codestyle</artifactId>
-                            <version>1.8.1-SNAPSHOT</version>
+                            <version>1.8.1</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -948,7 +948,7 @@
         <connection>${scm.connection.url}</connection>
         <developerConnection>${scm.devConnection.url}</developerConnection>
         <url>${scm.url}</url>
-        <tag>mithlond-codestyle-1.6.0</tag>
+        <tag>mithlond-codestyle-1.8.1</tag>
     </scm>
 
     <ciManagement>
