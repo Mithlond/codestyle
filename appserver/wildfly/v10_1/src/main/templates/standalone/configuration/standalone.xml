@@ -495,6 +495,21 @@
                 -->
                 <lookup name="java:global/jms/ConnectionFactory"
                         lookup="java:/jms/DefaultJMSConnectionFactory"/>
+
+
+                <!--
+                    MailSession mappings.
+
+                    Note: The default mail Session will only send mail on to the SMTP port (i.e. 25)
+                          on localhost, since it is configured to use the standard "mail-smtp" outbound
+                          socket binding. To use alternate settings, configure a new Mail Session and (optionally)
+                          a new outbound-socket-binding to match.
+
+                          <outbound-socket-binding name="mail-smtp">
+                              <remote-destination host="localhost" port="25"/>
+                          </outbound-socket-binding>
+                -->
+                <lookup name="java:global/mail/Mithlond" lookup="java:jboss/mail/Default"/>
             </bindings>
             <remote-naming/>
         </subsystem>
