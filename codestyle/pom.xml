@@ -16,7 +16,7 @@
 
     <groupId>se.mithlond.codestyle.codestyle</groupId>
     <artifactId>mithlond-codestyle</artifactId>
-    <version>1.9.0</version>
+    <version>1.9.1-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
@@ -435,7 +435,7 @@
         <connection>${scm.connection.url}</connection>
         <developerConnection>${scm.devConnection.url}</developerConnection>
         <url>${scm.url}</url>
-        <tag>mithlond-codestyle-1.9.0</tag>
+        <tag>mithlond-codestyle-1.6.0</tag>
     </scm>
 
     <ciManagement>
