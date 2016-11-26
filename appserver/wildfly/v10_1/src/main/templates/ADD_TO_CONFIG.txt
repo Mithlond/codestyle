@@ -1,11 +1,8 @@
 ##############
 #
-# Required mithlond webapp environment properties
+# Required Mithlond WebApp environment properties
 #
 ##############
-
-# Provide articles repo root path
-JAVA_OPTS="$JAVA_OPTS -Darticles.root.dir=/Users/lj/Development/Projects/Tolkien/articles"
 
 # Provide environment definition
 JAVA_OPTS="$JAVA_OPTS -Denvironment.type=${environment.id}"

@@ -510,6 +510,9 @@
                           </outbound-socket-binding>
                 -->
                 <lookup name="java:global/mail/Mithlond" lookup="java:jboss/mail/Default"/>
+                <lookup name="java:global/mail/Forodrim" lookup="java:jboss/mail/Default"/>
+                <lookup name="java:global/mail/Angmar" lookup="java:jboss/mail/Default"/>
+                <lookup name="java:global/mail/Bri" lookup="java:jboss/mail/Default"/>
             </bindings>
             <remote-naming/>
         </subsystem>
