@@ -42,15 +42,13 @@ a script must be run in order to enable Keycloak within the application server. 
 
 The result of the script should be something like
 
-`
-{"outcome" => "success"}
-{"outcome" => "success"}
-{
-    "outcome" => "success",
-    "result" => [("keycloak" => "1.1.0")]
-}
-{"outcome" => "success"}
-`
+    {"outcome" => "success"}
+    {"outcome" => "success"}
+    {
+        "outcome" => "success",
+        "result" => [("keycloak" => "1.1.0")]
+    }
+    {"outcome" => "success"}
 
 The installation script adds 3 entries to Wildfly's standalone.xml configuration file, namely:
 

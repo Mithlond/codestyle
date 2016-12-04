@@ -87,6 +87,7 @@
                                         <include>**/*.properties</include>
                                         <include>**/*.xml</include>
                                         <include>**/*.conf</include>
+                                        <include>**/*.cli</include>
                                     </includes>
                                     <directory>${basedir}/src/main/templates</directory>
                                     <filtering>true</filtering>
