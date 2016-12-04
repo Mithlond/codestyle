@@ -1,0 +1,13 @@
+#
+# Keycloak Adapter overlay configuration as a JBoss CLI Batch script.
+# // Lennart Jörelid, 2015-12-29
+#
+# 1) Add the Keycloak security domain
+#
+/subsystem=security/security-domain=keycloak/:add
+/subsystem=security/security-domain=keycloak/authentication=classic/:add(login-modules=[{ "code" => "org.keycloak.adapters.jboss.KeycloakLoginModule","flag" => "required"}])
+#
+# 2) Add the KeyCloak adapter subsystem
+#
+/extension=org.keycloak.keycloak-adapter-subsystem/:add(module=org.keycloak.keycloak-adapter-subsystem)
+/subsystem=keycloak:add
