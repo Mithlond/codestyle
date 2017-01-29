@@ -580,6 +580,14 @@
                     <location name="/" handler="welcome-content"/>
                     <filter-ref name="server-header"/>
                     <filter-ref name="x-powered-by-header"/>
+                    <filter-ref name="Access-Control-Allow-Methods"/>
+                    <filter-ref name="Access-Control-Allow-Headers"/>
+                    <filter-ref name="Access-Control-Allow-Credentials"/>
+                    <!--
+                        Note: The Access-Control-Allow-Origin header must be set within a @Provider
+                        within the application, as it must be the exact URI of the caller (i.e. not '*')
+                        when security is enabled.
+                    -->
                 </host>
             </server>
             <servlet-container name="default">
@@ -590,8 +598,21 @@
                 <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
             </handlers>
             <filters>
-                <response-header name="server-header" header-name="Server" header-value="WildFly/10"/>
-                <response-header name="x-powered-by-header" header-name="X-Powered-By" header-value="Undertow/1"/>
+                <response-header name="server-header"
+                                 header-name="Server"
+                                 header-value="WildFly/10"/>
+                <response-header name="x-powered-by-header"
+                                 header-name="X-Powered-By"
+                                 header-value="Undertow/1"/>
+                <response-header name="Access-Control-Allow-Methods"
+                                 header-name="Access-Control-Allow-Methods"
+                                 header-value="GET, POST, DELETE, OPTIONS, PUT"/>
+                <response-header name="Access-Control-Allow-Headers"
+                                 header-name="Access-Control-Allow-Headers"
+                                 header-value="accept, authorization, content-type, x-requested-with"/>
+                <response-header name="Access-Control-Allow-Credentials"
+                                 header-name="Access-Control-Allow-Credentials"
+                                 header-value="true"/>
             </filters>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0">
