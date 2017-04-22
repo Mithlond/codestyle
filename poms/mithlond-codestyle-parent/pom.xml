@@ -8,7 +8,7 @@
     <parent>
         <groupId>se.jguru.nazgul.core.poms.core-parent</groupId>
         <artifactId>nazgul-core-parent</artifactId>
-        <version>2.2.0</version>
+        <version>3.0.0</version>
         <relativePath />
     </parent>
 
@@ -78,7 +78,7 @@
         <checkstyle.suppressions.location>codestyle/mithlond-checkstyle-suppressions.xml</checkstyle.suppressions.location>
 
         <!-- Version constants -->
-        <nazgul-core.version>2.1.0</nazgul-core.version>
+        <nazgul-core.version>3.0.0</nazgul-core.version>
         <logback.version>1.1.7</logback.version>
         <aspectj-maven-plugin.version>1.8</aspectj-maven-plugin.version>
         <aspectj.runtime.version>1.8.10</aspectj.runtime.version>
@@ -203,11 +203,17 @@
             <!--
                 Joda-Time
             -->
-            <dependency>
+            <!-- dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>2.9.4</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>21.0</version>
+            </dependency  -->
 
             <!--
                 Db Drivers
