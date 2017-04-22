@@ -461,8 +461,13 @@
                 -->
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
-                <jms-topic name="ServicesOutboundEventsTopic" entries="java:/jms/nazgul/services/OutboundEventsTopic"/>
-                <jms-topic name="ServicesInboundEventsTopic" entries="java:/jms/nazgul/services/InboundEventsTopic"/>
+
+                <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
+
+                <jms-topic name="mail_request" entries="java:/jms/nazgul/services/mail/request"/>
+                <jms-topic name="mail_error" entries="java:/jms/services/mail/error"/>
+                <jms-topic name="calendar_request" entries="java:/jms/nazgul/services/eventcalendar/request"/>
+                <jms-topic name="calendar_request" entries="java:/jms/nazgul/services/eventcalendar/error"/>
 
                 <connection-factory name="InVmConnectionFactory"
                                     connectors="in-vm"
@@ -502,10 +507,15 @@
                 <!--
                     JMS Destination mappings.
                 -->
-                <lookup name="java:global/jms/nazgul/services/OutboundEventsTopic"
-                        lookup="java:/jms/nazgul/services/OutboundEventsTopic"/>
-                <lookup name="java:global/jms/nazgul/services/InboundEventsTopic"
-                        lookup="java:/jms/nazgul/services/InboundEventsTopic"/>
+                <lookup name="java:global/jms/nazgul/services/mail/request"
+                        lookup="java:/jms/nazgul/services/mail/request"/>
+                <lookup name="java:global/jms/nazgul/services/mail/error"
+                        lookup="java:/jms/services/mail/error"/>
+
+                <lookup name="java:global/jms/nazgul/services/eventcalendar/error"
+                        lookup="java:/jms/nazgul/services/eventcalendar/error"/>
+                <lookup name="java:global/jms/nazgul/services/eventcalendar/request"
+                        lookup="java:/jms/nazgul/services/eventcalendar/request"/>
 
                 <!--
                     JMS ConnectionFactory mappings.
