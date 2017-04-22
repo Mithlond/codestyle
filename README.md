@@ -3,6 +3,8 @@
 The Mithlond: Codestyle project structure contains parent POMs and codestyle 
 definitions with best practises for collaborative development.
 
+[![Build Status](https://travis-ci.org/Mithlond/mithlond-codestyle.svg?branch=master)](https://travis-ci.org/Mithlond/mithlond-codestyle)
+
 The reactor consists has 3 main strucures:
 
 1. **poms**. All parent poms for artifact projects (i.e. projects which produce JARs, WARs, EARs, 
