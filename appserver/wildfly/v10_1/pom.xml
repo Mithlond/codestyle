@@ -27,7 +27,7 @@
         -->
         <postgresql.version>9.4.1208</postgresql.version>
         <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
-        <keycloak.version>2.5.4.Final</keycloak.version>
+        <keycloak.version>2.5.5.Final</keycloak.version>
 
         <!--
             Directory definitions.
