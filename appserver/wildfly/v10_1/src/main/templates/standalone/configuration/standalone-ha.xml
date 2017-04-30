@@ -462,12 +462,10 @@
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
 
-                <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
-
                 <jms-topic name="mail_request" entries="java:/jms/nazgul/services/mail/request"/>
                 <jms-topic name="mail_error" entries="java:/jms/services/mail/error"/>
                 <jms-topic name="calendar_request" entries="java:/jms/nazgul/services/eventcalendar/request"/>
-                <jms-topic name="calendar_request" entries="java:/jms/nazgul/services/eventcalendar/error"/>
+                <jms-topic name="calendar_error" entries="java:/jms/nazgul/services/eventcalendar/error"/>
 
                 <connection-factory name="InVmConnectionFactory"
                                     connectors="in-vm"

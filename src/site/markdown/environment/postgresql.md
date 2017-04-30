@@ -86,7 +86,7 @@ Their respective purpose and access credentials are as follows:
 While still being logged in to the PostgreSQL database as the "postgres" user, create the 
 service databases for the mithlond and keycloak services using the following commands in order:
 
-    CREATE DATABASE "ServiceDB"
+    CREATE DATABASE "ServicesDB"
           WITH OWNER = mithlonduser
                ENCODING = 'UTF8'
                TABLESPACE = pg_default
@@ -94,7 +94,7 @@ service databases for the mithlond and keycloak services using the following com
                LC_CTYPE = 'sv_SE.UTF-8'
                CONNECTION LIMIT = -1;
     
-    COMMENT ON DATABASE "ServiceDB" IS 'Service persistence DB';
+    COMMENT ON DATABASE "ServicesDB" IS 'Service persistence DB';
 
     CREATE DATABASE "WildflyDB"
           WITH OWNER "wildflyuser"
