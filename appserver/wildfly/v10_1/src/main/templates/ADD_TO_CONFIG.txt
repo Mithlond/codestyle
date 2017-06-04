@@ -5,4 +5,4 @@
 ##############
 
 # Provide environment definition
-JAVA_OPTS="$JAVA_OPTS -Denvironment.type=${environment.id}"
+JAVA_OPTS="$JAVA_OPTS -Ddeployment.type=${environment.id}"
