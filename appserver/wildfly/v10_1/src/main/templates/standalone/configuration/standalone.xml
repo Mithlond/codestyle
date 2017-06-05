@@ -603,6 +603,7 @@
                     <filter-ref name="Access-Control-Allow-Methods"/>
                     <filter-ref name="Access-Control-Allow-Headers"/>
                     <filter-ref name="Access-Control-Allow-Credentials"/>
+                    <filter-ref name="Access-Control-Max-Age"/>
                     <!--
                         Note: The Access-Control-Allow-Origin header must be set within a @Provider
                         within the application, as it must be the exact URI of the caller (i.e. not '*')
@@ -629,7 +630,10 @@
                                  header-value="GET, POST, DELETE, OPTIONS, PUT"/>
                 <response-header name="Access-Control-Allow-Headers"
                                  header-name="Access-Control-Allow-Headers"
-                                 header-value="accept, authorization, content-type, x-requested-with"/>
+                                 header-value="accept, authorization, content-type, maxAge, origin, x-requested-with"/>
+                <response-header name="Access-Control-Max-Age"
+                                 header-name="Access-Control-Max-Age"
+                                 header-value="20"/>
                 <response-header name="Access-Control-Allow-Credentials"
                                  header-name="Access-Control-Allow-Credentials"
                                  header-value="true"/>
