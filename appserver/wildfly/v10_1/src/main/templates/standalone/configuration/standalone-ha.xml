@@ -468,6 +468,8 @@
 
                 <jms-topic name="mail_request" entries="java:/jms/nazgul/services/mail/request"/>
                 <jms-topic name="mail_error" entries="java:/jms/services/mail/error"/>
+                <jms-topic name="mailing_list_request" entries="java:/jms/nazgul/services/mailinglist/request"/>
+                <jms-topic name="mailing_list_response" entries="java:/jms/nazgul/services/mailinglist/response"/>
                 <jms-topic name="calendar_request" entries="java:/jms/nazgul/services/eventcalendar/request"/>
                 <jms-topic name="calendar_error" entries="java:/jms/nazgul/services/eventcalendar/error"/>
 
@@ -513,6 +515,11 @@
                         lookup="java:/jms/nazgul/services/mail/request"/>
                 <lookup name="java:global/jms/nazgul/services/mail/error"
                         lookup="java:/jms/services/mail/error"/>
+
+                <lookup name="java:global/jms/nazgul/services/mailinglist/request"
+                        lookup="java:/jms/nazgul/services/mailinglist/request"/>
+                <lookup name="java:global/jms/nazgul/services/mailinglist/response"
+                        lookup="java:/jms/nazgul/services/mailinglist/response"/>
 
                 <lookup name="java:global/jms/nazgul/services/eventcalendar/error"
                         lookup="java:/jms/nazgul/services/eventcalendar/error"/>
