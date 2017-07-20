@@ -41,6 +41,7 @@
         <module name="javax.validation.api"/>
         <module name="javax.xml.bind.api"/>
         <module name="javax.ws.rs.api"/>
+        <module name="javax.json.api"/>
         <module name="org.antlr"/>
         <module name="org.apache.commons.collections"/>
         <module name="org.dom4j"/>
