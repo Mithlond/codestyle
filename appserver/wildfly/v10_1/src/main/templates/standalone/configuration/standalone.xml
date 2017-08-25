@@ -611,6 +611,7 @@
                     <filter-ref name="Access-Control-Allow-Headers"/>
                     <filter-ref name="Access-Control-Allow-Credentials"/>
                     <filter-ref name="Access-Control-Max-Age"/>
+                    <filter-ref name="Access-Control-Expose-Headers"/>
                     <!--
                         Note: The Access-Control-Allow-Origin header must be set within a @Provider
                         within the application, as it must be the exact URI of the caller (i.e. not '*')
@@ -644,6 +645,24 @@
                 <response-header name="Access-Control-Allow-Credentials"
                                  header-name="Access-Control-Allow-Credentials"
                                  header-value="true"/>
+                <!--
+                    The Access-Control-Expose-Headers indicates to a compliant browser that some
+                    additional headers should be exposed to the XHR caller. Otherwise only the
+                    standard Access-Control headers are shown to the calling JavaScript.
+                    The standard Access-Control HTTP headers are:
+
+                    Cache-Control
+                    Content-Language
+                    Content-Type
+                    Expires
+                    Last-Modified
+                    Pragma
+
+                    See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
+                -->
+                <response-header name="Access-Control-Expose-Headers"
+                                 header-name="Access-Control-Expose-Headers"
+                                 header-value="Content-Disposition, X-Suggested-Filename"/>
             </filters>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0">
