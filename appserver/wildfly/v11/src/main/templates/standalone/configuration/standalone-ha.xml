@@ -642,7 +642,7 @@
                           only.
                 -->
                 <lookup name="java:global/jms/ConnectionFactory"
-                        lookup="java:/jms/DefaultJMSConnectionFactory"/>
+                        lookup="java:jboss/DefaultJMSConnectionFactory"/>
 
                 <!--
                     MailSession mappings.
