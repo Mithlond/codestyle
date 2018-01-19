@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <!--
   #%L
-  Nazgul Project: mithlond-codestyle-appserver-wildfly-v10_0-assembly
+  Nazgul Project: mithlond-codestyle-appserver-wildfly-v11-assembly
   %%
-  Copyright (C) 2015 - 2016 Mithlond
+  Copyright (C) 2015 - 2018 Mithlond
   %%
   Licensed under the jGuru Europe AB license (the "License"), based
   on Apache License, Version 2.0; you may not use this file except
@@ -261,6 +261,7 @@
             </concurrent>
             <default-bindings context-service="java:jboss/ee/concurrency/context/default"
                               datasource="java:jboss/datasources/${wildfly.db.name}DS"
+                              jms-connection-factory="java:jboss/DefaultJMSConnectionFactory"
                               managed-executor-service="java:jboss/ee/concurrency/executor/default"
                               managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default"
                               managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
