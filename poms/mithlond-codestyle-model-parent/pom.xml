@@ -119,8 +119,10 @@
             <properties>
                 <jpa.provider.class>org.eclipse.persistence.jpa.PersistenceProvider</jpa.provider.class>
                 <surefire.argLine>-javaagent:${basedir}/target/eclipselink.jar -Dfile.encoding=UTF-8 -Xmx1024m -XX:MaxPermSize=512m</surefire.argLine>
-                <eclipselink.version>2.7.1</eclipselink.version>
-                <eclipselink.javax.persistence.version>2.2.0</eclipselink.javax.persistence.version>
+
+                <!-- Eclipselink versions -->
+                <org.eclipse.persistence.osgi.version>2.2.0</org.eclipse.persistence.osgi.version>
+                <org.eclipse.persistence.version>2.7.1</org.eclipse.persistence.version>
             </properties>
 
             <dependencyManagement>
@@ -128,13 +130,19 @@
                     <dependency>
                         <groupId>org.eclipse.persistence</groupId>
                         <artifactId>javax.persistence</artifactId>
-                        <version>${eclipselink.javax.persistence.version}</version>
+                        <version>${org.eclipse.persistence.osgi.version}</version>
                         <scope>provided</scope>
                     </dependency>
                     <dependency>
                         <groupId>org.eclipse.persistence</groupId>
                         <artifactId>eclipselink</artifactId>
-                        <version>${eclipselink.version}</version>
+                        <version>${org.eclipse.persistence.version}</version>
+                        <scope>provided</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-validator</artifactId>
+                        <version>5.3.5.Final</version>
                         <scope>provided</scope>
                     </dependency>
                 </dependencies>
@@ -197,7 +205,7 @@
             </activation>
 
             <properties>
-                <openjpa.version>2.3.0</openjpa.version>
+                <openjpa.version>2.4.0</openjpa.version>
                 <openjpa.includes>se/jguru/nazgul/**/*.class</openjpa.includes>
                 <openjpa.excludes>se/jguru/nazgul/core/xmlbinding/spi/jaxb/transport/EntityWrapper.class</openjpa.excludes>
                 <openjpa.persistenceXmlPath>weaving/openjpa/v2/${project.artifactId}-persistence.xml</openjpa.persistenceXmlPath>
@@ -325,6 +333,5 @@
         <connection>${scm.connection.url}</connection>
         <developerConnection>${scm.devConnection.url}</developerConnection>
         <url>${scm.url}</url>
-        <tag>mithlond-codestyle-1.6.0</tag>
     </scm>
 </project>

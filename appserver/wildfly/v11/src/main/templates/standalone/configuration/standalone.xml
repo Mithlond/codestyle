@@ -581,7 +581,8 @@
                 <pooled-connection-factory name="activemq-ra"
                                            transaction="xa"
                                            connectors="in-vm"
-                                           entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory"/>
+                                           entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory"
+                                           statistics-enabled="true"/>
             </server>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
