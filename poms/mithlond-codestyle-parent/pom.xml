@@ -61,7 +61,8 @@
         <organisation.url.prefix>https://github.com/${organisation.name}</organisation.url.prefix>
         <git.url.prefix>scm:git:ssh://git@github.com/${organisation.name}</git.url.prefix>
         <site.url.prefix>http://mithlond.github.io</site.url.prefix>
-        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}</site.top.url>
+        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}
+        </site.top.url>
 
         <!--
             Define the URL prefixes for Site Deployment and DistributionManagement.
@@ -76,7 +77,8 @@
 
         <!-- Build controlling constants -->
         <checkstyle.config.location>codestyle/mithlond-checkstyle.xml</checkstyle.config.location>
-        <checkstyle.suppressions.location>codestyle/mithlond-checkstyle-suppressions.xml</checkstyle.suppressions.location>
+        <checkstyle.suppressions.location>codestyle/mithlond-checkstyle-suppressions.xml
+        </checkstyle.suppressions.location>
 
         <!-- Version constants -->
         <kotlin.version>1.2.21</kotlin.version>
@@ -789,7 +791,8 @@
                                     reproduced her to serve as an example of how to configure this enforcement rule
                                     in child reactors - where needs are likely different than here.
                                 -->
-                                <restrictImplDependencies implementation="se.jguru.nazgul.tools.codestyle.enforcer.rules.RestrictImplDependencies">
+                                <restrictImplDependencies
+                                        implementation="se.jguru.nazgul.tools.codestyle.enforcer.rules.RestrictImplDependencies">
                                     <includedGroupIdPatterns>^se\\.mithlond\\..*</includedGroupIdPatterns>
                                     <excludedGroupIdPatterns>
                                         ^se\\.mithlond\\..*\\.generated\\..*,^se\\.mithlond\\.codestyle\\..*
@@ -999,116 +1002,6 @@
     <!-- | Section 5:  Profiles                           -->
     <!-- +=============================================== -->
     <profiles>
-
-        <!--
-            Profile used to setup a standard Kotlin project structure.
-            This profile excludes Java as the project language.
-
-            Activate with:   -DdevelopIn=kotlin
-            or:
-
-            <properties>
-                <developIn>kotlin</developIn>
-            </properties>
-        -->
-        <profile>
-            <id>develop_with_kotlin</id>
-            <activation>
-                <property>
-                    <name>developIn</name>
-                    <value>kotlin</value>
-                </property>
-            </activation>
-
-            <dependencies>
-                <!--
-                    Include the standard Kotlin libraries.
-                -->
-                <dependency>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>kotlin-stdlib-jdk8</artifactId>
-                    <version>${kotlin.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>kotlin-reflect</artifactId>
-                    <version>${kotlin.version}</version>
-                </dependency>
-            </dependencies>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>kotlin-maven-plugin</artifactId>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <version>${kotlin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>compile</id>
-                                <goals>
-                                    <goal>compile</goal>
-                                </goals>
-                                <configuration>
-                                    <sourceDirs>
-                                        <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
-                                    </sourceDirs>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>test-compile</id>
-                                <goals>
-                                    <goal>test-compile</goal>
-                                </goals>
-                                <configuration>
-                                    <sourceDirs>
-                                        <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
-                                    </sourceDirs>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!--
-                        Ensure that the compiler plugin ignores the Java directories.
-                    -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <executions>
-                            <!--
-                                Replacing default-compile as it is treated specially by maven
-                             -->
-                            <execution>
-                                <id>default-compile</id>
-                                <phase>none</phase>
-                            </execution>
-                            <!--
-                                Replacing default-testCompile as it is treated specially by maven
-                             -->
-                            <execution>
-                                <id>default-testCompile</id>
-                                <phase>none</phase>
-                            </execution>
-                            <execution>
-                                <id>java-compile</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>compile</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>java-test-compile</id>
-                                <phase>test-compile</phase>
-                                <goals>
-                                    <goal>testCompile</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
         <profile>
             <id>mithlond-release</id>
             <build>

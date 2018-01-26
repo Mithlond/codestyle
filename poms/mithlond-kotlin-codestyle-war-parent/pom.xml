@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- +=============================================== -->
+    <!-- | Section 1:  Project information                -->
+    <!-- +=============================================== -->
+    <parent>
+        <groupId>se.mithlond.codestyle.poms</groupId>
+        <artifactId>mithlond-kotlin-codestyle-model-parent</artifactId>
+        <version>1.11.1-SNAPSHOT</version>
+        <relativePath>../mithlond-kotlin-codestyle-model-parent</relativePath>
+    </parent>
+
+    <groupId>se.mithlond.codestyle.poms</groupId>
+    <artifactId>mithlond-kotlin-codestyle-war-parent</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <description>Mithlond Kotlin Codestyle: Web Application Project Parent.</description>
+    <url>${site.top.url}/${path.in.reactor}</url>
+
+    <properties>
+        <!-- Define some extra version constants -->
+        <resteasy.version>3.0.8.Final</resteasy.version>
+        <undertow.version>1.0.15.Final</undertow.version>
+
+        <path.in.reactor>poms/mithlond-kotlin-codestyle-war-parent</path.in.reactor>
+        <!--
+            Don't break the build on coverage problems or pmd problems.
+        -->
+        <breakOnFailure.checkstyle>true</breakOnFailure.checkstyle>
+        <breakOnFailure.cobertura>false</breakOnFailure.cobertura>
+        <breakOnFailure.pmd>false</breakOnFailure.pmd>
+        <breakOnFailure.enforcer>false</breakOnFailure.enforcer>
+        <breakOnFailure.license>true</breakOnFailure.license>
+    </properties>
+
+    <!-- +=============================================== -->
+    <!-- | Section 2:  Dependency (management) settings   -->
+    <!-- +=============================================== -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.1.8.Final</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <!-- +=============================================== -->
+    <!-- | Section 3:  Build settings                     -->
+    <!-- +=============================================== -->
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${pmd.plugin.version}</version>
+                <configuration combine.self="override">
+                    <failurePriority>5</failurePriority>
+                    <failOnViolation>${breakOnFailure.pmd}</failOnViolation>
+                </configuration>
+            </plugin>
+
+            <!--
+                Ensure that we don't attempt to generate XSDs for all our WAR projects.
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>schemagen</id>
+                        <phase />
+                        <goals>
+                            <goal>schemagen</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration combine.self="append">
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- +=============================================== -->
+    <!-- | Section 4:  External systems                   -->
+    <!-- +=============================================== -->
+
+    <!--
+        Compensate for Maven standard variable extrapolation.
+        Git requires steady URLs (... but Subversion requires path extrapolation, hence the problem).
+     -->
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <url>${distroManagement.url}</url>
+        </site>
+    </distributionManagement>
+
+    <scm>
+        <connection>${scm.connection.url}</connection>
+        <developerConnection>${scm.devConnection.url}</developerConnection>
+        <url>${scm.url}</url>
+        <tag>mithlond-codestyle-1.6.0</tag>
+    </scm>
+</project>

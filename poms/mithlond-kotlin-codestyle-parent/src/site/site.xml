@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   #%L
-  Nazgul Project: mithlond-codestyle
+  Nazgul Project: mithlond-kotlin-codestyle-parent
   %%
   Copyright (C) 2015 - 2018 Mithlond
   %%
@@ -67,18 +67,8 @@
                     ]]>
         </head>
 
-        <links>
-            <item name="TravisCI" href="https://travis-ci.org/mithlond/"/>
-        </links>
-
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
-        </menu>
-
-        <menu name="Development Env Setup">
-            <item name="IntelliJ IDEA" href="ides/idea.html" />
-            <item name="Eclipse" href="ides/eclipse.html" />
-            <item name="NetBeans" href="ides/netbeans.html" />
         </menu>
 
         <menu ref="reports" inherit="bottom"/>
