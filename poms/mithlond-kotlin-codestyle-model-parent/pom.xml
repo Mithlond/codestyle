@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- +=============================================== -->
@@ -55,6 +56,9 @@
     <!-- | Section 3:  Build settings                     -->
     <!-- +=============================================== -->
     <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
@@ -69,7 +73,7 @@
 
         <plugins>
             <!--
-                Ensure that we generate XSDs for all our model projects.
+                The Jaxb2 plugin cannot generate XSDs for Kotlin code. Yet.
             -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -80,6 +84,7 @@
                         <goals>
                             <goal>schemagen</goal>
                         </goals>
+                        <phase></phase>
                     </execution>
                 </executions>
             </plugin>
@@ -116,7 +121,9 @@
 
             <properties>
                 <jpa.provider.class>org.eclipse.persistence.jpa.PersistenceProvider</jpa.provider.class>
-                <surefire.argLine>-javaagent:${basedir}/target/eclipselink.jar -Dfile.encoding=UTF-8 -Xmx1024m -XX:MaxPermSize=512m</surefire.argLine>
+                <surefire.argLine>-javaagent:${basedir}/target/eclipselink.jar -Dfile.encoding=UTF-8 -Xmx1024m
+                    -XX:MaxPermSize=512m
+                </surefire.argLine>
 
                 <!-- Eclipselink versions -->
                 <org.eclipse.persistence.osgi.version>2.2.0</org.eclipse.persistence.osgi.version>
@@ -205,12 +212,18 @@
             <properties>
                 <openjpa.version>2.4.0</openjpa.version>
                 <openjpa.includes>se/jguru/nazgul/**/*.class</openjpa.includes>
-                <openjpa.excludes>se/jguru/nazgul/core/xmlbinding/spi/jaxb/transport/EntityWrapper.class</openjpa.excludes>
-                <openjpa.persistenceXmlPath>weaving/openjpa/v2/${project.artifactId}-persistence.xml</openjpa.persistenceXmlPath>
-                <openjpa.persistenceXmlFile>${project.basedir}/src/main/${openjpa.persistenceXmlPath}</openjpa.persistenceXmlFile>
-                <openjpa.persistenceXmlTestFile>${project.basedir}/src/test/${openjpa.persistenceXmlPath}</openjpa.persistenceXmlTestFile>
+                <openjpa.excludes>se/jguru/nazgul/core/xmlbinding/spi/jaxb/transport/EntityWrapper.class
+                </openjpa.excludes>
+                <openjpa.persistenceXmlPath>weaving/openjpa/v2/${project.artifactId}-persistence.xml
+                </openjpa.persistenceXmlPath>
+                <openjpa.persistenceXmlFile>${project.basedir}/src/main/${openjpa.persistenceXmlPath}
+                </openjpa.persistenceXmlFile>
+                <openjpa.persistenceXmlTestFile>${project.basedir}/src/test/${openjpa.persistenceXmlPath}
+                </openjpa.persistenceXmlTestFile>
                 <jpa.provider.class>org.apache.openjpa.persistence.PersistenceProviderImpl</jpa.provider.class>
-                <surefire.argLine>-javaagent:${basedir}/target/openjpa.jar -Dfile.encoding=UTF-8 -Xmx1024m -XX:MaxPermSize=512m</surefire.argLine>
+                <surefire.argLine>-javaagent:${basedir}/target/openjpa.jar -Dfile.encoding=UTF-8 -Xmx1024m
+                    -XX:MaxPermSize=512m
+                </surefire.argLine>
             </properties>
 
             <dependencies>
