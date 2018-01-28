@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- +=============================================== -->
@@ -25,6 +26,8 @@
 
         <!-- Kotlin constants -->
         <kotlin.version>1.2.21</kotlin.version>
+        <kotlin.plugin>jpa</kotlin.plugin>
+        <dokka.version>0.9.15</dokka.version>
     </properties>
 
 
@@ -67,7 +70,85 @@
     <!-- | Section 3:  Build settings                     -->
     <!-- +=============================================== -->
     <build>
+        <pluginManagement>
+            <plugins>
+
+                <!--
+                    Ensure that the kotlin-maven-plugin uses the standard src/main/kotlin
+                    and src/test/kotlin directories.
+
+                    Why:  Ensures standard placement for Kotlin sources.
+                    Used: Standard lifecycle, mvn compile / test-compile.
+                -->
+                <plugin>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-maven-plugin</artifactId>
+                    <version>${kotlin.version}</version>
+                    <configuration>
+                        <plugin>${kotlin.plugin}</plugin>
+                        <jvmTarget>${jdk.version}</jvmTarget>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <artifactId>kotlin-maven-noarg</artifactId>
+                            <version>${kotlin.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <!--
+                    Use the Dokka plugin to document Kotlin code, as the
+                    standard JavaDoc Doclet does not work.
+
+                    Why:  Ensures javadoc for Kotlin sources.
+                    Used: Standard lifecycle, mvn pre-site
+                -->
+                <plugin>
+                    <groupId>org.jetbrains.dokka</groupId>
+                    <artifactId>dokka-maven-plugin</artifactId>
+                    <version>${dokka.version}</version>
+                    <configuration>
+                        <!-- Used for linking to JDK, default: 6 -->
+                        <jdkVersion>8</jdkVersion>
+
+                        <!-- Include documentation link to kotlin-stdlib -->
+                        <noStdlibLink>false</noStdlibLink>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>pre-site</phase>
+                            <goals>
+                                <goal>dokka</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+            
+        </pluginManagement>
+
         <plugins>
+
+            <!--
+                Use the Dokka plugin to document Kotlin code, as the
+                standard JavaDoc Doclet does not work.
+
+                Why:  Ensures javadoc for Kotlin sources.
+                Used: Standard lifecycle, mvn pre-site
+            -->
+            <plugin>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>dokka</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!--
                 Ensure that the kotlin-maven-plugin uses the standard src/main/kotlin
