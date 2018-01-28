@@ -70,6 +70,10 @@
     <!-- | Section 3:  Build settings                     -->
     <!-- +=============================================== -->
     <build>
+
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+
         <pluginManagement>
             <plugins>
 
@@ -114,15 +118,10 @@
 
                         <!-- Include documentation link to kotlin-stdlib -->
                         <noStdlibLink>false</noStdlibLink>
+                        <sourceRoots>
+                            
+                        </sourceRoots>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <phase>pre-site</phase>
-                            <goals>
-                                <goal>dokka</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
             
