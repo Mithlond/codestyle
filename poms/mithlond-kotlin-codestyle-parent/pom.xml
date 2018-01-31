@@ -116,15 +116,24 @@
                         <!-- Used for linking to JDK, default: 6 -->
                         <jdkVersion>8</jdkVersion>
 
+                        <!--
+                            Output format - one of the following:
+                            a) html - minimalistic html format used by default
+                            b) javadoc - Dokka mimic to javadoc
+                            c) html-as-java - as html but using java syntax
+                            d) markdown - Markdown structured as html
+                            f) gfm - GitHub flavored markdown
+                            g) jekyll - Jekyll compatible markdown
+                            h) kotlin-website* - internal format used for documentation on kotlinlang.org
+                        -->
+                        <outputFormat>javadoc</outputFormat>
+
                         <!-- Include documentation link to kotlin-stdlib -->
                         <noStdlibLink>false</noStdlibLink>
-                        <sourceRoots>
-                            
-                        </sourceRoots>
+                        <sourceRoots>${project.build.sourceDirectory}</sourceRoots>
                     </configuration>
                 </plugin>
             </plugins>
-            
         </pluginManagement>
 
         <plugins>
@@ -136,7 +145,7 @@
                 Why:  Ensures javadoc for Kotlin sources.
                 Used: Standard lifecycle, mvn pre-site
             -->
-            <plugin>
+            <!-- plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
                 <executions>
@@ -144,10 +153,11 @@
                         <phase>pre-site</phase>
                         <goals>
                             <goal>dokka</goal>
+                            <goal>javadoc</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin -->
 
             <!--
                 Ensure that the kotlin-maven-plugin uses the standard src/main/kotlin
