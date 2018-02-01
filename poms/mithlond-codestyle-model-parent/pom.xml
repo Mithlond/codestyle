@@ -8,7 +8,7 @@
     <parent>
         <groupId>se.mithlond.codestyle.poms</groupId>
         <artifactId>mithlond-codestyle-api-parent</artifactId>
-        <version>2.0.1</version>
+        <version>2.0.2-SNAPSHOT</version>
         <relativePath>../mithlond-codestyle-api-parent</relativePath>
     </parent>
 
@@ -333,6 +333,6 @@
         <connection>${scm.connection.url}</connection>
         <developerConnection>${scm.devConnection.url}</developerConnection>
         <url>${scm.url}</url>
-      <tag>mithlond-codestyle-2.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 </project>
