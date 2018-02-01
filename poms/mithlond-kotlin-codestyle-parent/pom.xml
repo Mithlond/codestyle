@@ -130,7 +130,6 @@
 
                         <!-- Include documentation link to kotlin-stdlib -->
                         <noStdlibLink>false</noStdlibLink>
-                        <sourceRoots>${project.build.sourceDirectory}</sourceRoots>
                     </configuration>
                 </plugin>
             </plugins>
