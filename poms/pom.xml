@@ -30,10 +30,6 @@
         <module>mithlond-codestyle-api-parent</module>
         <module>mithlond-codestyle-model-parent</module>
         <module>mithlond-codestyle-war-parent</module>
-        <module>mithlond-kotlin-codestyle-parent</module>
-        <module>mithlond-kotlin-codestyle-api-parent</module>
-        <module>mithlond-kotlin-codestyle-model-parent</module>
-        <module>mithlond-kotlin-codestyle-war-parent</module>
     </modules>
 
     <!-- +=============================================== -->

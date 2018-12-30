@@ -12,22 +12,22 @@
         <relativePath>../../../poms/mithlond-codestyle-war-parent</relativePath>
     </parent>
 
-    <groupId>se.mithlond.codestyle.appserver.wildfly.v10_1</groupId>
-    <artifactId>mithlond-codestyle-appserver-wildfly-v10_1-assembly</artifactId>
+    <groupId>se.mithlond.codestyle.appserver.wildfly.v15</groupId>
+    <artifactId>mithlond-codestyle-appserver-wildfly-v15-assembly</artifactId>
     <name>${project.artifactId}</name>
-    <description>Mithlond Codestyle: Wildfly 10 Appserver Assembly</description>
+    <description>Mithlond Codestyle: Wildfly 15 Appserver Assembly</description>
     <packaging>pom</packaging>
     <url>${site.top.url}/${path.in.reactor}</url>
 
     <properties>
-        <path.in.reactor>appserver/wildfly/v10_1</path.in.reactor>
+        <path.in.reactor>appserver/wildfly/v15</path.in.reactor>
 
         <!--
             Dependency versions.
         -->
-        <postgresql.version>9.4.1208</postgresql.version>
+        <postgresql.version>42.2.4</postgresql.version>
         <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
-        <keycloak.version>3.1.0.Final</keycloak.version>
+        <keycloak.version>4.8.1.Final</keycloak.version>
 
         <!--
             Directory definitions.
@@ -187,10 +187,10 @@
                             <goal>single</goal>
                         </goals>
                         <configuration combine.self="override">
-                            <finalName>wildfly_10_1_config_${environment}</finalName>
+                            <finalName>wildfly_15_config_${environment}</finalName>
                             <useJvmChmod>true</useJvmChmod>
                             <descriptors>
-                                <descriptor>src/assembly/wildfly_10_1.xml</descriptor>
+                                <descriptor>src/assembly/wildfly_15.xml</descriptor>
                             </descriptors>
                             <archive>
                                 <manifest>
@@ -238,7 +238,7 @@
         <connection>${scm.connection.url}</connection>
         <developerConnection>${scm.devConnection.url}</developerConnection>
         <url>${scm.url}</url>
-        <tag>mithlond-codestyle-1.6.0</tag>
+        <tag>mithlond-codestyle-2.0.2-SNAPSHOT</tag>
     </scm>
 
     <!-- +=============================================== -->

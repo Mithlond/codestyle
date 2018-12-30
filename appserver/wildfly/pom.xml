@@ -26,8 +26,8 @@
     <!-- | Section 2:  Module definitions                 -->
     <!-- +=============================================== -->
     <modules>
-        <module>v10_1</module>
         <module>v11</module>
+        <module>v15</module>
     </modules>
 
     <!-- +=============================================== -->

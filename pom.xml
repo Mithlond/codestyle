@@ -68,6 +68,9 @@
 
         <!-- Deploy reactor poms? -->
         <skip.deploy.reactor.poms>false</skip.deploy.reactor.poms>
+
+        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+        <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     </properties>
 
     <licenses>
@@ -160,7 +163,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.6</version>
+                    <version>3.7.1</version>
                     <executions>
                         <execution>
                             <id>attach-descriptor</id>
@@ -275,8 +278,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.9</version>
-                <reportSets>
+                <version>3.0.0</version>
+                <!-- reportSets>
                     <reportSet>
                         <reports>
                             <report>cim</report>
@@ -289,7 +292,7 @@
                             <report>summary</report>
                         </reports>
                     </reportSet>
-                </reportSets>
+                </reportSets -->
             </plugin>
         </plugins>
     </reporting>

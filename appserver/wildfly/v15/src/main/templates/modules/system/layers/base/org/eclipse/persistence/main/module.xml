@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   #%L
-  Nazgul Project: mithlond-codestyle-appserver-wildfly-v11-assembly
+  Nazgul Project: mithlond-codestyle-appserver-wildfly-v15-assembly
   %%
   Copyright (C) 2015 - 2018 Mithlond
   %%
@@ -21,13 +21,13 @@
   #L%
   -->
 
-<module xmlns="urn:jboss:module:1.3" name="org.eclipse.persistence">
+<module xmlns="urn:jboss:module:1.5" name="org.eclipse.persistence">
     <properties>
         <property name="jboss.api" value="private"/>
     </properties>
 
     <resources>
-        <resource-root path="jipijapa-eclipselink-11.0.0.Final.jar"/>
+        <resource-root path="jipijapa-eclipselink-15.0.0.Final.jar"/>
         <resource-root path="eclipselink-${eclipselink.version}.jar">
             <filter>
                 <exclude path="javax/**"/>

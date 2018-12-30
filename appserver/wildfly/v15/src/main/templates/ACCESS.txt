@@ -1,0 +1,18 @@
+#
+# Standard username --> password definitions, if the 
+# JBoss server is set up using the intranet overlay
+# tar archive.
+#
+# Management Users:
+# =================
+# 1. ${user.management.1.name} --> ${user.management.1.pwd.plain}
+#    ${user.management.1.pwd.serverIdentities}
+#
+# 2. ${user.management.2.name} --> ${user.management.2.pwd.plain}
+#    ${user.management.2.pwd.serverIdentities}
+#
+# Application Users:
+# =================
+# 1. ${user.application.1.name} --> ${user.application.1.pwd.plain}
+#    ${user.application.1.pwd.serverIdentities}
+#

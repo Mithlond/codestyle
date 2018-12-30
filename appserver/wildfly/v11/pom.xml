@@ -25,9 +25,9 @@
         <!--
             Dependency versions.
         -->
-        <postgresql.version>9.4.1208</postgresql.version>
+        <postgresql.version>42.2.4</postgresql.version>
         <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
-        <keycloak.version>3.4.3.Final</keycloak.version>
+        <keycloak.version>4.8.1.Final</keycloak.version>
 
         <!--
             Directory definitions.
@@ -70,7 +70,7 @@
              -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>filter-environment-and-maven-tokens</id>

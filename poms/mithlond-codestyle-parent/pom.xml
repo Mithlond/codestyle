@@ -60,8 +60,7 @@
         <organisation.url.prefix>https://github.com/${organisation.name}</organisation.url.prefix>
         <git.url.prefix>scm:git:ssh://git@github.com/${organisation.name}</git.url.prefix>
         <site.url.prefix>http://mithlond.github.io</site.url.prefix>
-        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}
-        </site.top.url>
+        <site.top.url>${site.url.prefix}/${organisation.name}/${reactor.name}/Documentation/${project.version}</site.top.url>
 
         <!--
             Define the URL prefixes for Site Deployment and DistributionManagement.
@@ -76,23 +75,21 @@
 
         <!-- Build controlling constants -->
         <checkstyle.config.location>codestyle/mithlond-checkstyle.xml</checkstyle.config.location>
-        <checkstyle.suppressions.location>codestyle/mithlond-checkstyle-suppressions.xml
-        </checkstyle.suppressions.location>
+        <checkstyle.suppressions.location>codestyle/mithlond-checkstyle-suppressions.xml</checkstyle.suppressions.location>
 
         <!-- Version constants -->
-        <kotlin.version>1.2.21</kotlin.version>
         <nazgul-core.version>3.0.0</nazgul-core.version>
-        <logback.version>1.1.7</logback.version>
-        <aspectj-maven-plugin.version>1.8</aspectj-maven-plugin.version>
-        <aspectj.runtime.version>1.8.10</aspectj.runtime.version>
+        <logback.version>1.2.3</logback.version>
+        <aspectj-maven-plugin.version>1.11</aspectj-maven-plugin.version>
+        <aspectj.runtime.version>1.9.2</aspectj.runtime.version>
         <findbugs.plugin.version>3.0.0</findbugs.plugin.version>
         <cobertura.plugin.version>2.7</cobertura.plugin.version>
         <checkstyle.version>7.0</checkstyle.version>
         <pmd.plugin.version>3.6</pmd.plugin.version>
-        <maven-project-info-reports-plugin.version>2.9</maven-project-info-reports-plugin.version>
-        <eclipselink.version>2.6.3</eclipselink.version>
-        <doxia-module.version>1.7</doxia-module.version>
-        <wagon.version>2.12</wagon.version>
+        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+        <eclipselink.version>2.7.3</eclipselink.version>
+        <doxia-module.version>1.8</doxia-module.version>
+        <wagon.version>3.2.0</wagon.version>
 
         <!-- Build time constants -->
         <timestamp>${maven.build.timestamp}</timestamp>
@@ -108,7 +105,13 @@
             <dependency>
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
-                <version>7.0</version>
+                <version>8.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>2.0.1.Final</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -188,7 +191,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.22</version>
+                <version>1.7.25</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -204,33 +207,18 @@
             </dependency>
 
             <!--
-                Joda-Time
-            -->
-            <!-- dependency>
-                <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-                <version>2.9.4</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>21.0</version>
-            </dependency -->
-
-            <!--
                 Db Drivers
             -->
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>9.4-1206-jdbc42</version>
+                <version>42.2.5</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
-                <version>2.3.4</version>
+                <version>2.4.1</version>
                 <scope>test</scope>
             </dependency>
 
@@ -253,6 +241,18 @@
                 <artifactId>eclipselink</artifactId>
                 <version>${eclipselink.version}</version>
                 <scope>provided</scope>
+                <!-- exclusions>
+                    <exclusion>
+                        <groupId>org.eclipse.persistence</groupId>
+                        <artifactId>javax.persistence</artifactId>
+                    </exclusion>
+                </exclusions -->
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>javax.persistence</artifactId>
+                <version>2.2.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -546,7 +546,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.6</version>
+                    <version>3.7.1</version>
                     <executions>
                         <execution>
                             <id>attach-descriptor</id>
@@ -659,7 +659,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>4.1.0</version>
                 <extensions>true</extensions>
             </plugin>
 
