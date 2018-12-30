@@ -1,4 +1,4 @@
-# Wildfly 11 AppServer overlay Assembly
+# Wildfly 14 AppServer overlay Assembly
 
 Getting the basic infrastructure ready for running on an application server can be a daunting task.
 This project builds a custom/convenient distribution on top of the WildFly 10 application server,
@@ -78,7 +78,7 @@ Keycloak administration console, and could look like the following.
             <credential name="secret">password</credential>  <== if direct client invocations are required
         </secure-deployment>
 
-## Structure of the Wildfly 10 overlay
+## Structure of the Wildfly overlay
 
 This overlay adds a new layer, called Nazgul, which contains Database drivers and generic module definitions.
 Moreover, the overlay also contains script files which must be run if Keycloak should be used to secure web 

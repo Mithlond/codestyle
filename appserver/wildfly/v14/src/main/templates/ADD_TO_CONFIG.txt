@@ -1,0 +1,8 @@
+##############
+#
+# Required Mithlond WebApp environment properties
+#
+##############
+
+# Provide environment definition
+JAVA_OPTS="$JAVA_OPTS -Ddeployment.type=${environment.id}"

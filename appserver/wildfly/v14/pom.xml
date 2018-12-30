@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- +=============================================== -->
+    <!-- | Section 1:  Project information                -->
+    <!-- +=============================================== -->
+    <parent>
+        <groupId>se.mithlond.codestyle.poms</groupId>
+        <artifactId>mithlond-codestyle-war-parent</artifactId>
+        <version>2.0.2-SNAPSHOT</version>
+        <relativePath>../../../poms/mithlond-codestyle-war-parent</relativePath>
+    </parent>
+
+    <groupId>se.mithlond.codestyle.appserver.wildfly.v14</groupId>
+    <artifactId>mithlond-codestyle-appserver-wildfly-v14-assembly</artifactId>
+    <name>${project.artifactId}</name>
+    <description>Mithlond Codestyle: Wildfly 14 Appserver Assembly</description>
+    <packaging>pom</packaging>
+    <url>${site.top.url}/${path.in.reactor}</url>
+
+    <properties>
+        <path.in.reactor>appserver/wildfly/v14</path.in.reactor>
+
+        <!--
+            Dependency versions.
+        -->
+        <postgresql.version>42.2.4</postgresql.version>
+        <bootstrap-datepicker.version>1.4.0</bootstrap-datepicker.version>
+        <keycloak.version>4.8.1.Final</keycloak.version>
+
+        <!--
+            Directory definitions.
+        -->
+        <dir.wildfly.root>${project.build.directory}/wildflyRoot</dir.wildfly.root>
+        <dir.base.layer>${dir.wildfly.root}/modules/system/layers/base</dir.base.layer>
+        <dir.nazgul.layer>${dir.wildfly.root}/modules/system/layers/nazgul</dir.nazgul.layer>
+        <dir.webjars.unpacked>${project.build.directory}/downloaded/webjars</dir.webjars.unpacked>
+
+        <!--
+            Build-controlling properties.
+        -->
+        <breakOnFailure.enforcer>false</breakOnFailure.enforcer>
+        <cobertura.haltOnFailure>false</cobertura.haltOnFailure>
+    </properties>
+
+    <!-- +=============================================== -->
+    <!-- | Section 2:  Dependency (management) settings   -->
+    <!-- +=============================================== -->
+    <dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+    </dependencies>
+
+    <!-- +=============================================== -->
+    <!-- | Section 3:  Build settings                     -->
+    <!-- +=============================================== -->
+    <build>
+        <plugins>
+
+            <!--
+                 Configures the resource plugin to copy and filter resources.
+                 This substitutes ${variables} to their properties.
+
+                 Why:  Copies and filters resources
+                 Used: Standard lifecycle, mvn process-resources.
+             -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>filter-environment-and-maven-tokens</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${dir.wildfly.root}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <includes>
+                                        <include>**/*.txt</include>
+                                        <include>**/*.properties</include>
+                                        <include>**/*.xml</include>
+                                        <include>**/*.conf</include>
+                                        <include>**/*.cli</include>
+                                    </includes>
+                                    <directory>${basedir}/src/main/templates</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <filters>
+                                <filter>${project.build.outputDirectory}/META-INF/maven/dependencies.properties</filter>
+                                <filter>${environment.tokens}</filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-postgresql-driver</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.postgresql</groupId>
+                                    <artifactId>postgresql</artifactId>
+                                    <version>${postgresql.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${dir.nazgul.layer}/org/postgresql/main</outputDirectory>
+                                    <destFileName>postgresql-${postgresql.version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-eclipselink-driver</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.eclipse.persistence</groupId>
+                                    <artifactId>eclipselink</artifactId>
+                                    <version>${eclipselink.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${dir.base.layer}/org/eclipse/persistence/main</outputDirectory>
+                                    <destFileName>eclipselink-${eclipselink.version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/wars</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-keycloak-adapter</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>bin/adapter-install*</excludes>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.keycloak</groupId>
+                                    <artifactId>keycloak-wildfly-adapter-dist</artifactId>
+                                    <version>${keycloak.version}</version>
+                                    <type>zip</type>
+                                    <overWrite>false</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${dir.wildfly.root}</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration combine.self="override">
+                            <finalName>wildfly_14_config_${environment}</finalName>
+                            <useJvmChmod>true</useJvmChmod>
+                            <descriptors>
+                                <descriptor>src/assembly/wildfly_14.xml</descriptor>
+                            </descriptors>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addClasspath>false</addClasspath>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>remove-default-artifact</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remove-project-artifact</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- +=============================================== -->
+    <!-- | Section 4:  External systems                   -->
+    <!-- +=============================================== -->
+
+    <!--
+        Compensate for Maven standard variable extrapolation.
+        Git requires steady URLs (... but Subversion requires path extrapolation, hence the problem).
+     -->
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <url>${distroManagement.url}</url>
+        </site>
+    </distributionManagement>
+
+    <scm>
+        <connection>${scm.connection.url}</connection>
+        <developerConnection>${scm.devConnection.url}</developerConnection>
+        <url>${scm.url}</url>
+        <tag>mithlond-codestyle-2.0.2-SNAPSHOT</tag>
+    </scm>
+
+    <!-- +=============================================== -->
+    <!-- | Section 5:  Profiles                           -->
+    <!-- +=============================================== -->
+    <profiles>
+
+        <!--
+            Profile for building the application server overlay for the development environment.
+            Requires no build parameters to building the overlay, and is therefor the default
+            build unless configured otherwise.
+        -->
+        <profile>
+            <id>development</id>
+            <activation>
+                <property>
+                    <name>!environment</name>
+                </property>
+            </activation>
+
+            <properties>
+                <environment.tokens>${basedir}/src/main/environments/development.properties</environment.tokens>
+                <environment>development</environment>
+            </properties>
+        </profile>
+
+        <!--
+            Profile for building the application server overlay for the staging environment.
+            Requires 2 parameters to building the overlay:
+
+            -Denvironment=staging -Dmithlond.staging.tokens=path/to/staging.properties
+
+            Value of the mithlond.staging.tokens must be a path to a properties files corresponding
+            to the properties supplied in src/main/environments/development.properties file.
+        -->
+        <profile>
+            <id>staging</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>staging</value>
+                </property>
+            </activation>
+
+            <properties>
+                <environment.tokens>${mithlond.staging.tokens}</environment.tokens>
+            </properties>
+        </profile>
+
+        <!--
+            Profile for building the application server overlay for the production environment.
+            Requires 2 parameters to building the overlay:
+
+            -Denvironment=production -Dmithlond.production.tokens=path/to/production.properties
+
+            Value of the mithlond.production.tokens must be a path to a properties files corresponding
+            to the properties supplied in src/main/environments/development.properties file.
+        -->
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>production</value>
+                </property>
+            </activation>
+
+            <properties>
+                <environment.tokens>${mithlond.production.tokens}</environment.tokens>
+            </properties>
+        </profile>
+    </profiles>
+</project>
