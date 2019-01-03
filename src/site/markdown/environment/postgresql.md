@@ -92,7 +92,8 @@ service databases for the mithlond and keycloak services using the following com
                TABLESPACE = pg_default
                LC_COLLATE = 'sv_SE.UTF-8'
                LC_CTYPE = 'sv_SE.UTF-8'
-               CONNECTION LIMIT = -1;
+               CONNECTION LIMIT = -1
+               TEMPLATE = template0;
     
     COMMENT ON DATABASE "ServicesDB" IS 'Service persistence DB';
 
@@ -102,7 +103,8 @@ service databases for the mithlond and keycloak services using the following com
                TABLESPACE = pg_default
                LC_COLLATE = 'sv_SE.UTF-8'
                LC_CTYPE = 'sv_SE.UTF-8'
-               CONNECTION LIMIT = -1;
+               CONNECTION LIMIT = -1
+               TEMPLATE = template0;
 
     COMMENT ON DATABASE "WildflyDB" IS 'Wildfly Appserver Default DB';
 
